@@ -10,11 +10,24 @@
     "build": "turbo run build",
     "typecheck": "turbo run typecheck",
     "clean": "turbo run clean",
-    "dev": "turbo run dev --parallel"
+    "dev": "turbo run dev --parallel",
+    "dev:mobile": "pnpm --filter @queuefree/mobile dev",
+    "android": "pnpm --filter @queuefree/mobile android",
+    "ios": "pnpm --filter @queuefree/mobile ios",
+    "web:mobile": "pnpm --filter @queuefree/mobile web",
+    "dev:web": "pnpm --filter @queuefree/web dev",
+    "build:web": "pnpm --filter @queuefree/web build",
+    "api:dev": "pnpm --filter @queuefree/api dev",
+    "api:build": "pnpm --filter @queuefree/api build",
+    "api:openapi:generate": "pnpm --filter @queuefree/api openapi:generate",
+    "api-client:generate": "pnpm --filter @queuefree/api-client generate"
   },
   "devDependencies": {
+    "@types/node": "^22.0.0",
+    "prettier": "3.8.1",
     "rimraf": "^6.0.1",
-    "turbo": "^2.5.0",
-    "typescript": "^5.8.2"
+    "tsx": "4.21.0",
+    "turbo": "^2.8.15",
+    "typescript": "^5.9.3"
   }
 }

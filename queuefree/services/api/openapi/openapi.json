@@ -1,0 +1,216 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/v1/health": {
+      "get": {
+        "operationId": "getHealth",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponseDto"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Health probe for the API service",
+        "tags": [
+          "System"
+        ]
+      }
+    },
+    "/v1/system/runtime-config": {
+      "get": {
+        "operationId": "getRuntimeConfig",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuntimeConfigResponseDto"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get public runtime configuration needed by mobile/web/admin clients",
+        "tags": [
+          "System"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "QueueFree API",
+    "description": "Initial C-end OpenAPI surface for QueueFree. This batch only exposes system-level endpoints required to bootstrap packages/api-client and runtime config delivery.",
+    "version": "0.0.1",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [
+    {
+      "url": "http://localhost:4000",
+      "description": "local"
+    },
+    {
+      "url": "https://dev-api.queuefree.com",
+      "description": "dev"
+    },
+    {
+      "url": "https://stg-api.queuefree.com",
+      "description": "staging"
+    },
+    {
+      "url": "https://api.queuefree.com",
+      "description": "prod"
+    }
+  ],
+  "components": {
+    "schemas": {
+      "AppEnv": {
+        "type": "string",
+        "enum": [
+          "local",
+          "dev",
+          "test",
+          "staging",
+          "prod"
+        ]
+      },
+      "HealthResponseDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok"
+            ],
+            "example": "ok"
+          },
+          "service": {
+            "type": "string",
+            "example": "@queuefree/api"
+          },
+          "version": {
+            "type": "string",
+            "example": "0.0.1"
+          },
+          "environment": {
+            "example": "local",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AppEnv"
+              }
+            ]
+          },
+          "timestamp": {
+            "type": "string",
+            "example": "2026-03-11T00:00:00.000Z",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "status",
+          "service",
+          "version",
+          "environment",
+          "timestamp"
+        ]
+      },
+      "ApiErrorResponseDto": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "example": "INTERNAL_SERVER_ERROR"
+          },
+          "message": {
+            "type": "string",
+            "example": "Unexpected server error."
+          },
+          "requestId": {
+            "type": "string",
+            "example": "req_demo_123"
+          },
+          "details": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Opaque structured error details for debugging or validation feedback."
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ]
+      },
+      "RuntimeConfigResponseDto": {
+        "type": "object",
+        "properties": {
+          "marketCode": {
+            "type": "string",
+            "example": "PH"
+          },
+          "currencyCode": {
+            "type": "string",
+            "example": "PHP"
+          },
+          "timezone": {
+            "type": "string",
+            "example": "Asia/Manila"
+          },
+          "locale": {
+            "type": "string",
+            "example": "en-PH"
+          },
+          "language": {
+            "type": "string",
+            "example": "English"
+          },
+          "ruleVersion": {
+            "type": "string",
+            "example": "v1.2"
+          },
+          "rewardedAdsEnabled": {
+            "type": "boolean",
+            "example": false
+          }
+        },
+        "required": [
+          "marketCode",
+          "currencyCode",
+          "timezone",
+          "locale",
+          "language",
+          "ruleVersion",
+          "rewardedAdsEnabled"
+        ]
+      }
+    }
+  }
+}

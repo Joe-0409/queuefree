@@ -1,0 +1,17 @@
+export declare enum EventName {
+    QUEUE_ENTRY_CREATED = "queue.entry.created",
+    QUEUE_ENTRY_FROZEN = "queue.entry.frozen",
+    QUEUE_ENTRY_RESTORED = "queue.entry.restored",
+    QUEUE_ENTRY_REMOVED = "queue.entry.removed",
+    QUEUE_ENTRY_BOOSTED = "queue.entry.boosted",
+    SETTLEMENT_SLOT_SETTLED = "settlement.slot.settled",
+    WALLET_PENDING_CREATED = "wallet.pending.created",
+    WALLET_CASHBACK_RELEASED = "wallet.cashback.released",
+    WALLET_CLAWBACK_CREATED = "wallet.clawback.created",
+    WITHDRAWAL_APPLIED = "withdrawal.applied",
+    WITHDRAWAL_APPROVED = "withdrawal.approved",
+    WITHDRAWAL_REJECTED = "withdrawal.rejected",
+    RISK_CASE_CREATED = "risk.case.created",
+    ACCOUNT_DELETE_REQUESTED = "account.delete.requested"
+}
+//# sourceMappingURL=event-name.d.ts.map

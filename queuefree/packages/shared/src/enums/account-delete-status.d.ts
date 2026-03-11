@@ -1,0 +1,9 @@
+export declare enum AccountDeleteStatus {
+    NOT_REQUESTED = "NOT_REQUESTED",
+    DELETE_REQUESTED = "DELETE_REQUESTED",
+    PENDING_SETTLEMENT = "PENDING_SETTLEMENT",
+    READY_TO_ANONYMIZE = "READY_TO_ANONYMIZE",
+    ANONYMIZED = "ANONYMIZED",
+    CANCELED_BY_USER = "CANCELED_BY_USER"
+}
+//# sourceMappingURL=account-delete-status.d.ts.map

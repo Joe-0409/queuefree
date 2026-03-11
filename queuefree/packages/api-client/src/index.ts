@@ -1,4 +1,15 @@
-export * from "./endpoints";
+import createClient from 'openapi-fetch';
+import type { paths } from './generated/schema';
 
-export const OPENAPI_GENERATION_REQUIRED_MESSAGE =
-  "packages/api-client is placeholder-only right now. Replace it with generated SDK after backend exports OpenAPI.";
+export type { components, operations, paths } from './generated/schema';
+
+export const createApiClient = (
+  baseUrl: string,
+  defaultHeaders?: HeadersInit
+) =>
+  createClient<paths>({
+    baseUrl,
+    headers: defaultHeaders
+  });
+
+export type QueueFreeApiClient = ReturnType<typeof createApiClient>;

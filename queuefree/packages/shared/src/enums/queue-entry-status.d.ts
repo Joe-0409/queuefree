@@ -1,0 +1,11 @@
+export declare enum QueueEntryStatus {
+    PENDING_RISK = "PENDING_RISK",
+    ACTIVE = "ACTIVE",
+    FROZEN = "FROZEN",
+    SUSPENDED_REVIEW = "SUSPENDED_REVIEW",
+    REMOVED = "REMOVED",
+    WON_PENDING_RELEASE = "WON_PENDING_RELEASE",
+    CASHBACK_RELEASED = "CASHBACK_RELEASED",
+    CLAWBACK_DONE = "CLAWBACK_DONE"
+}
+//# sourceMappingURL=queue-entry-status.d.ts.map

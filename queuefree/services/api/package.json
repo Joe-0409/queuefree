@@ -1,0 +1,28 @@
+{
+  "name": "@queuefree/api",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "nest start --watch",
+    "build": "nest build",
+    "start": "node dist/main",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "echo \"@queuefree/api lint will be added in a later batch\"",
+    "test": "echo \"@queuefree/api tests will be added in a later batch\"",
+    "openapi:generate": "tsx scripts/generate-openapi.ts",
+    "clean": "rm -rf dist tsconfig.tsbuildinfo"
+  },
+  "dependencies": {
+    "@nestjs/common": "11.1.16",
+    "@nestjs/core": "11.1.16",
+    "@nestjs/platform-express": "11.1.14",
+    "@nestjs/swagger": "11.2.6",
+    "@queuefree/shared": "workspace:*",
+    "reflect-metadata": "0.2.2",
+    "rxjs": "7.8.2",
+    "zod": "4.3.6"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "11.0.16"
+  }
+}
