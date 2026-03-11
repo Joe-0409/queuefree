@@ -1,0 +1,6 @@
+export enum InviteRelationStatus {
+  BOUND = 'BOUND',
+  PENDING_EFFECTIVE = 'PENDING_EFFECTIVE',
+  EFFECTIVE = 'EFFECTIVE',
+  INVALID = 'INVALID',
+}

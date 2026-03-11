@@ -1,0 +1,38 @@
+import { z } from 'zod';
+
+export const publicRoutesSchema = z.object({
+  privacy: z.literal('/privacy'),
+  terms: z.literal('/terms'),
+  rules: z.literal('/rules'),
+  deleteAccount: z.literal('/delete-account'),
+  contact: z.literal('/contact'),
+});
+
+export const runtimeConfigSchema = z.object({
+  ruleVersion: z.literal('v1.2'),
+  marketCode: z.literal('PH'),
+  currencyCode: z.literal('PHP'),
+  timezone: z.literal('Asia/Manila'),
+  locale: z.literal('en-PH'),
+  unpaidOrderExpireMinutes: z.number().int().positive(),
+  stockSoftReserveMinutes: z.number().int().positive(),
+  baseGuardHours: z.number().int().positive(),
+  freezeGraceHours: z.number().int().positive(),
+  adGuardBonusHours: z.number().int().nonnegative(),
+  protectZoneSize: z.number().int().positive(),
+  boostLimitPerEntry: z.number().int().positive(),
+  boostFragmentPerToken: z.number().int().positive(),
+  observationHoursAfterDelivery: z.number().int().positive(),
+  inviteBindWindowHours: z.number().int().positive(),
+  defaultCashbackCapMinor: z.number().int().nonnegative(),
+  withdrawMinAmountMinor: z.number().int().nonnegative(),
+  withdrawSingleMaxMinor: z.number().int().nonnegative(),
+  withdrawDailyMaxMinor: z.number().int().nonnegative(),
+  defaultOrderMaxQty: z.number().int().positive(),
+  defaultDailySlotCount: z.number().int().positive(),
+  rewardedAdsEnabled: z.boolean(),
+  publicWebBaseUrl: z.string().url(),
+  publicRoutes: publicRoutesSchema,
+});
+
+export type RuntimeConfigSchema = z.infer<typeof runtimeConfigSchema>;

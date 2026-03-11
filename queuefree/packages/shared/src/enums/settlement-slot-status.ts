@@ -1,0 +1,7 @@
+export enum SettlementSlotStatus {
+  SCHEDULED = 'SCHEDULED',
+  RUNNING = 'RUNNING',
+  SUCCEEDED = 'SUCCEEDED',
+  FAILED = 'FAILED',
+  REPLAYED = 'REPLAYED',
+}
