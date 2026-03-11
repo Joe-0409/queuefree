@@ -30,3 +30,5 @@ export function formatMoneyFromMinor(
     maximumFractionDigits,
   }).format(value);
 }
+
+export const formatMinorMoney = formatMoneyFromMinor;

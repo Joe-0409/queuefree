@@ -13,6 +13,13 @@
     "declarationMap": true,
     "sourceMap": true,
     "allowSyntheticDefaultImports": true,
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@queuefree/shared": ["packages/shared/src/index.ts"],
+      "@queuefree/api-client": ["packages/api-client/src/index.ts"],
+      "@queuefree/ui-tokens": ["packages/ui-tokens/src/index.ts"]
+    },
     "lib": ["ES2022", "DOM", "DOM.Iterable"]
   }
 }
