@@ -1,6 +1,18 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "tasks": {
+    "generate:api-client": {
+      "cache": false,
+      "outputs": [
+        "packages/api-client/src/generated/**"
+      ]
+    },
+    "verify:generated-adapter-bridge": {
+      "dependsOn": [
+        "generate:api-client"
+      ],
+      "outputs": []
+    },
     "typecheck": {
       "outputs": []
     }

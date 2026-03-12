@@ -51,6 +51,24 @@ async function verifyRootIntegration() {
     fail('Missing turbo task: typecheck');
   }
 
+  if (turboJson.tasks && turboJson.tasks['generate:api-client']) {
+    pass('Turbo task exists: generate:api-client');
+    if (turboJson.tasks['generate:api-client'].cache === false) {
+      pass('generate:api-client cache disabled (expected)');
+    }
+  } else {
+    fail('Missing turbo task: generate:api-client');
+  }
+
+  if (turboJson.tasks && turboJson.tasks['verify:generated-adapter-bridge']) {
+    pass('Turbo task exists: verify:generated-adapter-bridge');
+    if (turboJson.tasks['verify:generated-adapter-bridge'].dependsOn?.includes('generate:api-client')) {
+      pass('verify:generated-adapter-bridge dependsOn generate:api-client (expected)');
+    }
+  } else {
+    fail('Missing turbo task: verify:generated-adapter-bridge');
+  }
+
   console.log('');
 
   // Verify scripts exist
