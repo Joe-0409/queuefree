@@ -1,17 +1,17 @@
-export interface RuntimeConfigPublicRoutes {
-  privacy: '/privacy';
-  terms: '/terms';
-  rules: '/rules';
-  deleteAccount: '/delete-account';
-  contact: '/contact';
-}
+export type PublicRouteMap = {
+  privacy: string;
+  terms: string;
+  rules: string;
+  deleteAccount: string;
+  contact: string;
+};
 
-export interface RuntimeConfig {
-  ruleVersion: 'v1.2';
-  marketCode: 'PH';
-  currencyCode: 'PHP';
-  timezone: 'Asia/Manila';
-  locale: 'en-PH';
+export type RuntimeConfig = {
+  ruleVersion: string;
+  marketCode: string;
+  currencyCode: string;
+  timezone: string;
+  locale: string;
   unpaidOrderExpireMinutes: number;
   stockSoftReserveMinutes: number;
   baseGuardHours: number;
@@ -30,5 +30,5 @@ export interface RuntimeConfig {
   defaultDailySlotCount: number;
   rewardedAdsEnabled: boolean;
   publicWebBaseUrl: string;
-  publicRoutes: RuntimeConfigPublicRoutes;
-}
+  publicRoutes: PublicRouteMap;
+};

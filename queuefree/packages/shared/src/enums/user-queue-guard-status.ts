@@ -1,4 +1,6 @@
-export enum UserQueueGuardStatus {
-  VALID = 'VALID',
-  EXPIRED_GRACE = 'EXPIRED_GRACE',
-}
+  export const USER_QUEUE_GUARD_STATUSES = [
+    "VALID",
+"EXPIRED_GRACE"
+  ] as const;
+
+  export type UserQueueGuardStatus = (typeof USER_QUEUE_GUARD_STATUSES)[number];

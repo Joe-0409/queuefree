@@ -16,7 +16,7 @@ const specPath = findOpenApiSpec(paths);
 if (!specPath) {
   console.error(
     `generate-api-client failed: no OpenAPI file found under ${path.relative(process.cwd(), paths.openapiRoot)}. ` +
-    'Ask backend to export openapi.json / openapi.yaml first.'
+      'Ask backend to export openapi.json / openapi.yaml first.'
   );
   process.exit(1);
 }

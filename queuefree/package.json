@@ -4,44 +4,35 @@
   "version": "0.1.0",
   "packageManager": "pnpm@10.32.0",
   "engines": {
-    "node": ">=22.22.0 <23.0.0"
+    "node": ">=22.22.0 <23"
   },
   "scripts": {
-    "build": "turbo run build",
-    "typecheck": "pnpm verify:frontend-guardrails && turbo run typecheck",
-    "clean": "turbo run clean",
-    "dev": "turbo run dev --parallel",
     "dev:mobile": "pnpm --filter @queuefree/mobile dev",
     "android": "pnpm --filter @queuefree/mobile android",
     "ios": "pnpm --filter @queuefree/mobile ios",
     "web:mobile": "pnpm --filter @queuefree/mobile web",
+    "typecheck": "pnpm verify:frontend-guardrails && turbo run typecheck",
     "dev:web": "pnpm --filter @queuefree/web dev",
     "build:web": "pnpm --filter @queuefree/web build",
     "dev:admin": "pnpm --filter @queuefree/admin dev",
     "build:admin": "pnpm --filter @queuefree/admin build",
     "verify:registry-first-frontend": "node ./scripts/verify-registry-first-frontend.mjs",
+    "typecheck:frontends": "pnpm verify:frontend-guardrails && turbo run typecheck --filter=@queuefree/shared --filter=@queuefree/ui-tokens --filter=@queuefree/api-client --filter=@queuefree/mobile --filter=@queuefree/web --filter=@queuefree/admin",
     "verify:route-registry": "node ./scripts/verify-route-registry.mjs",
     "verify:frontend-import-boundaries": "node ./scripts/verify-frontend-import-boundaries.mjs",
+    "verify:mock-data-boundary": "node ./scripts/verify-mock-data-boundary.mjs",
+    "verify:adapter-switch-boundary": "node ./scripts/verify-adapter-switch-boundary.mjs",
     "verify:openapi-intake": "node ./scripts/verify-openapi-intake.mjs",
     "verify:generated-api-client": "node ./scripts/verify-generated-api-client.mjs",
     "verify:frontend-openapi-pipeline": "pnpm verify:openapi-intake && pnpm verify:generated-api-client",
-    "generate:api-client": "node ./scripts/generate-api-client.mjs",
-    "reset:api-client-placeholder": "node ./scripts/reset-api-client-placeholder.mjs",
-    "verify:mock-data-boundary": "node ./scripts/verify-mock-data-boundary.mjs",
-    "verify:adapter-switch-boundary": "node ./scripts/verify-adapter-switch-boundary.mjs",
     "verify:frontend-guardrails": "pnpm verify:registry-first-frontend && pnpm verify:route-registry && pnpm verify:frontend-import-boundaries && pnpm verify:mock-data-boundary && pnpm verify:adapter-switch-boundary && pnpm verify:openapi-intake && pnpm verify:generated-api-client",
-    "typecheck:frontends": "pnpm verify:frontend-guardrails && turbo run typecheck --filter=@queuefree/shared --filter=@queuefree/ui-tokens --filter=@queuefree/api-client --filter=@queuefree/mobile --filter=@queuefree/web --filter=@queuefree/admin",
-    "api:dev": "pnpm --filter @queuefree/api dev",
-    "api:build": "pnpm --filter @queuefree/api build",
-    "api:openapi:generate": "pnpm --filter @queuefree/api openapi:generate",
-    "api-client:generate": "pnpm --filter @queuefree/api-client generate"
+    "generate:api-client": "node ./scripts/generate-api-client.mjs",
+    "reset:api-client-placeholder": "node ./scripts/reset-api-client-placeholder.mjs"
   },
   "devDependencies": {
-    "@types/node": "^22.0.0",
-    "prettier": "3.8.1",
-    "rimraf": "^6.0.1",
-    "tsx": "4.21.0",
-    "turbo": "^2.8.15",
-    "typescript": "^5.9.3"
+    "openapi-typescript-codegen": "^0.29.0",
+    "turbo": "^2.4.4",
+    "typescript": "^5.8.3",
+    "yaml": "^2.8.1"
   }
 }

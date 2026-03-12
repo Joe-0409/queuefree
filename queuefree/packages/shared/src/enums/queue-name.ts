@@ -1,9 +1,11 @@
-export enum QueueName {
-  PAYMENTS_EVENTS = 'payments-events',
-  QUEUE_GUARD = 'queue-guard',
-  SETTLEMENT_SLOTS = 'settlement-slots',
-  WALLET_EVENTS = 'wallet-events',
-  INVITES = 'invites',
-  WITHDRAWALS = 'withdrawals',
-  RISK_CASES = 'risk-cases',
-}
+  export const QUEUE_NAMES = [
+    "payments-events",
+"queue-guard",
+"settlement-slots",
+"wallet-events",
+"invites",
+"withdrawals",
+"risk-cases"
+  ] as const;
+
+  export type QueueName = (typeof QUEUE_NAMES)[number];

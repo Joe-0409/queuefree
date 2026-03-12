@@ -17,9 +17,9 @@ export default function SecurityScreen() {
   return (
     <Screen
       title="Security"
-      subtitle="Session refresh and logout later connect to auth endpoints. Device visibility is useful for user trust and support."
+      subtitle="Session refresh and logout later connect through generated auth client calls. Device visibility is useful for user trust and support."
     >
-      <SectionCard title="Devices" description="The real backend later connects GET /v1/me/devices.">
+      <SectionCard title="Devices" description="The real backend later connects device visibility through generated client calls.">
         <View style={{ gap: 10 }}>
           {demoDevices.map((device) => (
             <NavRow key={device} label={device} />
@@ -36,7 +36,7 @@ export default function SecurityScreen() {
             router.replace("/(public)/welcome");
           }}
         />
-        <Text>Session refresh later uses POST /v1/auth/refresh, and logout later uses POST /v1/auth/logout.</Text>
+        <Text>Session refresh and logout later come from the generated auth client after backend exports OpenAPI.</Text>
       </SectionCard>
     </Screen>
   );

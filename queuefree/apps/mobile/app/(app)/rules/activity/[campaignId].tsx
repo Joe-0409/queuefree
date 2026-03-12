@@ -21,7 +21,7 @@ export default function ActivityRulesScreen() {
       </SectionCard>
 
       <SectionCard title="Implementation note" description="This page is a starter placeholder until rules content is delivered by backend and CMS-like config.">
-        <Text>Real frontend later consumes GET /v1/rules and GET /v1/rules/:slug or equivalent rules content contract exported through OpenAPI.</Text>
+        <Text>Real frontend later consumes generated rules content contracts after backend registers and exports the public rules API.</Text>
       </SectionCard>
     </Screen>
   );

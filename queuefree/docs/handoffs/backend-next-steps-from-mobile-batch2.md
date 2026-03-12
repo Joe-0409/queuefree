@@ -1,138 +1,51 @@
-# QueueFree 第 2 批：给后端线程的衔接说明
+# QueueFree 第 2 批：给后端线程的衔接说明（Batch 5 清理后版本）
 
 唯一规则源：`queuefree_prd_v1_2`
 
-## 你现在要继承的已完成前提
+## 当前前端状态
 
-前端第 2 批已经落地：
+前端第 2 批已经完成 `apps/mobile` 路由骨架。
 
-- `packages/shared`
-- `packages/ui-tokens`
-- `packages/api-client` 占位
-- `apps/mobile` 全路由骨架
-- `docs/contracts/mobile-screen-api-map-v1.2.md`
+当前手机端：
 
-前端当前**没有手写猜测型 DTO**，只用了：
+- 只依赖 `packages/shared`
+- 继续使用本地 mock / placeholder 数据
+- 已经移除手写猜测型 API path 说明
+- 等待后端按 registry-first 顺序补齐 OpenAPI
 
-1. `packages/shared` 的稳定枚举 / 常量 / runtime config schema
-2. 本地 mock 数据作为临时占位
+## 后端线程下一步正确顺序
 
-## 后端线程下一步必须做什么
+1. 若触碰冻结项，先更新 `docs/registry/registry-baseline-v1.2.md`
+2. 再导出 OpenAPI
+3. 再生成 `packages/api-client`
+4. 前端再逐模块替换本地 mock
 
-### 1）先按 PRD 固化 OpenAPI
+## 后端优先建议的模块域
 
-必须先覆盖这些 C 端接口：
+建议按下面顺序推进，不要求你在本文件里口头发明字段：
 
-- `POST /v1/auth/otp/send`
-- `POST /v1/auth/otp/verify`
-- `POST /v1/auth/refresh`
-- `POST /v1/auth/logout`
-- `GET /v1/me`
-- `PATCH /v1/me/profile`
-- `GET /v1/me/addresses`
-- `POST /v1/me/addresses`
-- `GET /v1/me/devices`
-- `POST /v1/me/delete-account-requests`
-- `GET /v1/products`
-- `GET /v1/products/:productId`
-- `POST /v1/orders`
-- `GET /v1/orders`
-- `GET /v1/orders/:orderId`
-- `POST /v1/orders/:orderId/payment-intents`
-- `GET /v1/queue-entries`
-- `GET /v1/queue-entries/:queueEntryId`
-- `GET /v1/queue-guard`
-- `POST /v1/queue-guard/check-in`
-- `POST /v1/queue-entries/:queueEntryId/boost`
-- `GET /v1/tasks`
-- `POST /v1/tasks/:taskId/claim`
-- `GET /v1/invites/me`
-- `POST /v1/invites/bind`
-- `GET /v1/invites/records`
-- `GET /v1/wallet`
-- `GET /v1/wallet/ledgers`
-- `GET /v1/withdrawal-accounts`
-- `POST /v1/withdrawal-accounts`
-- `POST /v1/withdrawals`
-- `GET /v1/withdrawals`
-- `GET /v1/rules`
-- `GET /v1/rules/:slug`
-- `GET /v1/notifications`
+1. auth / session
+2. product catalog
+3. orders / payment intents
+4. queue entries / queue guard / boost
+5. wallet / withdrawal accounts / withdrawals
+6. tasks
+7. invites
+8. profile / addresses / devices
+9. rules content / notifications
+10. account deletion
 
-### 2）导出 OpenAPI 后，立刻生成 `packages/api-client`
+## 对后端线程的硬约束提醒
 
-顺序必须是：
+- 不要跳过 registry 直接新增 path / field / state
+- 不要在没有 OpenAPI 的情况下让前端手写 contract
+- 不要把 NestJS DTO / Swagger class 放进 `packages/shared`
+- 前端只会消费 `packages/shared` 和生成后的 `packages/api-client`
 
-1. 后端定义 OpenAPI
-2. 生成 `packages/api-client`
-3. 前端删除 mock 数据
-4. 前端改成 SDK 调用
+## 当前前端最需要你输出什么
 
-### 3）先满足手机端已做页面的最小字段
-
-建议先补这些最小响应：
-
-#### Products
-- `id`
-- `title`
-- `subtitle`
-- `priceMinor`
-- `cashbackCapMinor`
-- `stockLabel`
-
-#### Queue Entry
-- `id`
-- `orderId`
-- `productTitle`
-- `status`
-- `currentRank`
-- `boostUsed`
-- `nextSlotAt`
-- `eligibleCashbackMinor`
-
-#### Queue Guard
-- `status`
-- `validUntil`
-- `graceUntil`
-
-#### Wallet
-- `pendingBalanceMinor`
-- `availableBalanceMinor`
-- `frozenBalanceMinor`
-- `showRecoverableDebtHint`
-- `activationLabel`
-
-#### Withdrawal
-- `id`
-- `amountMinor`
-- `status`
-- `createdAt`
-
-#### Rule Content
-- `slug`
-- `title`
-- `body`
-- `updatedAt`
-
-## 后端线程禁止事项
-
-- 不要跳过 OpenAPI 直接让前端手写 contract
-- 不要把 DTO class 放进 `packages/shared`
-- 不要把业务阈值写死在前端
-- 不要私自改 mobile 已锁定路由
-- 不要把钱包直接做成“只改总余额，没有账本”
-
-## 前端等你输出什么
-
-前端第 3 批最希望拿到：
-
-1. OpenAPI 文件
-2. 生成好的 `packages/api-client`
-3. 最小鉴权说明
-4. runtime config 接口 contract
-5. `GET /v1/products`
-6. `GET /v1/queue-entries`
-7. `GET /v1/queue-guard`
-8. `GET /v1/wallet`
-9. `POST /v1/queue-guard/check-in`
-10. `POST /v1/queue-entries/:queueEntryId/boost`
+1. registry 更新（如果你新增冻结项）
+2. OpenAPI 文件
+3. 生成好的 `packages/api-client`
+4. runtime config 的真实下发链路
+5. 按模块分批可读可接的最小 SDK

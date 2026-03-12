@@ -1,53 +1,32 @@
-import { LAUNCH_LOCALE, LAUNCH_TIMEZONE } from '../constants/launch';
-
-export interface FormatDateTimeOptions {
-  locale?: string;
-  timeZone?: string;
-}
-
-function toDate(input: string | number | Date): Date {
-  return input instanceof Date ? input : new Date(input);
-}
+import { LAUNCH_LOCALE, LAUNCH_TIMEZONE } from "../constants/launch";
 
 export function formatDateTime(
-  input: string | number | Date,
-  options: FormatDateTimeOptions = {},
+  value: Date | string | number,
+  timezone: string = LAUNCH_TIMEZONE,
+  locale: string = LAUNCH_LOCALE,
+  options: Intl.DateTimeFormatOptions = {}
 ): string {
-  const locale = options.locale ?? LAUNCH_LOCALE;
-  const timeZone = options.timeZone ?? LAUNCH_TIMEZONE;
-  const date = toDate(input);
+  const date = value instanceof Date ? value : new Date(value);
 
   return new Intl.DateTimeFormat(locale, {
-    dateStyle: 'medium',
-    timeStyle: 'short',
-    timeZone,
+    timeZone: timezone,
+    year: "numeric",
+    month: "short",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    ...options
   }).format(date);
 }
 
-export function formatDate(
-  input: string | number | Date,
-  options: FormatDateTimeOptions = {},
+export function formatDateOnly(
+  value: Date | string | number,
+  timezone: string = LAUNCH_TIMEZONE,
+  locale: string = LAUNCH_LOCALE
 ): string {
-  const locale = options.locale ?? LAUNCH_LOCALE;
-  const timeZone = options.timeZone ?? LAUNCH_TIMEZONE;
-  const date = toDate(input);
-
-  return new Intl.DateTimeFormat(locale, {
-    dateStyle: 'medium',
-    timeZone,
-  }).format(date);
-}
-
-export function formatTime(
-  input: string | number | Date,
-  options: FormatDateTimeOptions = {},
-): string {
-  const locale = options.locale ?? LAUNCH_LOCALE;
-  const timeZone = options.timeZone ?? LAUNCH_TIMEZONE;
-  const date = toDate(input);
-
-  return new Intl.DateTimeFormat(locale, {
-    timeStyle: 'short',
-    timeZone,
-  }).format(date);
+  return formatDateTime(value, timezone, locale, {
+    year: "numeric",
+    month: "short",
+    day: "2-digit"
+  });
 }

@@ -29,25 +29,25 @@ const styles = StyleSheet.create({
   }
 });
 
-const toneStyles = {
-  brand: StyleSheet.create({
+const toneStyles = StyleSheet.create({
+  brand: {
     container: { backgroundColor: mobileTheme.colors.brandSoft },
     text: { color: mobileTheme.colors.brand }
-  }),
-  success: StyleSheet.create({
+  },
+  success: {
     container: { backgroundColor: mobileTheme.colors.successSoft },
     text: { color: mobileTheme.colors.success }
-  }),
-  warning: StyleSheet.create({
+  },
+  warning: {
     container: { backgroundColor: mobileTheme.colors.warningSoft },
     text: { color: mobileTheme.colors.warning }
-  }),
-  danger: StyleSheet.create({
+  },
+  danger: {
     container: { backgroundColor: mobileTheme.colors.dangerSoft },
     text: { color: mobileTheme.colors.danger }
-  }),
-  neutral: StyleSheet.create({
+  },
+  neutral: {
     container: { backgroundColor: mobileTheme.colors.surfaceMuted },
     text: { color: mobileTheme.colors.textSecondary }
-  })
-} as const;
+  }
+});

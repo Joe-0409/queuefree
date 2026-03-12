@@ -96,7 +96,7 @@ export default function PhoneAuthScreen() {
 
       <SectionCard title="What happens next" description="OTP success will create the user account, default wallet, and default queue guard record on the real backend.">
         <Text>• This starter uses demo flow only</Text>
-        <Text>• Backend should later connect POST /v1/auth/otp/send</Text>
+        <Text>• Backend should later register and export the OTP send contract through OpenAPI</Text>
         <Text>• Frontend should swap mock flow after OpenAPI SDK is generated</Text>
       </SectionCard>
     </Screen>

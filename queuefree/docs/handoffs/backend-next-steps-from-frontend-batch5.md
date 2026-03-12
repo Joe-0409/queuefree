@@ -13,15 +13,15 @@
 2. 按模块导出 OpenAPI
 3. 生成 `packages/api-client`
 4. 以模块分批给前端接线：
- - auth
- - products
- - orders / payment
- - queue / queue guard
- - wallet / withdrawals
- - tasks
- - invites
- - rules content
- - admin read-only domains
+   - auth
+   - products
+   - orders / payment
+   - queue / queue guard
+   - wallet / withdrawals
+   - tasks
+   - invites
+   - rules content
+   - admin read-only domains
 
 ## 你当前不要做的事
 

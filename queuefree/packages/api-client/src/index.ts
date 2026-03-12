@@ -1,15 +1,7 @@
-import createClient from 'openapi-fetch';
-import type { paths } from './generated/schema';
-
-export type { components, operations, paths } from './generated/schema';
-
-export const createApiClient = (
-  baseUrl: string,
-  defaultHeaders?: HeadersInit
-) =>
-  createClient<paths>({
-    baseUrl,
-    headers: defaultHeaders
-  });
-
-export type QueueFreeApiClient = ReturnType<typeof createApiClient>;
+/**
+ * QueueFree pre-OpenAPI placeholder.
+ *
+ * Do not add hand-written business contracts here.
+ * Replace this file with a generated SDK entrypoint only after backend exports OpenAPI.
+ */
+export {};

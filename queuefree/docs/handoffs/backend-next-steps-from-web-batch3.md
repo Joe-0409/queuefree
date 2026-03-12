@@ -1,4 +1,4 @@
-# 给后端线程：第 3 批 Web 官网完成后的衔接说明
+# 给后端线程：第 3 批 Web 官网完成后的衔接说明（Batch 5 清理后版本）
 
 ## 1. 本轮没有新增冻结项
 
@@ -24,8 +24,6 @@
 
 ## 2. 这批 Web 目前不消费猜测型 API
 
-为了遵守协作契约，本轮没有手写猜测型规则 API contract。
-
 现在的官网与合规页：
 
 - 直接消费 `packages/shared` 的硬规则常量
@@ -36,27 +34,16 @@
 
 请你后续在后端线程补齐：
 
-- `GET /v1/rules`
-- `GET /v1/rules/:slug`
-
-并且在 OpenAPI 中稳定导出以下最小内容：
-
-- slug
-- title
-- summary
-- sections[]
-- updatedAt
-- ruleVersion
-- locale
-- visibility
+- public rules content 模块
+- public compliance content 模块（如果你希望后续由后台管理）
 
 注意：
 
-- 如果你新增这些响应字段，先登记 registry，再生成 OpenAPI，再生成 `packages/api-client`。
-- 前端会在后续批次把静态文案切换到真实 SDK。
+- 如果你新增 path / field / state，先登记 registry，再生成 OpenAPI，再生成 `packages/api-client`
+- Web 公开路径已经锁定，不要改 URL
+- `/contact` 继续保持公开合规页面，不要改回 `/support`
 
 ## 4. 对 Web 来说你最重要的保证
 
-- `/contact` 页面不需要你改 API 路由
-- Web 公共路径已经锁定，不要改
-- 规则页未来即使改成动态数据，也必须保持现有公开 URL 不变
+- 规则内容未来即使切成动态数据，也必须保持现有公开 URL 不变
+- 前端不会提前口头接字段，只会等待 registry + OpenAPI

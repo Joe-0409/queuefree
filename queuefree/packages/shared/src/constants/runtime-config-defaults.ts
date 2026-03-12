@@ -1,19 +1,20 @@
-import { RULE_VERSION } from './launch';
-import { WEB_PUBLIC_ROUTES } from './routes';
-import type { RuntimeConfig } from '../types/runtime-config';
+import {
+  LAUNCH_CURRENCY,
+  LAUNCH_LOCALE,
+  LAUNCH_MARKET,
+  LAUNCH_RULE_VERSION,
+  LAUNCH_TIMEZONE,
+  LAUNCH_WEBSITE
+} from "./launch";
+import type { RuntimeConfig } from "../types/runtime-config";
+import { runtimeConfigSchema } from "../schemas/runtime-config.schema";
 
-/**
- * 说明：
- * 1. 这是 shared 层的默认 fallback。
- * 2. 长期真相源仍然必须是服务端 runtime config。
- * 3. 前端禁止在页面内自行再硬编码一份不同阈值。
- */
-export const DEFAULT_RUNTIME_CONFIG: RuntimeConfig = {
-  ruleVersion: RULE_VERSION,
-  marketCode: 'PH',
-  currencyCode: 'PHP',
-  timezone: 'Asia/Manila',
-  locale: 'en-PH',
+export const DEFAULT_RUNTIME_CONFIG: RuntimeConfig = runtimeConfigSchema.parse({
+  ruleVersion: LAUNCH_RULE_VERSION,
+  marketCode: LAUNCH_MARKET,
+  currencyCode: LAUNCH_CURRENCY,
+  timezone: LAUNCH_TIMEZONE,
+  locale: LAUNCH_LOCALE,
   unpaidOrderExpireMinutes: 15,
   stockSoftReserveMinutes: 15,
   baseGuardHours: 36,
@@ -31,12 +32,12 @@ export const DEFAULT_RUNTIME_CONFIG: RuntimeConfig = {
   defaultOrderMaxQty: 5,
   defaultDailySlotCount: 3,
   rewardedAdsEnabled: false,
-  publicWebBaseUrl: 'https://queuefree.com',
+  publicWebBaseUrl: `https://${LAUNCH_WEBSITE}`,
   publicRoutes: {
-    privacy: WEB_PUBLIC_ROUTES.privacy,
-    terms: WEB_PUBLIC_ROUTES.terms,
-    rules: WEB_PUBLIC_ROUTES.rules,
-    deleteAccount: WEB_PUBLIC_ROUTES.deleteAccount,
-    contact: WEB_PUBLIC_ROUTES.contact,
-  },
-};
+    privacy: `https://${LAUNCH_WEBSITE}/privacy`,
+    terms: `https://${LAUNCH_WEBSITE}/terms`,
+    rules: `https://${LAUNCH_WEBSITE}/rules`,
+    deleteAccount: `https://${LAUNCH_WEBSITE}/delete-account`,
+    contact: `https://${LAUNCH_WEBSITE}/contact`
+  }
+});

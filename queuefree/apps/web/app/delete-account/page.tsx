@@ -29,7 +29,7 @@ export default function DeleteAccountPage(): React.ReactElement {
         <section className="rounded-[2rem] border border-border bg-white p-8 shadow-panel">
           <h2 className="text-2xl font-bold tracking-tight text-slate-950">Deletion statuses</h2>
           <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {(deleteStatusList as string[]).map((status) => (
+            {deleteStatusList.map((status) => (
               <div key={status} className="rounded-2xl border border-border bg-slate-50 px-4 py-3 text-sm font-medium text-slate-700">
                 {status}
               </div>

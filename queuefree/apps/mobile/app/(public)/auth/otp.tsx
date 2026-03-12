@@ -39,7 +39,7 @@ export default function OtpScreen() {
       title="Verify OTP"
       subtitle={`We are using a demo flow now. Enter any 6 digits to continue for ${phoneNumber || "your phone number"}.`}
     >
-      <SectionCard title="Step 2" description="Real backend flow later uses POST /v1/auth/otp/verify.">
+      <SectionCard title="Step 2" description="Real backend flow later verifies the OTP through generated OpenAPI client calls.">
         <Controller
           control={form.control}
           name="otpCode"
@@ -66,7 +66,7 @@ export default function OtpScreen() {
       <SectionCard title="Reminder" description="The real app must keep privacy policy, terms, support, rules, and delete account access available in-app.">
         <Text>• Language stays English for MVP</Text>
         <Text>• No country selector in MVP</Text>
-        <Text>• Session refresh later uses POST /v1/auth/refresh</Text>
+        <Text>• Session refresh later comes from the generated auth client after backend exports OpenAPI</Text>
       </SectionCard>
     </Screen>
   );

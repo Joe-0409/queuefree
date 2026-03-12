@@ -17,15 +17,6 @@
     "paths": {
       "@/*": [
         "./src/*"
-      ],
-      "@queuefree/shared": [
-        "../../packages/shared/src/index.ts"
-      ],
-      "@queuefree/api-client": [
-        "../../packages/api-client/src/index.ts"
-      ],
-      "@queuefree/ui-tokens": [
-        "../../packages/ui-tokens/src/index.ts"
       ]
     },
     "plugins": [
@@ -33,7 +24,7 @@
         "name": "next"
       }
     ],
-    "noEmit": true
+    "esModuleInterop": true
   },
   "include": [
     "next-env.d.ts",

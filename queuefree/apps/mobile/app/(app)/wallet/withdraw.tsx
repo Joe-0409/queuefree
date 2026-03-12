@@ -59,7 +59,7 @@ export default function WithdrawScreen() {
         <Text>Daily max: {formatMinorMoney(config.withdrawDailyMaxMinor)}</Text>
       </SectionCard>
 
-      <SectionCard title="Submit a withdrawal" description="The real backend later connects POST /v1/withdrawals and server-side risk review.">
+      <SectionCard title="Submit a withdrawal" description="The real backend later connects generated withdrawal submission plus server-side risk review.">
         <Controller
           control={form.control}
           name="amountMinor"

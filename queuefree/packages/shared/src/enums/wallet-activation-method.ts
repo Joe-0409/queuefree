@@ -1,5 +1,7 @@
-export enum WalletActivationMethod {
-  INVITE = 'INVITE',
-  TASK = 'TASK',
-  ADMIN_OVERRIDE = 'ADMIN_OVERRIDE',
-}
+  export const WALLET_ACTIVATION_METHODS = [
+    "INVITE",
+"TASK",
+"ADMIN_OVERRIDE"
+  ] as const;
+
+  export type WalletActivationMethod = (typeof WALLET_ACTIVATION_METHODS)[number];

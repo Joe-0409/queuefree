@@ -40,7 +40,7 @@ export default function AddressesScreen() {
   });
 
   return (
-    <Screen title="Addresses" subtitle="The real backend later connects GET /v1/me/addresses and POST /v1/me/addresses.">
+    <Screen title="Addresses" subtitle="The real backend later connects address list and address save through generated client calls.">
       <SectionCard title="Saved addresses" description="Use clear shipping details before checkout.">
         <View style={{ gap: 10 }}>
           {addresses.map((item) => (

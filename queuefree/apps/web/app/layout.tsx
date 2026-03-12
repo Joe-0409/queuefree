@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import { LAUNCH_WEBSITE } from '@queuefree/shared';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
+import { publicAppEnv } from '@/lib/env';
 import './globals.css';
 
 const inter = Inter({
@@ -11,7 +12,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(`https://${LAUNCH_WEBSITE}`),
+  metadataBase: new URL(publicAppEnv.webBaseUrl || `https://${LAUNCH_WEBSITE}`),
   title: {
     default: 'QueueFree',
     template: '%s | QueueFree'

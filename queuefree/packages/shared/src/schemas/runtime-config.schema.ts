@@ -1,19 +1,19 @@
-import { z } from 'zod';
+import { z } from "zod";
 
-export const publicRoutesSchema = z.object({
-  privacy: z.literal('/privacy'),
-  terms: z.literal('/terms'),
-  rules: z.literal('/rules'),
-  deleteAccount: z.literal('/delete-account'),
-  contact: z.literal('/contact'),
+export const publicRouteMapSchema = z.object({
+  privacy: z.string().min(1),
+  terms: z.string().min(1),
+  rules: z.string().min(1),
+  deleteAccount: z.string().min(1),
+  contact: z.string().min(1)
 });
 
 export const runtimeConfigSchema = z.object({
-  ruleVersion: z.literal('v1.2'),
-  marketCode: z.literal('PH'),
-  currencyCode: z.literal('PHP'),
-  timezone: z.literal('Asia/Manila'),
-  locale: z.literal('en-PH'),
+  ruleVersion: z.string().min(1),
+  marketCode: z.string().min(1),
+  currencyCode: z.string().min(1),
+  timezone: z.string().min(1),
+  locale: z.string().min(1),
   unpaidOrderExpireMinutes: z.number().int().positive(),
   stockSoftReserveMinutes: z.number().int().positive(),
   baseGuardHours: z.number().int().positive(),
@@ -31,8 +31,8 @@ export const runtimeConfigSchema = z.object({
   defaultOrderMaxQty: z.number().int().positive(),
   defaultDailySlotCount: z.number().int().positive(),
   rewardedAdsEnabled: z.boolean(),
-  publicWebBaseUrl: z.string().url(),
-  publicRoutes: publicRoutesSchema,
+  publicWebBaseUrl: z.string().min(1),
+  publicRoutes: publicRouteMapSchema
 });
 
 export type RuntimeConfigSchema = z.infer<typeof runtimeConfigSchema>;

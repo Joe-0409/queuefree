@@ -1,11 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "rootDir": "src",
-    "outDir": "dist",
-    "composite": true,
-    "lib": ["ES2022", "DOM", "DOM.Iterable"]
+    "rootDir": "./src"
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts"],
-  "exclude": ["dist", "node_modules"]
+  "include": ["src/**/*.ts"]
 }

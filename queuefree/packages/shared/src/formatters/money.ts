@@ -1,34 +1,14 @@
-import { DEFAULT_MINOR_UNIT_SCALE } from '../constants/business-rules';
-import { LAUNCH_CURRENCY_CODE, LAUNCH_LOCALE } from '../constants/launch';
+import { LAUNCH_CURRENCY, LAUNCH_LOCALE } from "../constants/launch";
 
-export interface FormatMoneyFromMinorOptions {
-  currency?: string;
-  locale?: string;
-  minorUnitScale?: number;
-  minimumFractionDigits?: number;
-  maximumFractionDigits?: number;
-}
-
-export function formatMoneyFromMinor(
-  amountMinor: number,
-  options: FormatMoneyFromMinorOptions = {},
+export function formatMinorMoney(
+  minorValue: number,
+  currency: string = LAUNCH_CURRENCY,
+  locale: string = LAUNCH_LOCALE
 ): string {
-  const {
-    currency = LAUNCH_CURRENCY_CODE,
-    locale = LAUNCH_LOCALE,
-    minorUnitScale = DEFAULT_MINOR_UNIT_SCALE,
-    minimumFractionDigits,
-    maximumFractionDigits,
-  } = options;
-
-  const value = amountMinor / minorUnitScale;
-
   return new Intl.NumberFormat(locale, {
-    style: 'currency',
+    style: "currency",
     currency,
-    minimumFractionDigits,
-    maximumFractionDigits,
-  }).format(value);
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  }).format(minorValue / 100);
 }
-
-export const formatMinorMoney = formatMoneyFromMinor;

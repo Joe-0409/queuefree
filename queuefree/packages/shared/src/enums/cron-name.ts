@@ -1,7 +1,9 @@
-export enum CronName {
-  QUEUE_GUARD_FREEZE_SCAN = 'queue-guard-freeze-scan',
-  QUEUE_GUARD_REMOVE_SCAN = 'queue-guard-remove-scan',
-  SETTLEMENT_SLOT_DISPATCH = 'settlement-slot-dispatch',
-  CASHBACK_RELEASE_SCAN = 'cashback-release-scan',
-  INVITE_EFFECTIVE_SCAN = 'invite-effective-scan',
-}
+  export const CRON_NAMES = [
+    "queue-guard-freeze-scan",
+"queue-guard-remove-scan",
+"settlement-slot-dispatch",
+"cashback-release-scan",
+"invite-effective-scan"
+  ] as const;
+
+  export type CronName = (typeof CRON_NAMES)[number];

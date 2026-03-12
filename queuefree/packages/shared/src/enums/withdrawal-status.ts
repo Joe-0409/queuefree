@@ -1,9 +1,11 @@
-export enum WithdrawalStatus {
-  APPLIED = 'APPLIED',
-  RISK_REVIEW = 'RISK_REVIEW',
-  PROCESSING = 'PROCESSING',
-  SUCCESS = 'SUCCESS',
-  REJECTED = 'REJECTED',
-  FAILED = 'FAILED',
-  REVERSED = 'REVERSED',
-}
+  export const WITHDRAWAL_STATUSES = [
+    "APPLIED",
+"RISK_REVIEW",
+"PROCESSING",
+"SUCCESS",
+"REJECTED",
+"FAILED",
+"REVERSED"
+  ] as const;
+
+  export type WithdrawalStatus = (typeof WITHDRAWAL_STATUSES)[number];

@@ -1,6 +1,6 @@
 import { ADMIN_ROUTES } from '@queuefree/shared';
 
-export type AdminRoute = (typeof ADMIN_ROUTES)[keyof typeof ADMIN_ROUTES];
+export type AdminRoute = (typeof ADMIN_ROUTES)[number];
 
 export type AdminNavItem = {
   href: AdminRoute;
