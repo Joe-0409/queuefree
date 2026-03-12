@@ -145,169 +145,134 @@
 - `POST /v1/withdrawals`
 - `POST /v1/me/delete-account-requests`
 
-### C 端只读 Core API（Batch 8A）
+### Shared Read API Conventions (Batch 9)
 
-- `GET /v1/me`
-- `GET /v1/products`
-- `GET /v1/products/:productId`
-- `GET /v1/queue-guard`
-- `GET /v1/queue-entries`
-- `GET /v1/queue-entries/:queueEntryId`
+- 所有 `...Id` 字段：`string` (UUID)
+- 所有时间字段：`string` (ISO 8601 UTC)
+- 所有金额字段：`integer` (minor unit)
+- 所有 JSON 字段命名：`camelCase`
+- 列表 Response 统一结构：`items` (array), `nextCursor` (string | null, 仅分页列表)
+- 列表 Request Query 统一允许：`cursor` (string | null), `limit` (integer | null)
 
-### C 端只读 Core Request Field Registry（Batch 8A）
+### C 端只读 API 字段定义 (Batch 9)
 
-#### `GET /v1/products/:productId`
-- `productId: string`
+#### GET `/v1/me`
+- `userId`: string
+- `phoneMasked`: string
+- `inviteCode`: string
+- `walletActivated`: boolean
+- `walletActivationMethod`: `WalletActivationMethod | null`
+- `accountDeleteStatus`: `AccountDeleteStatus`
+- `marketCode`: string
+- `currency`: string
+- `timezone`: string
+- `ruleVersion`: string
 
-#### `GET /v1/queue-entries/:queueEntryId`
-- `queueEntryId: string`
+#### GET `/v1/products`
+- `items`: ProductListItem[]
+- **ProductListItem**: `productId`, `title`, `coverImageUrl`, `priceMinor`, `currency`, `defaultCashbackCapMinor`, `queueEnabled`, `soldOut`
 
-### C 端只读 Core Response Schema Registry（Batch 8A）
+#### GET `/v1/products/{productId}`
+- `productId`: string
+- `title`, `descriptionText`, `coverImageUrl`, `galleryImageUrls`, `priceMinor`, `currency`, `defaultCashbackCapMinor`, `queueEnabled`, `soldOut`, `maxOrderQty`, `skus`
+- **ProductDetailSku**: `skuId`, `label`, `priceMinor`, `soldOut`
 
-#### `MeOverviewResponse`
-- `userId: string`
-- `phoneMasked: string`
-- `accountDeleteStatus: AccountDeleteStatus`
-- `walletActivationMethod: WalletActivationMethod | null`
+#### GET `/v1/queue-guard`
+- `status`: `UserQueueGuardStatus`
+- `validUntil`, `graceUntil`, `lastCheckinAt`, `canCheckInNow`, `activeEntriesCount`, `frozenEntriesCount`
 
-#### `ProductListItem`
-- `productId: string`
-- `title: string`
-- `coverImageUrl: string`
-- `priceMinor: number`
-- `currencyCode: string`
-- `maxQty: number`
-- `isQueueEligible: boolean`
+#### GET `/v1/queue-entries`
+- `items`: QueueEntryListItem[], `nextCursor`
+- **QueueEntryListItem**: `queueEntryId`, `orderId`, `productId`, `productTitle`, `productCoverImageUrl`, `quantity`, `status`, `activeRank`, `boostUsedCount`, `canBoost`, `isInProtectZone`, `nextSettlementSlotAt`, `finalCashbackMinor`, `currency`
 
-#### `ProductListResponse`
-- `items: ProductListItem[]`
+#### GET `/v1/queue-entries/{queueEntryId}`
+- `queueEntryId`, `orderId`, `productId`, `productTitle`, `productCoverImageUrl`, `productSkuLabel`, `quantity`, `paidAmountMinor`, `currency`, `status`, `activeRank`, `boostUsedCount`, `canBoost`, `isInProtectZone`, `queueGuardStatus`, `createdAt`, `wonSettlementSlotAt`, `cashbackAvailableAt`, `finalCashbackMinor`, `timeline`
+- **QueueEntryTimelineItem**: `timelineId`, `occurredAt`, `title`, `descriptionText`
 
-#### `ProductDetailResponse`
-- `productId: string`
-- `title: string`
-- `description: string`
-- `imageUrls: string[]`
-- `priceMinor: number`
-- `currencyCode: string`
-- `maxQty: number`
-- `isQueueEligible: boolean`
+#### GET `/v1/tasks`
+- `items`: TaskListItem[]
+- **TaskListItem**: `taskId`, `title`, `descriptionText`, `categoryLabel`, `rewardSummaryText`, `progressCurrent`, `progressTarget`, `claimable`, `claimed`, `expiresAt`
 
-#### `UserQueueGuardResponse`
-- `status: UserQueueGuardStatus`
-- `lastCheckinAt: string | null`
-- `validUntil: string`
-- `graceUntil: string | null`
+#### GET `/v1/invites/me`
+- `inviteCode`, `inviteLink`, `canBindInviteCode`, `bindWindowEndsAt`, `totalInviteCount`, `pendingEffectiveInviteCount`, `effectiveInviteCount`, `invalidInviteCount`, `walletActivated`, `walletActivationMethod`
 
-#### `QueueEntryListItem`
-- `queueEntryId: string`
-- `orderId: string`
-- `productId: string`
-- `productTitle: string`
-- `coverImageUrl: string`
-- `status: QueueEntryStatus`
-- `activeRank: number | null`
-- `boostUsedCount: number`
-- `wonCashbackAmountMinor: number | null`
+#### GET `/v1/invites/records`
+- `items`: InviteRecordListItem[], `nextCursor`
+- **InviteRecordListItem**: `relationId`, `inviteeMaskedPhone`, `status`, `createdAt`, `effectiveAt`, `invalidReasonText`
 
-#### `QueueEntryListResponse`
-- `items: QueueEntryListItem[]`
+#### GET `/v1/wallet`
+- `walletActivated`, `activationMethod`, `pendingBalanceMinor`, `availableBalanceMinor`, `frozenBalanceMinor`, `currency`, `canWithdraw`, `hasSettlementException`
 
-#### `QueueEntryDetailResponse`
-- `queueEntryId: string`
-- `orderId: string`
-- `productId: string`
-- `productTitle: string`
-- `coverImageUrl: string`
-- `status: QueueEntryStatus`
-- `activeRank: number | null`
-- `boostUsedCount: number`
-- `wonCashbackAmountMinor: number | null`
-- `enteredAt: string`
+#### GET `/v1/wallet/ledgers`
+- `items`: WalletLedgerListItem[], `nextCursor`
+- **WalletLedgerListItem**: `ledgerId`, `title`, `balanceBucket`, `deltaMinor`, `createdAt`, `relatedOrderId`, `relatedWithdrawalId`, `noteText`
 
-### C 端只读 Core 列表约定（Batch 9）
+#### GET `/v1/withdrawals`
+- `items`: WithdrawalListItem[], `nextCursor`
+- **WithdrawalListItem**: `withdrawalId`, `amountMinor`, `currency`, `status`, `createdAt`, `updatedAt`, `rejectReasonText`
 
-对于所有支持分页的只读列表接口，统一采用以下约定：
+#### GET `/v1/rules`
+- `items`: RuleListItem[]
+- **RuleListItem**: `slug`, `title`, `summary`, `version`, `updatedAt`
 
-#### 列表 Request Query
-- `cursor: string | null` (分页游标)
-- `limit: number` (分页条数)
+#### GET `/v1/rules/{slug}`
+- `slug`, `title`, `version`, `contentMarkdown`, `updatedAt`
 
-#### 列表 Response 通用结构
-- `items: T[]`
-- `nextCursor: string | null`
+### Admin 只读 API 字段定义 (Batch 9)
 
-### C 端只读 Core API 字段登记（Batch 9）
+#### GET `/v1/admin/dashboard/summary`
+- `paidOrderCountToday`, `activeQueueEntryCount`, `frozenQueueEntryCount`, `scheduledSettlementSlotCount`, `runningSettlementSlotCount`, `pendingWithdrawalCount`, `pendingRiskCaseCount`
 
-#### `GET /v1/tasks`
-- Response: `TaskListResponse`
-  - `items: TaskListItem[]`
-- `TaskListItem`:
-  - `taskId: string`
-  - `title: string`
-  - `rewardCashbackAmountMinor: number`
-  - `isClaimed: boolean`
+#### GET `/v1/admin/products`
+- `items`: AdminProductListItem[], `nextCursor`
+- **AdminProductListItem**: `productId`, `title`, `priceMinor`, `currency`, `marketCode`, `queueEnabled`, `soldOut`, `updatedAt`
 
-#### `GET /v1/invites/me`
-- Response: `UserInviteOverviewResponse`
-  - `inviteCode: string`
-  - `totalInvitedCount: number`
-  - `effectiveInvitedCount: number`
+#### GET `/v1/admin/orders`
+- `items`: AdminOrderListItem[], `nextCursor`
+- **AdminOrderListItem**: `orderId`, `userId`, `userPhoneMasked`, `productId`, `productTitle`, `quantity`, `paidAmountMinor`, `currency`, `status`, `createdAt`, `paidAt`
 
-#### `GET /v1/invites/records`
-- Response: `InviteRecordListResponse`
-  - `items: InviteRecordListItem[]`
-- `InviteRecordListItem`:
-  - `relationId: string`
-  - `inviteePhoneMasked: string`
-  - `status: InviteRelationStatus`
-  - `createdAt: string`
+#### GET `/v1/admin/queue-pools`
+- `items`: AdminQueuePoolListItem[]
+- **AdminQueuePoolListItem**: `marketCode`, `activeQueueEntryCount`, `frozenQueueEntryCount`, `nextSettlementSlotAt`
 
-#### `GET /v1/wallet`
-- Response: `WalletOverviewResponse`
-  - `balanceMinor: number`
-  - `pendingCashbackMinor: number`
-  - `totalWithdrawnMinor: number`
+#### GET `/v1/admin/queue-entries`
+- `items`: AdminQueueEntryListItem[], `nextCursor`
+- **AdminQueueEntryListItem**: `queueEntryId`, `orderId`, `userId`, `userPhoneMasked`, `productTitle`, `status`, `activeRank`, `boostUsedCount`, `createdAt`, `wonSettlementSlotAt`
 
-#### `GET /v1/wallet/ledgers`
-- Response: `WalletLedgerListResponse`
-  - `items: WalletLedgerListItem[]`
-- `WalletLedgerListItem`:
-  - `ledgerId: string`
-  - `amountMinor: number`
-  - `type: string` (e.g., "CASHBACK", "WITHDRAWAL")
-  - `description: string`
-  - `createdAt: string`
+#### GET `/v1/admin/settlement-slots`
+- `items`: AdminSettlementSlotListItem[], `nextCursor`
+- **AdminSettlementSlotListItem**: `settlementSlotId`, `marketCode`, `slotAt`, `status`, `winnerQueueEntryId`, `updatedAt`
 
-#### `GET /v1/withdrawals`
-- Response: `WithdrawalListResponse`
-  - `items: WithdrawalListItem[]`
-- `WithdrawalListItem`:
-  - `withdrawalId: string`
-  - `amountMinor: number`
-  - `status: WithdrawalStatus`
-  - `createdAt: string`
+#### GET `/v1/admin/campaigns`
+- `items`: AdminCampaignListItem[], `nextCursor`
+- **AdminCampaignListItem**: `campaignId`, `slug`, `title`, `startsAt`, `endsAt`, `active`
 
-### Admin 只读 API 字段登记（Batch 9）
+#### GET `/v1/admin/tasks`
+- `items`: AdminTaskListItem[], `nextCursor`
+- **AdminTaskListItem**: `taskId`, `title`, `categoryLabel`, `rewardSummaryText`, `active`, `updatedAt`
 
-#### `GET /v1/admin/dashboard/summary`
-- Response: `AdminDashboardSummaryResponse`
-  - `totalActiveUsers: number`
-  - `totalActiveEntries: number`
-  - `totalPendingWithdrawals: number`
-  - `todayOrderCount: number`
+#### GET `/v1/admin/invites`
+- `items`: AdminInviteListItem[], `nextCursor`
+- **AdminInviteListItem**: `relationId`, `inviterUserId`, `inviterPhoneMasked`, `inviteeUserId`, `inviteePhoneMasked`, `status`, `createdAt`, `effectiveAt`, `invalidReasonText`
 
-#### `GET /v1/admin/risk-cases`
-- Response: `RiskCaseListResponse`
-  - `items: RiskCaseListItem[]`
-- `RiskCaseListItem`:
-  - `caseId: string`
-  - `subjectType: string`
-  - `subjectId: string`
-  - `riskScore: number`
-  - `status: string`
-  - `createdAt: string`
+#### GET `/v1/admin/withdrawals`
+- `items`: AdminWithdrawalListItem[], `nextCursor`
+- **AdminWithdrawalListItem**: `withdrawalId`, `userId`, `userPhoneMasked`, `amountMinor`, `currency`, `status`, `createdAt`, `updatedAt`, `rejectReasonText`
 
-### 必须幂等的服务端回调 / Worker 动作
+#### GET `/v1/admin/risk-cases`
+- `items`: AdminRiskCaseListItem[], `nextCursor`
+- **AdminRiskCaseListItem**: `riskCaseId`, `entityType`, `entityId`, `riskScore`, `summaryText`, `createdAt`, `updatedAt`
+
+#### GET `/v1/admin/risk-cases/{id}`
+- `riskCaseId`, `entityType`, `entityId`, `riskScore`, `summaryText`, `hitRulesTextList`, `decisionText`, `createdAt`, `updatedAt`
+
+#### GET `/v1/admin/audit-logs`
+- `items`: AdminAuditLogListItem[], `nextCursor`
+- **AdminAuditLogListItem**: `auditLogId`, `actorAdminId`, `actorRole`, `action`, `targetType`, `targetId`, `reasonText`, `createdAt`
+
+---
+
+## 必须幂等的服务端回调 / Worker 动作
 
 - 支付回调
 - 时隙结算

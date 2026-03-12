@@ -78,12 +78,27 @@
         "summary": "List My Queue Entries",
         "parameters": [
           { "name": "cursor", "in": "query", "schema": { "type": "string", "nullable": true } },
-          { "name": "limit", "in": "query", "schema": { "type": "number", "default": 20 } }
+          { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 20 } }
         ],
         "responses": {
           "200": {
             "description": "OK",
             "content": { "application/json": { "schema": { "$ref": "#/components/schemas/QueueEntryListResponse" } } }
+          }
+        }
+      }
+    },
+    "/v1/queue-entries/{queueEntryId}": {
+      "get": {
+        "tags": ["ConsumerQueue"],
+        "summary": "Get Queue Entry Detail",
+        "parameters": [
+          { "name": "queueEntryId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/QueueEntryDetailResponse" } } }
           }
         }
       }
@@ -112,6 +127,22 @@
         }
       }
     },
+    "/v1/invites/records": {
+      "get": {
+        "tags": ["ConsumerInvites"],
+        "summary": "List My Invite Records",
+        "parameters": [
+          { "name": "cursor", "in": "query", "schema": { "type": "string", "nullable": true } },
+          { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 20 } }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/InviteRecordListResponse" } } }
+          }
+        }
+      }
+    },
     "/v1/wallet": {
       "get": {
         "tags": ["ConsumerWallet"],
@@ -120,6 +151,38 @@
           "200": {
             "description": "OK",
             "content": { "application/json": { "schema": { "$ref": "#/components/schemas/WalletOverviewResponse" } } }
+          }
+        }
+      }
+    },
+    "/v1/wallet/ledgers": {
+      "get": {
+        "tags": ["ConsumerWallet"],
+        "summary": "List Wallet Ledgers",
+        "parameters": [
+          { "name": "cursor", "in": "query", "schema": { "type": "string", "nullable": true } },
+          { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 20 } }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/WalletLedgerListResponse" } } }
+          }
+        }
+      }
+    },
+    "/v1/withdrawals": {
+      "get": {
+        "tags": ["ConsumerWithdrawals"],
+        "summary": "List Withdrawals",
+        "parameters": [
+          { "name": "cursor", "in": "query", "schema": { "type": "string", "nullable": true } },
+          { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 20 } }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/WithdrawalListResponse" } } }
           }
         }
       }
@@ -150,27 +213,32 @@
       "MeOverviewResponse": {
         "type": "object",
         "properties": {
-          "userId": { "type": "string" },
+          "userId": { "type": "string", "format": "uuid" },
           "phoneMasked": { "type": "string" },
           "inviteCode": { "type": "string" },
           "walletActivated": { "type": "boolean" },
+          "walletActivationMethod": { "type": "string", "nullable": true },
           "accountDeleteStatus": { "type": "string" },
+          "marketCode": { "type": "string" },
+          "currency": { "type": "string" },
+          "timezone": { "type": "string" },
           "ruleVersion": { "type": "string" }
         },
-        "required": ["userId", "phoneMasked", "inviteCode", "walletActivated", "accountDeleteStatus", "ruleVersion"]
+        "required": ["userId", "phoneMasked", "inviteCode", "walletActivated", "accountDeleteStatus", "marketCode", "currency", "timezone", "ruleVersion"]
       },
       "ProductListItem": {
         "type": "object",
         "properties": {
-          "productId": { "type": "string" },
+          "productId": { "type": "string", "format": "uuid" },
           "title": { "type": "string" },
           "coverImageUrl": { "type": "string" },
-          "priceMinor": { "type": "number" },
+          "priceMinor": { "type": "integer" },
           "currency": { "type": "string" },
+          "defaultCashbackCapMinor": { "type": "integer" },
           "queueEnabled": { "type": "boolean" },
           "soldOut": { "type": "boolean" }
         },
-        "required": ["productId", "title", "coverImageUrl", "priceMinor", "currency", "queueEnabled", "soldOut"]
+        "required": ["productId", "title", "coverImageUrl", "priceMinor", "currency", "defaultCashbackCapMinor", "queueEnabled", "soldOut"]
       },
       "ProductListResponse": {
         "type": "object",
@@ -179,41 +247,66 @@
         },
         "required": ["items"]
       },
+      "ProductDetailSku": {
+        "type": "object",
+        "properties": {
+          "skuId": { "type": "string", "format": "uuid" },
+          "label": { "type": "string" },
+          "priceMinor": { "type": "integer" },
+          "soldOut": { "type": "boolean" }
+        },
+        "required": ["skuId", "label", "priceMinor", "soldOut"]
+      },
       "ProductDetailResponse": {
         "type": "object",
         "properties": {
-          "productId": { "type": "string" },
+          "productId": { "type": "string", "format": "uuid" },
           "title": { "type": "string" },
           "descriptionText": { "type": "string" },
           "coverImageUrl": { "type": "string" },
-          "priceMinor": { "type": "number" },
+          "galleryImageUrls": { "type": "array", "items": { "type": "string" } },
+          "priceMinor": { "type": "integer" },
           "currency": { "type": "string" },
+          "defaultCashbackCapMinor": { "type": "integer" },
           "queueEnabled": { "type": "boolean" },
-          "soldOut": { "type": "boolean" }
+          "soldOut": { "type": "boolean" },
+          "maxOrderQty": { "type": "integer" },
+          "skus": { "type": "array", "items": { "$ref": "#/components/schemas/ProductDetailSku" } }
         },
-        "required": ["productId", "title", "descriptionText", "coverImageUrl", "priceMinor", "currency", "queueEnabled", "soldOut"]
+        "required": ["productId", "title", "descriptionText", "coverImageUrl", "galleryImageUrls", "priceMinor", "currency", "defaultCashbackCapMinor", "queueEnabled", "soldOut", "maxOrderQty", "skus"]
       },
       "UserQueueGuardResponse": {
         "type": "object",
         "properties": {
           "status": { "type": "string" },
-          "validUntil": { "type": "string" },
-          "activeEntriesCount": { "type": "number" },
-          "frozenEntriesCount": { "type": "number" }
+          "validUntil": { "type": "string", "format": "date-time" },
+          "graceUntil": { "type": "string", "format": "date-time" },
+          "lastCheckinAt": { "type": "string", "format": "date-time", "nullable": true },
+          "canCheckInNow": { "type": "boolean" },
+          "activeEntriesCount": { "type": "integer" },
+          "frozenEntriesCount": { "type": "integer" }
         },
-        "required": ["status", "validUntil", "activeEntriesCount", "frozenEntriesCount"]
+        "required": ["status", "validUntil", "graceUntil", "canCheckInNow", "activeEntriesCount", "frozenEntriesCount"]
       },
       "QueueEntryListItem": {
         "type": "object",
         "properties": {
-          "queueEntryId": { "type": "string" },
-          "productId": { "type": "string" },
+          "queueEntryId": { "type": "string", "format": "uuid" },
+          "orderId": { "type": "string", "format": "uuid" },
+          "productId": { "type": "string", "format": "uuid" },
           "productTitle": { "type": "string" },
+          "productCoverImageUrl": { "type": "string" },
+          "quantity": { "type": "integer" },
           "status": { "type": "string" },
-          "activeRank": { "type": "number", "nullable": true },
-          "boostUsedCount": { "type": "number" }
+          "activeRank": { "type": "integer", "nullable": true },
+          "boostUsedCount": { "type": "integer" },
+          "canBoost": { "type": "boolean" },
+          "isInProtectZone": { "type": "boolean" },
+          "nextSettlementSlotAt": { "type": "string", "format": "date-time", "nullable": true },
+          "finalCashbackMinor": { "type": "integer", "nullable": true },
+          "currency": { "type": "string" }
         },
-        "required": ["queueEntryId", "productId", "productTitle", "status", "boostUsedCount"]
+        "required": ["queueEntryId", "orderId", "productId", "productTitle", "productCoverImageUrl", "quantity", "status", "boostUsedCount", "canBoost", "isInProtectZone", "currency"]
       },
       "QueueEntryListResponse": {
         "type": "object",
@@ -223,6 +316,58 @@
         },
         "required": ["items"]
       },
+      "QueueEntryTimelineItem": {
+        "type": "object",
+        "properties": {
+          "timelineId": { "type": "string", "format": "uuid" },
+          "occurredAt": { "type": "string", "format": "date-time" },
+          "title": { "type": "string" },
+          "descriptionText": { "type": "string" }
+        },
+        "required": ["timelineId", "occurredAt", "title", "descriptionText"]
+      },
+      "QueueEntryDetailResponse": {
+        "type": "object",
+        "properties": {
+          "queueEntryId": { "type": "string", "format": "uuid" },
+          "orderId": { "type": "string", "format": "uuid" },
+          "productId": { "type": "string", "format": "uuid" },
+          "productTitle": { "type": "string" },
+          "productCoverImageUrl": { "type": "string" },
+          "productSkuLabel": { "type": "string" },
+          "quantity": { "type": "integer" },
+          "paidAmountMinor": { "type": "integer" },
+          "currency": { "type": "string" },
+          "status": { "type": "string" },
+          "activeRank": { "type": "integer", "nullable": true },
+          "boostUsedCount": { "type": "integer" },
+          "canBoost": { "type": "boolean" },
+          "isInProtectZone": { "type": "boolean" },
+          "queueGuardStatus": { "type": "string" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "wonSettlementSlotAt": { "type": "string", "format": "date-time", "nullable": true },
+          "cashbackAvailableAt": { "type": "string", "format": "date-time", "nullable": true },
+          "finalCashbackMinor": { "type": "integer", "nullable": true },
+          "timeline": { "type": "array", "items": { "$ref": "#/components/schemas/QueueEntryTimelineItem" } }
+        },
+        "required": ["queueEntryId", "orderId", "productId", "productTitle", "productCoverImageUrl", "productSkuLabel", "quantity", "paidAmountMinor", "currency", "status", "boostUsedCount", "canBoost", "isInProtectZone", "queueGuardStatus", "createdAt", "timeline"]
+      },
+      "TaskListItem": {
+        "type": "object",
+        "properties": {
+          "taskId": { "type": "string", "format": "uuid" },
+          "title": { "type": "string" },
+          "descriptionText": { "type": "string" },
+          "categoryLabel": { "type": "string" },
+          "rewardSummaryText": { "type": "string" },
+          "progressCurrent": { "type": "integer" },
+          "progressTarget": { "type": "integer" },
+          "claimable": { "type": "boolean" },
+          "claimed": { "type": "boolean" },
+          "expiresAt": { "type": "string", "format": "date-time", "nullable": true }
+        },
+        "required": ["taskId", "title", "descriptionText", "categoryLabel", "rewardSummaryText", "progressCurrent", "progressTarget", "claimable", "claimed"]
+      },
       "TaskListResponse": {
         "type": "object",
         "properties": {
@@ -230,43 +375,111 @@
         },
         "required": ["items"]
       },
-      "TaskListItem": {
-        "type": "object",
-        "properties": {
-          "taskId": { "type": "string" },
-          "title": { "type": "string" },
-          "rewardSummaryText": { "type": "string" },
-          "claimed": { "type": "boolean" }
-        },
-        "required": ["taskId", "title", "rewardSummaryText", "claimed"]
-      },
       "UserInviteOverviewResponse": {
         "type": "object",
         "properties": {
           "inviteCode": { "type": "string" },
-          "totalInviteCount": { "type": "number" },
-          "effectiveInviteCount": { "type": "number" }
+          "inviteLink": { "type": "string" },
+          "canBindInviteCode": { "type": "boolean" },
+          "bindWindowEndsAt": { "type": "string", "format": "date-time", "nullable": true },
+          "totalInviteCount": { "type": "integer" },
+          "pendingEffectiveInviteCount": { "type": "integer" },
+          "effectiveInviteCount": { "type": "integer" },
+          "invalidInviteCount": { "type": "integer" },
+          "walletActivated": { "type": "boolean" },
+          "walletActivationMethod": { "type": "string", "nullable": true }
         },
-        "required": ["inviteCode", "totalInviteCount", "effectiveInviteCount"]
+        "required": ["inviteCode", "inviteLink", "canBindInviteCode", "totalInviteCount", "pendingEffectiveInviteCount", "effectiveInviteCount", "invalidInviteCount", "walletActivated"]
+      },
+      "InviteRecordListItem": {
+        "type": "object",
+        "properties": {
+          "relationId": { "type": "string", "format": "uuid" },
+          "inviteeMaskedPhone": { "type": "string" },
+          "status": { "type": "string" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "effectiveAt": { "type": "string", "format": "date-time", "nullable": true },
+          "invalidReasonText": { "type": "string", "nullable": true }
+        },
+        "required": ["relationId", "inviteeMaskedPhone", "status", "createdAt"]
+      },
+      "InviteRecordListResponse": {
+        "type": "object",
+        "properties": {
+          "items": { "type": "array", "items": { "$ref": "#/components/schemas/InviteRecordListItem" } },
+          "nextCursor": { "type": "string", "nullable": true }
+        },
+        "required": ["items"]
       },
       "WalletOverviewResponse": {
         "type": "object",
         "properties": {
           "walletActivated": { "type": "boolean" },
-          "availableBalanceMinor": { "type": "number" },
-          "pendingBalanceMinor": { "type": "number" },
-          "currency": { "type": "string" }
+          "activationMethod": { "type": "string", "nullable": true },
+          "pendingBalanceMinor": { "type": "integer" },
+          "availableBalanceMinor": { "type": "integer" },
+          "frozenBalanceMinor": { "type": "integer" },
+          "currency": { "type": "string" },
+          "canWithdraw": { "type": "boolean" },
+          "hasSettlementException": { "type": "boolean" }
         },
-        "required": ["walletActivated", "availableBalanceMinor", "pendingBalanceMinor", "currency"]
+        "required": ["walletActivated", "pendingBalanceMinor", "availableBalanceMinor", "frozenBalanceMinor", "currency", "canWithdraw", "hasSettlementException"]
+      },
+      "WalletLedgerListItem": {
+        "type": "object",
+        "properties": {
+          "ledgerId": { "type": "string", "format": "uuid" },
+          "title": { "type": "string" },
+          "balanceBucket": { "type": "string" },
+          "deltaMinor": { "type": "integer" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "relatedOrderId": { "type": "string", "format": "uuid", "nullable": true },
+          "relatedWithdrawalId": { "type": "string", "format": "uuid", "nullable": true },
+          "noteText": { "type": "string", "nullable": true }
+        },
+        "required": ["ledgerId", "title", "balanceBucket", "deltaMinor", "createdAt"]
+      },
+      "WalletLedgerListResponse": {
+        "type": "object",
+        "properties": {
+          "items": { "type": "array", "items": { "$ref": "#/components/schemas/WalletLedgerListItem" } },
+          "nextCursor": { "type": "string", "nullable": true }
+        },
+        "required": ["items"]
+      },
+      "WithdrawalListItem": {
+        "type": "object",
+        "properties": {
+          "withdrawalId": { "type": "string", "format": "uuid" },
+          "amountMinor": { "type": "integer" },
+          "currency": { "type": "string" },
+          "status": { "type": "string" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" },
+          "rejectReasonText": { "type": "string", "nullable": true }
+        },
+        "required": ["withdrawalId", "amountMinor", "currency", "status", "createdAt", "updatedAt"]
+      },
+      "WithdrawalListResponse": {
+        "type": "object",
+        "properties": {
+          "items": { "type": "array", "items": { "$ref": "#/components/schemas/WithdrawalListItem" } },
+          "nextCursor": { "type": "string", "nullable": true }
+        },
+        "required": ["items"]
       },
       "AdminDashboardSummaryResponse": {
         "type": "object",
         "properties": {
-          "paidOrderCountToday": { "type": "number" },
-          "activeQueueEntryCount": { "type": "number" },
-          "pendingWithdrawalCount": { "type": "number" }
+          "paidOrderCountToday": { "type": "integer" },
+          "activeQueueEntryCount": { "type": "integer" },
+          "frozenQueueEntryCount": { "type": "integer" },
+          "scheduledSettlementSlotCount": { "type": "integer" },
+          "runningSettlementSlotCount": { "type": "integer" },
+          "pendingWithdrawalCount": { "type": "integer" },
+          "pendingRiskCaseCount": { "type": "integer" }
         },
-        "required": ["paidOrderCountToday", "activeQueueEntryCount", "pendingWithdrawalCount"]
+        "required": ["paidOrderCountToday", "activeQueueEntryCount", "frozenQueueEntryCount", "scheduledSettlementSlotCount", "runningSettlementSlotCount", "pendingWithdrawalCount", "pendingRiskCaseCount"]
       }
     }
   }
