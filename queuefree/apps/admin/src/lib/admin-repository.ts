@@ -1,46 +1,26 @@
-import {
-  dashboardBacklogTable,
-  dashboardMetrics,
-  dashboardQueueTable,
-  dashboardRiskNotes,
-  dashboardWalletTable,
-  getDetailPageConfig,
-  getListPageConfig,
-  type DetailPageConfig,
-  type ListPageConfig,
-  type Metric
-} from '@/lib/admin-content';
-import type { DataTableConfig } from '@/components/ui/data-table';
-import { waitForMock } from '@/lib/mock-delay';
+import { resolveAdminReadAdapter } from '@/adapters/admin-read-adapter.resolve';
 
-export type AdminDashboardData = {
-  metrics: Metric[];
-  queueTable: DataTableConfig;
-  walletTable: DataTableConfig;
-  backlogTable: DataTableConfig;
-  riskNotes: string[];
-};
+export type {
+  AdminDashboardData,
+  AdminDetailPageKind,
+  AdminListPageKind
+} from '@/adapters/admin-read-adapter';
 
-export type AdminListPageKind = Parameters<typeof getListPageConfig>[0];
-export type AdminDetailPageKind = Parameters<typeof getDetailPageConfig>[0];
-
-export async function fetchAdminDashboardData(): Promise<AdminDashboardData> {
-  await waitForMock();
-  return {
-    metrics: dashboardMetrics,
-    queueTable: dashboardQueueTable,
-    walletTable: dashboardWalletTable,
-    backlogTable: dashboardBacklogTable,
-    riskNotes: dashboardRiskNotes
-  };
+function getAdapter() {
+  return resolveAdminReadAdapter();
 }
 
-export async function fetchAdminListPageConfig(kind: AdminListPageKind): Promise<ListPageConfig> {
-  await waitForMock();
-  return getListPageConfig(kind);
+export function fetchAdminDashboardData() {
+  return getAdapter().fetchAdminDashboardData();
 }
 
-export async function fetchAdminDetailPageConfig(kind: AdminDetailPageKind, id: string): Promise<DetailPageConfig> {
-  await waitForMock();
-  return getDetailPageConfig(kind, id);
+export function fetchAdminListPageConfig(kind: import('@/adapters/admin-read-adapter').AdminListPageKind) {
+  return getAdapter().fetchAdminListPageConfig(kind);
+}
+
+export function fetchAdminDetailPageConfig(
+  kind: import('@/adapters/admin-read-adapter').AdminDetailPageKind,
+  id: string
+) {
+  return getAdapter().fetchAdminDetailPageConfig(kind, id);
 }
