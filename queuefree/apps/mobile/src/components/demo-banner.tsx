@@ -14,6 +14,10 @@ export function DemoBanner() {
         Screen data: {screenDataStatus.screenDataMode} · Runtime config: {runtimeConfigStatus.runtimeConfigMode} · api-client:{' '}
         {screenDataStatus.apiClientRuntimeMode} · screen-model validation: active
       </Text>
+      <Text style={styles.text}>
+        Generated bridge coverage — screens: {screenDataStatus.bridgeCoverage.wired}/{screenDataStatus.bridgeCoverage.total} · runtime config:{' '}
+        {runtimeConfigStatus.bridgeCoverage.wired}/{runtimeConfigStatus.bridgeCoverage.total}
+      </Text>
       {screenDataStatus.reasons.map((reason) => (
         <Text key={`screen-${reason}`} style={styles.bullet}>
           • {reason}

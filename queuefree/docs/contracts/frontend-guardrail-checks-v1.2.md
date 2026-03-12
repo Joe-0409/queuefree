@@ -45,16 +45,25 @@
 
 - 校验 app 内仍然使用 page → query hook → repository → adapter 的切换结构
 - 防止页面直接跨层 import mock adapter 或 generated adapter
+- 防止非 generated 层直接跨层 import `generated-bridge`
 
 ### 6. `pnpm verify:generated-adapter-bridge`
 
 作用：
 
-- 限制 `@queuefree/api-client` 只能出现在 `*.generated.ts` 或 `*.readiness.ts`
+- 限制 `@queuefree/api-client` 只能出现在 `*.generated.ts`、`*.readiness.ts` 或 `generated-bridge`
 - 防止 page / query / repository / mock adapter 直接依赖 generated SDK
-- 防止 generated adapter 偷偷引用 mock content
+- 防止 generated adapter / bridge 偷偷引用 mock content
 
-### 7. `pnpm verify:openapi-intake`
+### 7. `pnpm verify:generated-bridge-coverage`
+
+作用：
+
+- 校验 generated adapter 的每个方法都有对应的 generated bridge 槽位
+- 校验 manifest 没有漏项或多项
+- 把未来 DTO → screen-model mapping 的落点提前固定住
+
+### 8. `pnpm verify:openapi-intake`
 
 作用：
 
@@ -62,14 +71,14 @@
 - 校验 path 前缀继续落在冻结 API 前缀范围内
 - 校验 operationId 完整性
 
-### 8. `pnpm verify:generated-api-client`
+### 9. `pnpm verify:generated-api-client`
 
 作用：
 
 - 校验 spec、生成物、`packages/api-client/src/index.ts` 三者是否同步
 - 校验 `packages/api-client/src` 没有长出额外手写业务文件
 
-### 9. `pnpm verify:screen-model-validation`
+### 10. `pnpm verify:screen-model-validation`
 
 作用：
 
@@ -77,7 +86,7 @@
 - 校验 adapters 不直接依赖 schema / validator
 - 校验 page route files 不直接依赖 schema / validator
 
-### 10. `pnpm verify:frontend-guardrails`
+### 11. `pnpm verify:frontend-guardrails`
 
 作用：
 
@@ -86,7 +95,7 @@
 
 ## 设计目的
 
-这批脚本不是为了新增功能，而是为了避免 5 类问题再次出现：
+这批脚本不是为了新增功能，而是为了避免 7 类问题再次出现：
 
 1. 前端偷偷长出未登记路径
 2. 前端重新手写猜测型 API path / SDK
@@ -94,6 +103,7 @@
 4. generated SDK 直接泄漏到 page / query / repository 层
 5. SDK 已生成但 screen-model mapping 尚未完成时，被误切到 generated 模式
 6. mock / generated adapter 输出未经过统一 screen-model 校验就直接进入页面
+7. generated adapter 方法数量与未来 bridge 槽位数量不一致
 
 ## 当前边界
 

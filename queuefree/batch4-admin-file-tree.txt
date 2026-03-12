@@ -1,0 +1,90 @@
+queuefree-batch4-admin-starter/
+├── apps
+│   └── admin
+│       ├── app
+│       │   ├── (console)
+│       │   │   ├── audit
+│       │   │   │   └── page.tsx
+│       │   │   ├── campaigns
+│       │   │   │   ├── [campaignId]
+│       │   │   │   │   └── page.tsx
+│       │   │   │   └── page.tsx
+│       │   │   ├── governance
+│       │   │   │   └── page.tsx
+│       │   │   ├── invites
+│       │   │   │   ├── [relationId]
+│       │   │   │   │   └── page.tsx
+│       │   │   │   └── page.tsx
+│       │   │   ├── orders
+│       │   │   │   ├── [orderId]
+│       │   │   │   │   └── page.tsx
+│       │   │   │   └── page.tsx
+│       │   │   ├── products
+│       │   │   │   ├── [productId]
+│       │   │   │   │   └── page.tsx
+│       │   │   │   └── page.tsx
+│       │   │   ├── queues
+│       │   │   │   ├── [entryId]
+│       │   │   │   │   └── page.tsx
+│       │   │   │   └── page.tsx
+│       │   │   ├── risk
+│       │   │   │   ├── [caseId]
+│       │   │   │   │   └── page.tsx
+│       │   │   │   └── page.tsx
+│       │   │   ├── slots
+│       │   │   │   ├── [slotId]
+│       │   │   │   │   └── page.tsx
+│       │   │   │   └── page.tsx
+│       │   │   ├── tasks
+│       │   │   │   ├── [taskId]
+│       │   │   │   │   └── page.tsx
+│       │   │   │   └── page.tsx
+│       │   │   ├── wallet
+│       │   │   │   └── page.tsx
+│       │   │   ├── withdrawals
+│       │   │   │   └── page.tsx
+│       │   │   ├── layout.tsx
+│       │   │   └── page.tsx
+│       │   ├── login
+│       │   │   └── page.tsx
+│       │   ├── globals.css
+│       │   ├── layout.tsx
+│       │   └── not-found.tsx
+│       ├── src
+│       │   ├── components
+│       │   │   ├── ui
+│       │   │   │   ├── badge.tsx
+│       │   │   │   ├── button.tsx
+│       │   │   │   ├── card.tsx
+│       │   │   │   ├── data-table.tsx
+│       │   │   │   └── input.tsx
+│       │   │   ├── admin-page-header.tsx
+│       │   │   ├── admin-shell.tsx
+│       │   │   ├── admin-sidebar.tsx
+│       │   │   ├── admin-skeleton-banner.tsx
+│       │   │   ├── admin-topbar.tsx
+│       │   │   ├── metric-card.tsx
+│       │   │   ├── module-detail-page.tsx
+│       │   │   ├── module-list-page.tsx
+│       │   │   ├── page-shell.tsx
+│       │   │   └── section-title.tsx
+│       │   └── lib
+│       │       ├── admin-content.ts
+│       │       ├── navigation.ts
+│       │       └── utils.ts
+│       ├── .env.example
+│       ├── next-env.d.ts
+│       ├── next.config.mjs
+│       ├── package.json
+│       ├── postcss.config.mjs
+│       ├── tailwind.config.ts
+│       └── tsconfig.json
+├── docs
+│   ├── contracts
+│   │   └── admin-route-module-map-v1.2.md
+│   └── handoffs
+│       ├── backend-next-steps-from-admin-batch4.md
+│       ├── server-next-steps-from-admin-batch4.md
+│       └── 第4批-发给后端和服务器的话术.md
+├── README-第4批-Admin后台启动步骤.md
+└── package.json

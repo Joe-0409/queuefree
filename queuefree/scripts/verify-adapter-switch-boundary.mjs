@@ -41,6 +41,28 @@ const checks = [
       /src[\/]lib[\/]admin-content\.ts$/,
       /src[\/]adapters[\/]admin-read-adapter\.mock\.ts$/
     ]
+  },
+  {
+    rootDir: path.join(repoRoot, 'apps', 'mobile', 'src'),
+    blockedFragments: ['generated-bridge/'],
+    description: 'mobile source files must not import generated bridge directly outside generated adapter or generated-bridge layers',
+    allowPatterns: [
+      /src[\/]generated-bridge[\/].+\.ts$/,
+      /src[\/]adapters[\/]mobile-read-adapter\.generated\.ts$/,
+      /src[\/]adapters[\/]runtime-config-adapter\.generated\.ts$/,
+      /src[\/]adapters[\/]mobile-read-adapter\.readiness\.ts$/,
+      /src[\/]adapters[\/]runtime-config-adapter\.readiness\.ts$/
+    ]
+  },
+  {
+    rootDir: path.join(repoRoot, 'apps', 'admin', 'src'),
+    blockedFragments: ['generated-bridge/'],
+    description: 'admin source files must not import generated bridge directly outside generated adapter or generated-bridge layers',
+    allowPatterns: [
+      /src[\/]generated-bridge[\/].+\.ts$/,
+      /src[\/]adapters[\/]admin-read-adapter\.generated\.ts$/,
+      /src[\/]adapters[\/]admin-read-adapter\.readiness\.ts$/
+    ]
   }
 ];
 

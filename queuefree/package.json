@@ -25,11 +25,12 @@
     "verify:openapi-intake": "node ./scripts/verify-openapi-intake.mjs",
     "verify:generated-api-client": "node ./scripts/verify-generated-api-client.mjs",
     "verify:frontend-openapi-pipeline": "pnpm verify:openapi-intake && pnpm verify:generated-api-client",
-    "verify:frontend-guardrails": "pnpm verify:registry-first-frontend && pnpm verify:route-registry && pnpm verify:frontend-import-boundaries && pnpm verify:mock-data-boundary && pnpm verify:adapter-switch-boundary && pnpm verify:generated-adapter-bridge && pnpm verify:screen-model-validation && pnpm verify:openapi-intake && pnpm verify:generated-api-client",
+    "verify:frontend-guardrails": "pnpm verify:registry-first-frontend && pnpm verify:route-registry && pnpm verify:frontend-import-boundaries && pnpm verify:mock-data-boundary && pnpm verify:adapter-switch-boundary && pnpm verify:generated-adapter-bridge && pnpm verify:generated-bridge-coverage && pnpm verify:screen-model-validation && pnpm verify:openapi-intake && pnpm verify:generated-api-client",
     "generate:api-client": "node ./scripts/generate-api-client.mjs",
     "reset:api-client-placeholder": "node ./scripts/reset-api-client-placeholder.mjs",
     "verify:generated-adapter-bridge": "node ./scripts/verify-generated-adapter-bridge.mjs",
-    "verify:screen-model-validation": "node ./scripts/verify-screen-model-validation-boundary.mjs"
+    "verify:screen-model-validation": "node ./scripts/verify-screen-model-validation-boundary.mjs",
+    "verify:generated-bridge-coverage": "node ./scripts/verify-generated-bridge-coverage.mjs"
   },
   "devDependencies": {
     "openapi-typescript-codegen": "^0.29.0",

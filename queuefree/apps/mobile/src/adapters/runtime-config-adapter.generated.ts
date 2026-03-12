@@ -1,12 +1,9 @@
 import type { RuntimeConfig } from '@queuefree/shared';
 import type { RuntimeConfigAdapter } from './runtime-config-adapter';
-
-async function unsupported(): Promise<RuntimeConfig> {
-  throw new Error(
-    '[QueueFree mobile skeleton] runtime config adapter is not wired yet. Replace it only after backend exports the runtime config contract via OpenAPI or registered REST wiring.'
-  );
-}
+import { getRuntimeConfigFromGeneratedBridge } from '../generated-bridge/runtime-config-generated-bridge';
 
 export const generatedRuntimeConfigAdapter: RuntimeConfigAdapter = {
-  getRuntimeConfig: unsupported
+  getRuntimeConfig: () => getRuntimeConfigFromGeneratedBridge()
 };
+
+export type { RuntimeConfig };

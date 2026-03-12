@@ -1,0 +1,1184 @@
+# Batch 11 新增 / 修改文件完整内容汇总
+
+## `package.json`
+
+```json
+{
+  "name": "queuefree",
+  "private": true,
+  "version": "0.1.0",
+  "packageManager": "pnpm@10.32.0",
+  "engines": {
+    "node": ">=22.22.0 <23"
+  },
+  "scripts": {
+    "dev:mobile": "pnpm --filter @queuefree/mobile dev",
+    "android": "pnpm --filter @queuefree/mobile android",
+    "ios": "pnpm --filter @queuefree/mobile ios",
+    "web:mobile": "pnpm --filter @queuefree/mobile web",
+    "typecheck": "pnpm verify:frontend-guardrails && turbo run typecheck",
+    "dev:web": "pnpm --filter @queuefree/web dev",
+    "build:web": "pnpm --filter @queuefree/web build",
+    "dev:admin": "pnpm --filter @queuefree/admin dev",
+    "build:admin": "pnpm --filter @queuefree/admin build",
+    "verify:registry-first-frontend": "node ./scripts/verify-registry-first-frontend.mjs",
+    "typecheck:frontends": "pnpm verify:frontend-guardrails && turbo run typecheck --filter=@queuefree/shared --filter=@queuefree/ui-tokens --filter=@queuefree/api-client --filter=@queuefree/mobile --filter=@queuefree/web --filter=@queuefree/admin",
+    "verify:route-registry": "node ./scripts/verify-route-registry.mjs",
+    "verify:frontend-import-boundaries": "node ./scripts/verify-frontend-import-boundaries.mjs",
+    "verify:mock-data-boundary": "node ./scripts/verify-mock-data-boundary.mjs",
+    "verify:adapter-switch-boundary": "node ./scripts/verify-adapter-switch-boundary.mjs",
+    "verify:openapi-intake": "node ./scripts/verify-openapi-intake.mjs",
+    "verify:generated-api-client": "node ./scripts/verify-generated-api-client.mjs",
+    "verify:frontend-openapi-pipeline": "pnpm verify:openapi-intake && pnpm verify:generated-api-client",
+    "verify:frontend-guardrails": "pnpm verify:registry-first-frontend && pnpm verify:route-registry && pnpm verify:frontend-import-boundaries && pnpm verify:mock-data-boundary && pnpm verify:adapter-switch-boundary && pnpm verify:generated-adapter-bridge && pnpm verify:screen-model-validation && pnpm verify:openapi-intake && pnpm verify:generated-api-client",
+    "generate:api-client": "node ./scripts/generate-api-client.mjs",
+    "reset:api-client-placeholder": "node ./scripts/reset-api-client-placeholder.mjs",
+    "verify:generated-adapter-bridge": "node ./scripts/verify-generated-adapter-bridge.mjs",
+    "verify:screen-model-validation": "node ./scripts/verify-screen-model-validation-boundary.mjs"
+  },
+  "devDependencies": {
+    "openapi-typescript-codegen": "^0.29.0",
+    "turbo": "^2.4.4",
+    "typescript": "^5.8.3",
+    "yaml": "^2.8.1"
+  }
+}
+```
+
+## `apps/admin/package.json`
+
+```json
+{
+  "name": "@queuefree/admin",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "next dev -p 3001",
+    "build": "next build",
+    "start": "next start -p 3001",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@queuefree/shared": "workspace:*",
+    "@queuefree/ui-tokens": "workspace:*",
+    "@tanstack/react-query": "^5.66.0",
+    "clsx": "^2.1.1",
+    "next": "^15.3.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "tailwind-merge": "^2.5.5",
+    "@queuefree/api-client": "workspace:*",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.21",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.8.3"
+  }
+}
+```
+
+## `apps/mobile/src/schemas/mobile-screen-schemas.ts`
+
+```ts
+import {
+  ACCOUNT_DELETE_STATUSES,
+  INVITE_RELATION_STATUSES,
+  QUEUE_ENTRY_STATUSES,
+  USER_QUEUE_GUARD_STATUSES,
+  WITHDRAWAL_STATUSES
+} from '@queuefree/shared';
+import { z } from 'zod';
+
+const moneyMinorSchema = z.number().int();
+const nonEmptyStringSchema = z.string().min(1);
+
+export const productCardSchema = z.object({
+  id: nonEmptyStringSchema,
+  title: nonEmptyStringSchema,
+  subtitle: nonEmptyStringSchema,
+  priceMinor: moneyMinorSchema,
+  cashbackCapMinor: moneyMinorSchema,
+  stockLabel: nonEmptyStringSchema
+});
+
+export const queueEntryCardSchema = z.object({
+  id: nonEmptyStringSchema,
+  orderId: nonEmptyStringSchema,
+  productTitle: nonEmptyStringSchema,
+  status: z.enum(QUEUE_ENTRY_STATUSES),
+  currentRank: z.number().int().nullable(),
+  boostUsed: z.number().int().min(0),
+  nextSlotAt: nonEmptyStringSchema,
+  eligibleCashbackMinor: moneyMinorSchema
+});
+
+export const taskCardSchema = z.object({
+  id: nonEmptyStringSchema,
+  title: nonEmptyStringSchema,
+  rewardLabel: nonEmptyStringSchema,
+  progressLabel: nonEmptyStringSchema,
+  claimable: z.boolean()
+});
+
+export const inviteRecordSchema = z.object({
+  id: nonEmptyStringSchema,
+  maskedPhone: nonEmptyStringSchema,
+  status: z.enum(INVITE_RELATION_STATUSES),
+  reason: nonEmptyStringSchema
+});
+
+export const walletLedgerSchema = z.object({
+  id: nonEmptyStringSchema,
+  title: nonEmptyStringSchema,
+  amountMinor: moneyMinorSchema,
+  createdAt: nonEmptyStringSchema
+});
+
+export const withdrawalRecordSchema = z.object({
+  id: nonEmptyStringSchema,
+  amountMinor: moneyMinorSchema,
+  status: z.enum(WITHDRAWAL_STATUSES),
+  createdAt: nonEmptyStringSchema
+});
+
+export const profileSchema = z.object({
+  displayName: nonEmptyStringSchema,
+  phoneNumber: nonEmptyStringSchema,
+  marketLabel: nonEmptyStringSchema,
+  timezoneLabel: nonEmptyStringSchema
+});
+
+export const guardSchema = z.object({
+  status: z.enum(USER_QUEUE_GUARD_STATUSES),
+  validUntil: nonEmptyStringSchema,
+  graceUntil: nonEmptyStringSchema
+});
+
+export const walletSummarySchema = z.object({
+  activationLabel: nonEmptyStringSchema,
+  pendingBalanceMinor: moneyMinorSchema,
+  availableBalanceMinor: moneyMinorSchema,
+  frozenBalanceMinor: moneyMinorSchema,
+  showRecoverableDebtHint: z.boolean()
+});
+
+export const homeScreenDataSchema = z.object({
+  products: z.array(productCardSchema),
+  nextSlotAt: z.string().min(1).nullable()
+});
+
+export const queueScreenDataSchema = z.object({
+  guard: guardSchema,
+  entries: z.array(queueEntryCardSchema)
+});
+
+export const tasksScreenDataSchema = z.object({
+  tasks: z.array(taskCardSchema)
+});
+
+export const invitesScreenDataSchema = z.object({
+  inviteCode: nonEmptyStringSchema,
+  records: z.array(inviteRecordSchema)
+});
+
+export const walletScreenDataSchema = z.object({
+  wallet: walletSummarySchema,
+  ledgers: z.array(walletLedgerSchema),
+  withdrawals: z.array(withdrawalRecordSchema)
+});
+
+export const profileScreenDataSchema = z.object({
+  profile: profileSchema
+});
+
+export const rulesCenterDataSchema = z.object({
+  faq: z.array(nonEmptyStringSchema)
+});
+
+export const orderSuccessDataSchema = z.object({
+  entryId: nonEmptyStringSchema,
+  summary: z.object({
+    title: nonEmptyStringSchema,
+    rankLabel: nonEmptyStringSchema,
+    nextSlotLabel: nonEmptyStringSchema,
+    cashbackLabel: nonEmptyStringSchema
+  })
+});
+
+export const deleteAccountPreviewDataSchema = z.object({
+  statuses: z.tuple([
+    z.literal(ACCOUNT_DELETE_STATUSES[0]),
+    z.literal(ACCOUNT_DELETE_STATUSES[1]),
+    z.literal(ACCOUNT_DELETE_STATUSES[2]),
+    z.literal(ACCOUNT_DELETE_STATUSES[3]),
+    z.literal(ACCOUNT_DELETE_STATUSES[4]),
+    z.literal(ACCOUNT_DELETE_STATUSES[5])
+  ]),
+  blockers: z.array(nonEmptyStringSchema),
+  impactNotes: z.array(nonEmptyStringSchema)
+});
+```
+
+## `apps/mobile/src/lib/mobile-screen-validators.ts`
+
+```ts
+import type {
+  DeleteAccountPreviewData,
+  HomeScreenData,
+  InvitesScreenData,
+  OrderSuccessData,
+  ProfileScreenData,
+  QueueScreenData,
+  RulesCenterData,
+  TasksScreenData,
+  WalletScreenData
+} from '../adapters/mobile-read-adapter';
+import type {
+  ProductCardModel,
+  QueueEntryCardModel
+} from '../models/mobile-screen-models';
+import {
+  deleteAccountPreviewDataSchema,
+  homeScreenDataSchema,
+  invitesScreenDataSchema,
+  orderSuccessDataSchema,
+  productCardSchema,
+  profileScreenDataSchema,
+  queueEntryCardSchema,
+  queueScreenDataSchema,
+  rulesCenterDataSchema,
+  tasksScreenDataSchema,
+  walletScreenDataSchema
+} from '../schemas/mobile-screen-schemas';
+
+function formatIssues(issues: Array<{ path: (string | number)[]; message: string }>) {
+  return issues
+    .slice(0, 5)
+    .map((issue) => `${issue.path.join('.') || '<root>'}: ${issue.message}`)
+    .join('; ');
+}
+
+function parseOrThrow<T>(
+  label: string,
+  parseFn: (value: unknown) => { success: true; data: T } | { success: false; error: { issues: Array<{ path: (string | number)[]; message: string }> } },
+  value: unknown
+): T {
+  const result = parseFn(value);
+
+  if (!result.success) {
+    throw new Error(`[QueueFree mobile skeleton] ${label} failed screen-model validation. ${formatIssues(result.error.issues)}`);
+  }
+
+  return result.data;
+}
+
+export function validateHomeScreenData(value: unknown): HomeScreenData {
+  return parseOrThrow('fetchHomeScreenData', homeScreenDataSchema.safeParse.bind(homeScreenDataSchema), value);
+}
+
+export function validateQueueScreenData(value: unknown): QueueScreenData {
+  return parseOrThrow('fetchQueueScreenData', queueScreenDataSchema.safeParse.bind(queueScreenDataSchema), value);
+}
+
+export function validateTasksScreenData(value: unknown): TasksScreenData {
+  return parseOrThrow('fetchTasksScreenData', tasksScreenDataSchema.safeParse.bind(tasksScreenDataSchema), value);
+}
+
+export function validateInvitesScreenData(value: unknown): InvitesScreenData {
+  return parseOrThrow('fetchInvitesScreenData', invitesScreenDataSchema.safeParse.bind(invitesScreenDataSchema), value);
+}
+
+export function validateWalletScreenData(value: unknown): WalletScreenData {
+  return parseOrThrow('fetchWalletScreenData', walletScreenDataSchema.safeParse.bind(walletScreenDataSchema), value);
+}
+
+export function validateProfileScreenData(value: unknown): ProfileScreenData {
+  return parseOrThrow('fetchProfileScreenData', profileScreenDataSchema.safeParse.bind(profileScreenDataSchema), value);
+}
+
+export function validateProductCard(value: unknown): ProductCardModel {
+  return parseOrThrow('fetchProductDetail', productCardSchema.safeParse.bind(productCardSchema), value);
+}
+
+export function validateQueueEntryCard(value: unknown): QueueEntryCardModel {
+  return parseOrThrow('fetchQueueEntryDetail', queueEntryCardSchema.safeParse.bind(queueEntryCardSchema), value);
+}
+
+export function validateRulesCenterData(value: unknown): RulesCenterData {
+  return parseOrThrow('fetchRulesCenterData', rulesCenterDataSchema.safeParse.bind(rulesCenterDataSchema), value);
+}
+
+export function validateOrderSuccessData(value: unknown): OrderSuccessData {
+  return parseOrThrow('fetchOrderSuccessData', orderSuccessDataSchema.safeParse.bind(orderSuccessDataSchema), value);
+}
+
+export function validateDeleteAccountPreviewData(value: unknown): DeleteAccountPreviewData {
+  return parseOrThrow(
+    'fetchDeleteAccountPreview',
+    deleteAccountPreviewDataSchema.safeParse.bind(deleteAccountPreviewDataSchema),
+    value
+  );
+}
+```
+
+## `apps/mobile/src/lib/mobile-repository.ts`
+
+```ts
+import { resolveMobileReadAdapter } from '../adapters/mobile-read-adapter.resolve';
+import {
+  validateDeleteAccountPreviewData,
+  validateHomeScreenData,
+  validateInvitesScreenData,
+  validateOrderSuccessData,
+  validateProductCard,
+  validateProfileScreenData,
+  validateQueueEntryCard,
+  validateQueueScreenData,
+  validateRulesCenterData,
+  validateTasksScreenData,
+  validateWalletScreenData
+} from './mobile-screen-validators';
+
+export type {
+  DeleteAccountPreviewData,
+  HomeScreenData,
+  InvitesScreenData,
+  OrderSuccessData,
+  ProfileScreenData,
+  QueueScreenData,
+  RulesCenterData,
+  TasksScreenData,
+  WalletScreenData
+} from '../adapters/mobile-read-adapter';
+
+function getAdapter() {
+  return resolveMobileReadAdapter();
+}
+
+export async function fetchHomeScreenData() {
+  const data = await getAdapter().fetchHomeScreenData();
+  return validateHomeScreenData(data);
+}
+
+export async function fetchQueueScreenData() {
+  const data = await getAdapter().fetchQueueScreenData();
+  return validateQueueScreenData(data);
+}
+
+export async function fetchTasksScreenData() {
+  const data = await getAdapter().fetchTasksScreenData();
+  return validateTasksScreenData(data);
+}
+
+export async function fetchInvitesScreenData() {
+  const data = await getAdapter().fetchInvitesScreenData();
+  return validateInvitesScreenData(data);
+}
+
+export async function fetchWalletScreenData() {
+  const data = await getAdapter().fetchWalletScreenData();
+  return validateWalletScreenData(data);
+}
+
+export async function fetchProfileScreenData() {
+  const data = await getAdapter().fetchProfileScreenData();
+  return validateProfileScreenData(data);
+}
+
+export async function fetchProductDetail(productId: string) {
+  const data = await getAdapter().fetchProductDetail(productId);
+  return validateProductCard(data);
+}
+
+export async function fetchQueueEntryDetail(entryId: string) {
+  const data = await getAdapter().fetchQueueEntryDetail(entryId);
+  return validateQueueEntryCard(data);
+}
+
+export async function fetchRulesCenterData() {
+  const data = await getAdapter().fetchRulesCenterData();
+  return validateRulesCenterData(data);
+}
+
+export async function fetchOrderSuccessData(orderId: string) {
+  const data = await getAdapter().fetchOrderSuccessData(orderId);
+  return validateOrderSuccessData(data);
+}
+
+export async function fetchDeleteAccountPreview() {
+  const data = await getAdapter().fetchDeleteAccountPreview();
+  return validateDeleteAccountPreviewData(data);
+}
+```
+
+## `apps/mobile/src/components/demo-banner.tsx`
+
+```ts
+import { StyleSheet, Text, View } from 'react-native';
+import { mobileTheme } from '@queuefree/ui-tokens';
+import { getMobileReadAdapterStatusSummary } from '../adapters/mobile-read-adapter.resolve';
+import { getRuntimeConfigAdapterStatusSummary } from '../adapters/runtime-config-adapter.resolve';
+
+export function DemoBanner() {
+  const screenDataStatus = getMobileReadAdapterStatusSummary();
+  const runtimeConfigStatus = getRuntimeConfigAdapterStatusSummary();
+
+  return (
+    <View style={styles.banner}>
+      <Text style={styles.title}>Demo mode</Text>
+      <Text style={styles.text}>
+        Screen data: {screenDataStatus.screenDataMode} · Runtime config: {runtimeConfigStatus.runtimeConfigMode} · api-client:{' '}
+        {screenDataStatus.apiClientRuntimeMode} · screen-model validation: active
+      </Text>
+      {screenDataStatus.reasons.map((reason) => (
+        <Text key={`screen-${reason}`} style={styles.bullet}>
+          • {reason}
+        </Text>
+      ))}
+      {runtimeConfigStatus.reasons
+        .filter((reason) => !screenDataStatus.reasons.includes(reason))
+        .map((reason) => (
+          <Text key={`runtime-${reason}`} style={styles.bullet}>
+            • {reason}
+          </Text>
+        ))}
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  banner: {
+    backgroundColor: mobileTheme.colors.infoSoft,
+    borderRadius: mobileTheme.radius.md,
+    padding: mobileTheme.spacing.md,
+    gap: mobileTheme.spacing.xs
+  },
+  title: {
+    color: mobileTheme.colors.info,
+    fontWeight: '700'
+  },
+  text: {
+    color: mobileTheme.colors.textSecondary,
+    fontSize: 13,
+    lineHeight: 18
+  },
+  bullet: {
+    color: mobileTheme.colors.textSecondary,
+    fontSize: 12,
+    lineHeight: 17
+  }
+});
+```
+
+## `apps/admin/src/schemas/admin-screen-schemas.ts`
+
+```ts
+import { z } from 'zod';
+
+const badgeTones = ['slate', 'brand', 'accent', 'warning', 'danger'] as const;
+const tableAlignments = ['left', 'right'] as const;
+const nonEmptyStringSchema = z.string().min(1);
+
+export const badgeToneSchema = z.enum(badgeTones);
+
+export const tableCellValueSchema = z.union([
+  z.string(),
+  z.number(),
+  z.object({
+    label: nonEmptyStringSchema,
+    tone: badgeToneSchema.optional()
+  })
+]);
+
+export const dataTableColumnSchema = z.object({
+  key: nonEmptyStringSchema,
+  label: nonEmptyStringSchema,
+  align: z.enum(tableAlignments).optional()
+});
+
+export const dataTableConfigSchema = z.object({
+  columns: z.array(dataTableColumnSchema),
+  rows: z.array(z.record(tableCellValueSchema)),
+  emptyMessage: z.string().optional()
+});
+
+export const metricSchema = z.object({
+  title: nonEmptyStringSchema,
+  value: nonEmptyStringSchema,
+  description: nonEmptyStringSchema,
+  tone: badgeToneSchema.optional()
+});
+
+export const listPageConfigSchema = z.object({
+  eyebrow: nonEmptyStringSchema,
+  title: nonEmptyStringSchema,
+  description: nonEmptyStringSchema,
+  meta: z.array(nonEmptyStringSchema),
+  metrics: z.array(metricSchema),
+  tableTitle: nonEmptyStringSchema,
+  tableDescription: nonEmptyStringSchema,
+  table: dataTableConfigSchema,
+  secondaryTable: dataTableConfigSchema
+    .extend({
+      title: nonEmptyStringSchema,
+      description: nonEmptyStringSchema
+    })
+    .optional(),
+  notes: z.array(nonEmptyStringSchema)
+});
+
+export const detailSectionSchema = z.object({
+  title: nonEmptyStringSchema,
+  description: nonEmptyStringSchema,
+  rows: z.array(
+    z.object({
+      label: nonEmptyStringSchema,
+      value: nonEmptyStringSchema
+    })
+  )
+});
+
+export const detailPageConfigSchema = z.object({
+  eyebrow: nonEmptyStringSchema,
+  title: nonEmptyStringSchema,
+  description: nonEmptyStringSchema,
+  meta: z.array(nonEmptyStringSchema),
+  badgeLabel: nonEmptyStringSchema,
+  badgeTone: badgeToneSchema,
+  backHref: nonEmptyStringSchema,
+  metrics: z.array(metricSchema),
+  sections: z.array(detailSectionSchema),
+  actions: z.array(nonEmptyStringSchema),
+  notes: z.array(nonEmptyStringSchema),
+  relatedLinks: z.array(
+    z.object({
+      href: nonEmptyStringSchema,
+      label: nonEmptyStringSchema
+    })
+  )
+});
+
+export const adminDashboardDataSchema = z.object({
+  metrics: z.array(metricSchema),
+  queueTable: dataTableConfigSchema,
+  walletTable: dataTableConfigSchema,
+  backlogTable: dataTableConfigSchema,
+  riskNotes: z.array(nonEmptyStringSchema)
+});
+```
+
+## `apps/admin/src/lib/admin-screen-validators.ts`
+
+```ts
+import type {
+  AdminDashboardData
+} from '@/adapters/admin-read-adapter';
+import type {
+  DetailPageConfig,
+  ListPageConfig
+} from '@/models/admin-screen-models';
+import {
+  adminDashboardDataSchema,
+  detailPageConfigSchema,
+  listPageConfigSchema
+} from '@/schemas/admin-screen-schemas';
+
+function formatIssues(issues: Array<{ path: (string | number)[]; message: string }>) {
+  return issues
+    .slice(0, 5)
+    .map((issue) => `${issue.path.join('.') || '<root>'}: ${issue.message}`)
+    .join('; ');
+}
+
+function parseOrThrow<T>(
+  label: string,
+  parseFn: (value: unknown) => { success: true; data: T } | { success: false; error: { issues: Array<{ path: (string | number)[]; message: string }> } },
+  value: unknown
+): T {
+  const result = parseFn(value);
+
+  if (!result.success) {
+    throw new Error(`[QueueFree admin skeleton] ${label} failed screen-model validation. ${formatIssues(result.error.issues)}`);
+  }
+
+  return result.data;
+}
+
+export function validateAdminDashboardData(value: unknown): AdminDashboardData {
+  return parseOrThrow('fetchAdminDashboardData', adminDashboardDataSchema.safeParse.bind(adminDashboardDataSchema), value);
+}
+
+export function validateAdminListPageConfig(value: unknown): ListPageConfig {
+  return parseOrThrow('fetchAdminListPageConfig', listPageConfigSchema.safeParse.bind(listPageConfigSchema), value);
+}
+
+export function validateAdminDetailPageConfig(value: unknown): DetailPageConfig {
+  return parseOrThrow('fetchAdminDetailPageConfig', detailPageConfigSchema.safeParse.bind(detailPageConfigSchema), value);
+}
+```
+
+## `apps/admin/src/lib/admin-repository.ts`
+
+```ts
+import { resolveAdminReadAdapter } from '@/adapters/admin-read-adapter.resolve';
+import { validateAdminDashboardData, validateAdminDetailPageConfig, validateAdminListPageConfig } from '@/lib/admin-screen-validators';
+
+export type {
+  AdminDashboardData,
+  AdminDetailPageKind,
+  AdminListPageKind
+} from '@/adapters/admin-read-adapter';
+
+function getAdapter() {
+  return resolveAdminReadAdapter();
+}
+
+export async function fetchAdminDashboardData() {
+  const data = await getAdapter().fetchAdminDashboardData();
+  return validateAdminDashboardData(data);
+}
+
+export async function fetchAdminListPageConfig(kind: import('@/adapters/admin-read-adapter').AdminListPageKind) {
+  const data = await getAdapter().fetchAdminListPageConfig(kind);
+  return validateAdminListPageConfig(data);
+}
+
+export async function fetchAdminDetailPageConfig(
+  kind: import('@/adapters/admin-read-adapter').AdminDetailPageKind,
+  id: string
+) {
+  const data = await getAdapter().fetchAdminDetailPageConfig(kind, id);
+  return validateAdminDetailPageConfig(data);
+}
+```
+
+## `apps/admin/src/components/admin-skeleton-banner.tsx`
+
+```ts
+import { getAdminReadAdapterStatusSummary } from '@/adapters/admin-read-adapter.resolve';
+import { Card, CardContent } from '@/components/ui/card';
+
+export function AdminSkeletonBanner(): React.ReactElement {
+  const status = getAdminReadAdapterStatusSummary();
+
+  return (
+    <Card className="border-brand/20 bg-brand-soft">
+      <CardContent className="space-y-3 p-5">
+        <div className="text-sm font-semibold text-slate-950">Admin Skeleton</div>
+        <p className="text-sm text-slate-700">
+          Data source: <span className="font-semibold">{status.screenDataMode}</span> · api-client mode:{' '}
+          <span className="font-semibold">{status.apiClientRuntimeMode}</span> · screen-model validation:{' '}
+          <span className="font-semibold">active</span>
+        </p>
+        <p className="text-sm text-slate-700">
+          This batch is route-safe and registry-safe. Data, actions, and permissions are placeholders only. No real authentication, no real API,
+          and no unregistered contract has been added here.
+        </p>
+        <ul className="space-y-2 text-sm text-slate-700">
+          {status.reasons.map((reason) => (
+            <li key={reason} className="rounded-2xl border border-brand/20 bg-white/70 px-3 py-2">
+              {reason}
+            </li>
+          ))}
+        </ul>
+      </CardContent>
+    </Card>
+  );
+}
+```
+
+## `scripts/verify-screen-model-validation-boundary.mjs`
+
+```
+import { readdirSync, readFileSync, statSync } from 'node:fs';
+import path from 'node:path';
+
+const repoRoot = process.cwd();
+const violations = [];
+
+const requiredFiles = [
+  {
+    file: path.join(repoRoot, 'apps', 'mobile', 'src', 'lib', 'mobile-repository.ts'),
+    mustInclude: ['mobile-screen-validators'],
+    description: 'mobile repository must validate adapter output via mobile-screen-validators'
+  },
+  {
+    file: path.join(repoRoot, 'apps', 'admin', 'src', 'lib', 'admin-repository.ts'),
+    mustInclude: ['admin-screen-validators'],
+    description: 'admin repository must validate adapter output via admin-screen-validators'
+  }
+];
+
+for (const check of requiredFiles) {
+  const exists = statSync(check.file, { throwIfNoEntry: false });
+  if (!exists) {
+    violations.push(`${check.description}: missing file ${path.relative(repoRoot, check.file)}`);
+    continue;
+  }
+
+  const content = readFileSync(check.file, 'utf8');
+  for (const fragment of check.mustInclude) {
+    if (!content.includes(fragment)) {
+      violations.push(`${check.description}: ${path.relative(repoRoot, check.file)}`);
+    }
+  }
+}
+
+const disallowedImports = [
+  {
+    rootDir: path.join(repoRoot, 'apps', 'mobile', 'src', 'adapters'),
+    blockedFragments: ['/schemas/', 'screen-validators'],
+    description: 'mobile adapters must stay raw and must not own screen-model validation'
+  },
+  {
+    rootDir: path.join(repoRoot, 'apps', 'admin', 'src', 'adapters'),
+    blockedFragments: ['/schemas/', 'screen-validators'],
+    description: 'admin adapters must stay raw and must not own screen-model validation'
+  },
+  {
+    rootDir: path.join(repoRoot, 'apps', 'mobile', 'app'),
+    blockedFragments: ['screen-validators', '/schemas/'],
+    description: 'mobile route files must not import screen validators or schemas directly'
+  },
+  {
+    rootDir: path.join(repoRoot, 'apps', 'admin', 'app'),
+    blockedFragments: ['screen-validators', '/schemas/'],
+    description: 'admin route files must not import screen validators or schemas directly'
+  }
+];
+
+function walk(dir) {
+  const entries = readdirSync(dir, { withFileTypes: true });
+  let files = [];
+
+  for (const entry of entries) {
+    const absolutePath = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      files = files.concat(walk(absolutePath));
+    } else if (/\.(ts|tsx|js|mjs)$/.test(entry.name)) {
+      files.push(absolutePath);
+    }
+  }
+
+  return files;
+}
+
+for (const check of disallowedImports) {
+  const rootExists = statSync(check.rootDir, { throwIfNoEntry: false });
+  if (!rootExists) {
+    continue;
+  }
+
+  const files = walk(check.rootDir);
+
+  for (const filePath of files) {
+    const content = readFileSync(filePath, 'utf8');
+    for (const fragment of check.blockedFragments) {
+      if (content.includes(fragment)) {
+        violations.push(`${check.description}: ${path.relative(repoRoot, filePath)}`);
+      }
+    }
+  }
+}
+
+if (violations.length > 0) {
+  console.error('Screen-model validation boundary violations found:\n');
+  for (const violation of violations) {
+    console.error(`- ${violation}`);
+  }
+  process.exit(1);
+}
+
+console.log('verify-screen-model-validation passed');
+```
+
+## `docs/contracts/frontend-screen-model-validation-v1.2.md`
+
+```md
+# Frontend Screen Model Validation v1.2
+
+状态：Batch 11 / Frontend
+
+## 目标
+
+在不新增任何 registry 冻结项、也不猜测 backend contract 的前提下，把前端当前的读取链路统一收口到：
+
+```text
+page -> query hook -> repository -> screen-model validation -> read adapter
+```
+
+这样后续无论是 mock adapter 还是 generated adapter，只要最终返回的数据不符合页面当前使用的 screen model，都会在 repository 边界被拦下，而不是把非法数据直接带进页面。
+
+## 本轮边界
+
+本轮没有新增：
+
+- route
+- env var
+- enum
+- state
+- API path
+- request field
+- response field
+- table field
+- event
+- worker
+- queue
+- cron
+- domain
+
+## 为什么这一步必要
+
+前端当前消费的不是 backend DTO，而是 app-local screen model：
+
+- mobile 页面消费 `ProductCardModel`、`QueueEntryCardModel`、`WalletSummaryModel` 等
+- admin 页面消费 `AdminDashboardData`、`ListPageConfig`、`DetailPageConfig` 等
+
+即使未来 `packages/api-client` 已经由 OpenAPI 成功生成，generated SDK response 也不能直接进页面。仍然需要 app 内自己的 screen-model mapping。
+
+本轮加的 schema 校验层，就是为了把这种约束明确下来。
+
+## 当前规则
+
+### 1. schema 只定义 app-local screen model
+
+- `apps/mobile/src/schemas/mobile-screen-schemas.ts`
+- `apps/admin/src/schemas/admin-screen-schemas.ts`
+
+这些 schema 不是 shared contract，不会进入 `packages/shared`。
+
+### 2. repository 是唯一 validation boundary
+
+- `apps/mobile/src/lib/mobile-repository.ts`
+- `apps/admin/src/lib/admin-repository.ts`
+
+repository 必须对 adapter 返回值做 parse / validate。
+
+### 3. adapter 保持 raw
+
+adapter 只负责“取数 + 映射到初步 screen model 结构”，不负责 schema gating。
+
+这样 mock 与 generated 可以共享同一层 repository 校验，不会各写一套逻辑。
+
+### 4. 页面层不能直接碰 schema 或 validator
+
+page / query hook 只依赖 repository，不直接依赖 schema 与 validator。
+
+## 当前门禁脚本
+
+### `pnpm verify:screen-model-validation`
+
+会检查：
+
+- mobile repository 必须接入 `mobile-screen-validators`
+- admin repository 必须接入 `admin-screen-validators`
+- adapters 不允许直接依赖 `/schemas/` 或 `screen-validators`
+- app route files 不允许直接依赖 `/schemas/` 或 `screen-validators`
+
+## 对 backend 的直接影响
+
+- backend 仍然不需要为 screen model 负责
+- backend 只需要按 registry + OpenAPI 输出真实接口
+- 前端会在 generated adapter 内部完成 DTO -> screen model mapping，再由 repository 做最后校验
+
+## 对 server 的直接影响
+
+- 不需要新增 env
+- 不需要改域名或路由
+- CI 后续可在前端 guardrails 中继续保留这一层校验
+```
+
+## `docs/contracts/frontend-guardrail-checks-v1.2.md`
+
+```md
+# QueueFree Frontend Guardrail Checks v1.2
+
+状态：Informational  
+唯一规则源：`queuefree_prd_v1_2`
+
+本文件不是新的共享契约。
+
+本文件只说明：当前前端线程新增了哪些**本地质量门禁脚本**，以及它们分别防止什么问题。
+
+## 新增脚本
+
+### 1. `pnpm verify:registry-first-frontend`
+
+作用：
+
+- 校验 mobile / web / admin 只使用已登记的公开 env var
+- 校验 pre-OpenAPI 阶段没有手写业务 API path 片段
+- 校验 `packages/api-client` 没有回退成手写 SDK
+
+### 2. `pnpm verify:route-registry`
+
+作用：
+
+- 校验 `apps/mobile` 的 expo-router 页面路径与 registry 一致
+- 校验 `apps/web` 的公开页面路径与 registry 一致
+- 校验 `apps/admin` 的后台路径与 registry 一致
+
+### 3. `pnpm verify:frontend-import-boundaries`
+
+作用：
+
+- 校验前端 app 没有直接引入 NestJS / Prisma / worker 侧依赖
+- 校验 `packages/shared` 没有混入 NestJS DTO / Prisma runtime 绑定逻辑
+
+### 4. `pnpm verify:mock-data-boundary`
+
+作用：
+
+- 校验 page / query / repository 层没有直接偷用 `demo-data` 或 `admin-content`
+- 把 mock 数据限定在 adapter / mock content 层
+
+### 5. `pnpm verify:adapter-switch-boundary`
+
+作用：
+
+- 校验 app 内仍然使用 page → query hook → repository → adapter 的切换结构
+- 防止页面直接跨层 import mock adapter 或 generated adapter
+
+### 6. `pnpm verify:generated-adapter-bridge`
+
+作用：
+
+- 限制 `@queuefree/api-client` 只能出现在 `*.generated.ts` 或 `*.readiness.ts`
+- 防止 page / query / repository / mock adapter 直接依赖 generated SDK
+- 防止 generated adapter 偷偷引用 mock content
+
+### 7. `pnpm verify:openapi-intake`
+
+作用：
+
+- 校验 backend 给出的 OpenAPI 输入文件是否合法
+- 校验 path 前缀继续落在冻结 API 前缀范围内
+- 校验 operationId 完整性
+
+### 8. `pnpm verify:generated-api-client`
+
+作用：
+
+- 校验 spec、生成物、`packages/api-client/src/index.ts` 三者是否同步
+- 校验 `packages/api-client/src` 没有长出额外手写业务文件
+
+### 9. `pnpm verify:screen-model-validation`
+
+作用：
+
+- 校验 mobile / admin repository 必须对 adapter 返回值做 screen-model validation
+- 校验 adapters 不直接依赖 schema / validator
+- 校验 page route files 不直接依赖 schema / validator
+
+### 10. `pnpm verify:frontend-guardrails`
+
+作用：
+
+- 串联执行上面所有校验
+- 建议作为本地提交前的统一检查入口
+
+## 设计目的
+
+这批脚本不是为了新增功能，而是为了避免 5 类问题再次出现：
+
+1. 前端偷偷长出未登记路径
+2. 前端重新手写猜测型 API path / SDK
+3. `packages/shared` 被污染成后端运行时代码仓库
+4. generated SDK 直接泄漏到 page / query / repository 层
+5. SDK 已生成但 screen-model mapping 尚未完成时，被误切到 generated 模式
+6. mock / generated adapter 输出未经过统一 screen-model 校验就直接进入页面
+
+## 当前边界
+
+在 backend 尚未导出正式 OpenAPI 之前，前端仍然保持：
+
+- 页面骨架可继续做
+- mock / placeholder 可继续做
+- 真实 SDK 接入继续等待 OpenAPI 生成后再做
+```
+
+## `docs/handoffs/backend-next-steps-from-frontend-batch11.md`
+
+```md
+# 给后端线程的衔接说明（Frontend Batch 11）
+
+本轮前端没有新增任何冻结项，也没有新增 shared contract。
+
+前端当前已明确把 app-local screen model 校验层固定在 repository 边界：
+
+- page
+- query hook
+- repository
+- screen-model validation
+- read adapter
+- mock / generated source
+
+这意味着：
+
+1. backend 不需要为前端 screen model 命名负责
+2. backend 只需要继续按 registry-first 输出 OpenAPI
+3. 前端会自己完成 generated response -> screen model mapping
+4. repository 会对 mapping 结果做最终校验
+
+## 你下一步最适合给前端的内容
+
+仍然是：**最小只读 OpenAPI**。
+
+请继续优先覆盖：
+
+### mobile
+
+- products list / detail
+- queue guard
+- queue entries list / detail
+- tasks list
+- invites me / records
+- wallet summary / ledgers
+- withdrawals list
+- me summary
+- rules list / detail
+
+### admin
+
+- dashboard summary
+- products list
+- orders list
+- queue entries list
+- settlement slots list
+- campaigns list
+- tasks list
+- invites list
+- withdrawals list
+- risk cases list / detail
+- audit logs list
+
+## 对你这边的约束提醒
+
+- 不要口头给字段
+- 先登记，再 OpenAPI，再生成 `packages/api-client`
+- 不要把 frontend screen model 误当成 shared API contract
+```
+
+## `docs/handoffs/server-next-steps-from-frontend-batch11.md`
+
+```md
+# 给服务器线程的衔接说明（Frontend Batch 11）
+
+本轮前端没有新增 env var，也没有修改任何域名或冻结路由。
+
+你这边当前仍然只需要维持现有 registry baseline：
+
+- web: `queuefree.com`
+- admin: `admin.queuefree.com`
+- api: `api.queuefree.com`
+- assets: `assets.queuefree.com`
+
+## 本轮对你意味着什么
+
+前端新增的是 app 内部 screen-model validation 边界，不涉及：
+
+- mobile env var
+- web env var
+- admin env var
+- 公开域名
+- Web 公共路由
+- Admin 路由
+
+## 你下一步该准备什么
+
+等 backend 最小只读 OpenAPI 到位后，再协助补：
+
+1. CI 中 OpenAPI intake + SDK 生成 + 前端 guardrail 的串联顺序
+2. staging 环境联调顺序
+3. generated SDK 产物在流水线中的缓存与失效策略
+
+当前仍然不要抢先新增前端 env。
+```
+
+## `docs/handoffs/第11批-发给后端和服务器的话术.md`
+
+```md
+从现在开始，前端线程已进入 Batch 11：Screen Model Validation Boundary。
+
+请后端和服务器继续严格遵守：
+
+1. queuefree_prd_v1_2
+2. queuefree-collaboration-contract-v1.2.md
+3. registry-baseline-v1.2.md
+4. packages/shared
+5. packages/api-client
+
+本轮前端没有新增任何冻结项，也没有新增 shared contract。
+
+本轮只增加了前端 app-local 的 screen-model validation 边界：
+- page
+- query hook
+- repository
+- screen-model validation
+- read adapter
+- mock / generated source
+
+后端下一步仍请优先提供最小只读 OpenAPI。
+服务器线程本轮不要新增前端 env，也不要改动任何冻结路由与公开域名。
+```
+
+## `README-第11批-Screen-Model校验边界.md`
+
+```md
+# 第11批：Screen Model 校验边界
+
+这批不是新增页面，而是把前端当前 skeleton 仓库补成：
+
+```text
+page -> query hook -> repository -> screen-model validation -> read adapter
+```
+
+## 你现在怎么做
+
+1. 下载并解压这批仓库。
+2. 用它覆盖你本地当前的 QueueFree 前端仓库。
+3. 打开 VS Code。
+4. 打开终端。
+5. 运行：
+
+```bash
+pnpm install
+pnpm verify:frontend-guardrails
+pnpm dev:web
+```
+
+后台：
+
+```bash
+pnpm dev:admin
+```
+
+手机端：
+
+```bash
+pnpm dev:mobile
+```
+
+## 这批新增了什么
+
+- mobile screen model zod schema
+- admin screen model zod schema
+- repository 层统一 parse / validate
+- `verify:screen-model-validation` 门禁脚本
+- Batch 11 handoff 文档
+
+## 这批没有做什么
+
+- 没有新增 route
+- 没有新增 env var
+- 没有新增 API path
+- 没有新增 request / response field
+- 没有真实接后端
+- 没有改 `packages/shared`
+- 没有改 registry baseline
+```

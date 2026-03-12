@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const toneStyles = StyleSheet.create({
+const toneStyles = {
   brand: {
     container: { backgroundColor: mobileTheme.colors.brandSoft },
     text: { color: mobileTheme.colors.brand }
@@ -50,4 +50,4 @@ const toneStyles = StyleSheet.create({
     container: { backgroundColor: mobileTheme.colors.surfaceMuted },
     text: { color: mobileTheme.colors.textSecondary }
   }
-});
+};

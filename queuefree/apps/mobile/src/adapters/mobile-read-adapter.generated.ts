@@ -14,24 +14,44 @@ import type {
   ProductCardModel,
   QueueEntryCardModel
 } from '../models/mobile-screen-models';
-
-async function unsupported<T>(adapterMethod: string): Promise<T> {
-  throw new Error(
-    `[QueueFree mobile skeleton] ${adapterMethod} is not wired yet. ` +
-      'Wait for backend OpenAPI export and generated packages/api-client, then replace the generated adapter implementation.'
-  );
-}
+import {
+  fetchDeleteAccountPreviewFromGeneratedBridge,
+  fetchHomeScreenDataFromGeneratedBridge,
+  fetchInvitesScreenDataFromGeneratedBridge,
+  fetchOrderSuccessDataFromGeneratedBridge,
+  fetchProductDetailFromGeneratedBridge,
+  fetchProfileScreenDataFromGeneratedBridge,
+  fetchQueueEntryDetailFromGeneratedBridge,
+  fetchQueueScreenDataFromGeneratedBridge,
+  fetchRulesCenterDataFromGeneratedBridge,
+  fetchTasksScreenDataFromGeneratedBridge,
+  fetchWalletScreenDataFromGeneratedBridge
+} from '../generated-bridge/mobile-generated-screen-bridge';
 
 export const generatedMobileReadAdapter: MobileReadAdapter = {
-  fetchHomeScreenData: () => unsupported<HomeScreenData>('fetchHomeScreenData'),
-  fetchQueueScreenData: () => unsupported<QueueScreenData>('fetchQueueScreenData'),
-  fetchTasksScreenData: () => unsupported<TasksScreenData>('fetchTasksScreenData'),
-  fetchInvitesScreenData: () => unsupported<InvitesScreenData>('fetchInvitesScreenData'),
-  fetchWalletScreenData: () => unsupported<WalletScreenData>('fetchWalletScreenData'),
-  fetchProfileScreenData: () => unsupported<ProfileScreenData>('fetchProfileScreenData'),
-  fetchProductDetail: (_productId: string) => unsupported<ProductCardModel>('fetchProductDetail'),
-  fetchQueueEntryDetail: (_entryId: string) => unsupported<QueueEntryCardModel>('fetchQueueEntryDetail'),
-  fetchRulesCenterData: () => unsupported<RulesCenterData>('fetchRulesCenterData'),
-  fetchOrderSuccessData: (_orderId: string) => unsupported<OrderSuccessData>('fetchOrderSuccessData'),
-  fetchDeleteAccountPreview: () => unsupported<DeleteAccountPreviewData>('fetchDeleteAccountPreview')
+  fetchHomeScreenData: () => fetchHomeScreenDataFromGeneratedBridge(),
+  fetchQueueScreenData: () => fetchQueueScreenDataFromGeneratedBridge(),
+  fetchTasksScreenData: () => fetchTasksScreenDataFromGeneratedBridge(),
+  fetchInvitesScreenData: () => fetchInvitesScreenDataFromGeneratedBridge(),
+  fetchWalletScreenData: () => fetchWalletScreenDataFromGeneratedBridge(),
+  fetchProfileScreenData: () => fetchProfileScreenDataFromGeneratedBridge(),
+  fetchProductDetail: (productId: string) => fetchProductDetailFromGeneratedBridge(productId),
+  fetchQueueEntryDetail: (entryId: string) => fetchQueueEntryDetailFromGeneratedBridge(entryId),
+  fetchRulesCenterData: () => fetchRulesCenterDataFromGeneratedBridge(),
+  fetchOrderSuccessData: (orderId: string) => fetchOrderSuccessDataFromGeneratedBridge(orderId),
+  fetchDeleteAccountPreview: () => fetchDeleteAccountPreviewFromGeneratedBridge()
+};
+
+export type {
+  DeleteAccountPreviewData,
+  HomeScreenData,
+  InvitesScreenData,
+  OrderSuccessData,
+  ProfileScreenData,
+  QueueScreenData,
+  RulesCenterData,
+  TasksScreenData,
+  WalletScreenData,
+  ProductCardModel,
+  QueueEntryCardModel
 };

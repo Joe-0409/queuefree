@@ -34,18 +34,18 @@ function walk(dirPath) {
     const importsApiClient = text.includes('@queuefree/api-client');
     const isGeneratedAdapter = relPath.includes('/adapters/') && relPath.endsWith('.generated.ts');
     const isReadinessFile = relPath.includes('/adapters/') && relPath.endsWith('.readiness.ts');
-    const isMockAdapter = relPath.includes('/adapters/') && relPath.endsWith('.mock.ts');
+    const isGeneratedBridge = relPath.includes('/generated-bridge/');
 
-    if (importsApiClient && !isGeneratedAdapter && !isReadinessFile) {
-      violations.push(`${relPath}: @queuefree/api-client may only be imported inside adapter *.generated.ts or *.readiness.ts files.`);
+    if (importsApiClient && !isGeneratedAdapter && !isReadinessFile && !isGeneratedBridge) {
+      violations.push(`${relPath}: @queuefree/api-client may only be imported inside adapter *.generated.ts, *.readiness.ts, or generated-bridge files.`);
     }
 
-    if (isGeneratedAdapter && (text.includes('demo-data') || text.includes('admin-content'))) {
-      violations.push(`${relPath}: generated adapter must not import mock/demo content sources.`);
+    if ((isGeneratedAdapter || isGeneratedBridge) && (text.includes('demo-data') || text.includes('admin-content'))) {
+      violations.push(`${relPath}: generated adapter/bridge must not import mock/demo content sources.`);
     }
 
-    if (isMockAdapter && importsApiClient) {
-      violations.push(`${relPath}: mock adapter must not import @queuefree/api-client.`);
+    if (isGeneratedBridge && (text.includes('.mock') || text.includes('mockMobileReadAdapter') || text.includes('mockAdminReadAdapter'))) {
+      violations.push(`${relPath}: generated bridge must not depend on mock adapters.`);
     }
   }
 }
@@ -62,4 +62,4 @@ if (violations.length > 0) {
   process.exit(1);
 }
 
-console.log('Generated adapter bridge verified. api-client imports stay inside generated/readiness adapter files only.');
+console.log('Generated adapter bridge verified. api-client imports stay inside generated/readiness/bridge files only.');

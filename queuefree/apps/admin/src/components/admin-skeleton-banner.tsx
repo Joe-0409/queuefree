@@ -14,6 +14,10 @@ export function AdminSkeletonBanner(): React.ReactElement {
           <span className="font-semibold">active</span>
         </p>
         <p className="text-sm text-slate-700">
+          Generated bridge coverage: <span className="font-semibold">{status.bridgeCoverage.wired}</span> /{' '}
+          <span className="font-semibold">{status.bridgeCoverage.total}</span>
+        </p>
+        <p className="text-sm text-slate-700">
           This batch is route-safe and registry-safe. Data, actions, and permissions are placeholders only. No real authentication, no real API,
           and no unregistered contract has been added here.
         </p>

@@ -19,6 +19,7 @@ import {
 } from '@queuefree/shared';
 import type { DataTableConfig } from '@/components/ui/data-table';
 import type { DetailPageConfig, ListPageConfig, Metric } from '@/models/admin-screen-models';
+import type { BadgeTone } from '@/components/ui/badge';
 
 const generatedAt = formatDateTime('2026-03-11T08:00:00.000Z');
 const nextSlotAt = formatDateTime('2026-03-11T12:00:00.000Z');
