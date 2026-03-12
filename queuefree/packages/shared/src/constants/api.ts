@@ -1,4 +1,5 @@
-import { ADMIN_API_PREFIX, API_PREFIX } from './routes';
+export const API_PREFIX = '/v1';
+export const ADMIN_API_PREFIX = '/v1/admin';
 
 export const API_ROOT_PATH = API_PREFIX;
 export const ADMIN_API_ROOT_PATH = ADMIN_API_PREFIX;

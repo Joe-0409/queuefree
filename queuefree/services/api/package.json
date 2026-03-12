@@ -9,7 +9,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "echo \"@queuefree/api lint will be added in a later batch\"",
     "test": "echo \"@queuefree/api tests will be added in a later batch\"",
-    "openapi:generate": "tsx scripts/generate-openapi.ts",
+    "openapi:generate": "ts-node scripts/generate-openapi.ts",
     "clean": "rm -rf dist tsconfig.tsbuildinfo"
   },
   "dependencies": {
@@ -23,6 +23,7 @@
     "zod": "4.3.6"
   },
   "devDependencies": {
-    "@nestjs/cli": "11.0.16"
+    "@nestjs/cli": "11.0.16",
+    "ts-node": "^10.9.2"
   }
 }

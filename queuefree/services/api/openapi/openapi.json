@@ -1,485 +1,1531 @@
 {
   "openapi": "3.0.0",
-  "info": {
-    "title": "QueueFree API",
-    "description": "Batch 9 Final: Typed Read-Only Core OpenAPI (Consumer & Admin).",
-    "version": "0.1.0"
-  },
-  "servers": [
-    { "url": "http://localhost:4000", "description": "local" }
-  ],
   "paths": {
     "/v1/health": {
       "get": {
-        "tags": ["System"],
-        "summary": "Health Check",
+        "operationId": "getHealth",
+        "parameters": [],
         "responses": {
           "200": {
-            "description": "OK",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HealthResponse" } } }
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponseDto"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponseDto"
+                }
+              }
+            }
           }
-        }
+        },
+        "summary": "Health probe for the API service",
+        "tags": [
+          "System"
+        ]
       }
     },
-    "/v1/me": {
+    "/v1/system/runtime-config": {
       "get": {
-        "tags": ["ConsumerMe"],
+        "operationId": "getRuntimeConfig",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuntimeConfigResponseDto"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get public runtime configuration needed by mobile/web/admin clients",
+        "tags": [
+          "System"
+        ]
+      }
+    },
+    "/v1/rules": {
+      "get": {
+        "operationId": "listRules",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RuleListItemDto"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "List public rule documents for the Web/App rules center",
+        "tags": [
+          "Rules"
+        ]
+      }
+    },
+    "/v1/rules/{slug}": {
+      "get": {
+        "operationId": "getRuleBySlug",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "example": "queue",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuleDetailResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponseDto"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get a public rule document by slug",
+        "tags": [
+          "Rules"
+        ]
+      }
+    },
+    "/v1/v1/me": {
+      "get": {
+        "operationId": "getMe",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeOverviewResponseDto"
+                }
+              }
+            }
+          }
+        },
         "summary": "Get User Overview",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MeOverviewResponse" } } }
-          }
-        }
+        "tags": [
+          "Consumer"
+        ]
       }
     },
-    "/v1/products": {
+    "/v1/v1/products": {
       "get": {
-        "tags": ["ConsumerProducts"],
+        "operationId": "listProducts",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductListResponseDto"
+                }
+              }
+            }
+          }
+        },
         "summary": "List Products",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ProductListResponse" } } }
-          }
-        }
+        "tags": [
+          "Consumer"
+        ]
       }
     },
-    "/v1/products/{productId}": {
+    "/v1/v1/products/{productId}": {
       "get": {
-        "tags": ["ConsumerProducts"],
+        "operationId": "getProductDetail",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductDetailResponseDto"
+                }
+              }
+            }
+          }
+        },
         "summary": "Get Product Detail",
-        "parameters": [
-          { "name": "productId", "in": "path", "required": true, "schema": { "type": "string" } }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ProductDetailResponse" } } }
-          }
-        }
+        "tags": [
+          "Consumer"
+        ]
       }
     },
-    "/v1/queue-guard": {
+    "/v1/v1/queue-guard": {
       "get": {
-        "tags": ["ConsumerQueue"],
+        "operationId": "getQueueGuard",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserQueueGuardResponseDto"
+                }
+              }
+            }
+          }
+        },
         "summary": "Get Queue Guard Status",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/UserQueueGuardResponse" } } }
-          }
-        }
+        "tags": [
+          "Consumer"
+        ]
       }
     },
-    "/v1/queue-entries": {
+    "/v1/v1/queue-entries": {
       "get": {
-        "tags": ["ConsumerQueue"],
+        "operationId": "listQueueEntries",
+        "parameters": [
+          {
+            "name": "cursor",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QueueEntryListResponseDto"
+                }
+              }
+            }
+          }
+        },
         "summary": "List My Queue Entries",
-        "parameters": [
-          { "name": "cursor", "in": "query", "schema": { "type": "string", "nullable": true } },
-          { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 20 } }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/QueueEntryListResponse" } } }
-          }
-        }
+        "tags": [
+          "Consumer"
+        ]
       }
     },
-    "/v1/queue-entries/{queueEntryId}": {
+    "/v1/v1/queue-entries/{queueEntryId}": {
       "get": {
-        "tags": ["ConsumerQueue"],
+        "operationId": "getQueueEntryDetail",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QueueEntryDetailResponseDto"
+                }
+              }
+            }
+          }
+        },
         "summary": "Get Queue Entry Detail",
-        "parameters": [
-          { "name": "queueEntryId", "in": "path", "required": true, "schema": { "type": "string" } }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/QueueEntryDetailResponse" } } }
-          }
-        }
+        "tags": [
+          "Consumer"
+        ]
       }
     },
-    "/v1/tasks": {
+    "/v1/v1/tasks": {
       "get": {
-        "tags": ["ConsumerTasks"],
+        "operationId": "listTasks",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskListResponseDto"
+                }
+              }
+            }
+          }
+        },
         "summary": "List Available Tasks",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/TaskListResponse" } } }
-          }
-        }
+        "tags": [
+          "Consumer"
+        ]
       }
     },
-    "/v1/invites/me": {
+    "/v1/v1/invites/me": {
       "get": {
-        "tags": ["ConsumerInvites"],
+        "operationId": "getInviteOverview",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserInviteOverviewResponseDto"
+                }
+              }
+            }
+          }
+        },
         "summary": "Get My Invite Overview",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/UserInviteOverviewResponse" } } }
-          }
-        }
+        "tags": [
+          "Consumer"
+        ]
       }
     },
-    "/v1/invites/records": {
+    "/v1/v1/invites/records": {
       "get": {
-        "tags": ["ConsumerInvites"],
+        "operationId": "listInviteRecords",
+        "parameters": [
+          {
+            "name": "cursor",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InviteRecordListResponseDto"
+                }
+              }
+            }
+          }
+        },
         "summary": "List My Invite Records",
-        "parameters": [
-          { "name": "cursor", "in": "query", "schema": { "type": "string", "nullable": true } },
-          { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 20 } }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/InviteRecordListResponse" } } }
-          }
-        }
+        "tags": [
+          "Consumer"
+        ]
       }
     },
-    "/v1/wallet": {
+    "/v1/v1/wallet": {
       "get": {
-        "tags": ["ConsumerWallet"],
+        "operationId": "getWalletOverview",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WalletOverviewResponseDto"
+                }
+              }
+            }
+          }
+        },
         "summary": "Get Wallet Overview",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/WalletOverviewResponse" } } }
-          }
-        }
+        "tags": [
+          "Consumer"
+        ]
       }
     },
-    "/v1/wallet/ledgers": {
+    "/v1/v1/wallet/ledgers": {
       "get": {
-        "tags": ["ConsumerWallet"],
+        "operationId": "listWalletLedgers",
+        "parameters": [
+          {
+            "name": "cursor",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WalletLedgerListResponseDto"
+                }
+              }
+            }
+          }
+        },
         "summary": "List Wallet Ledgers",
+        "tags": [
+          "Consumer"
+        ]
+      }
+    },
+    "/v1/v1/withdrawals": {
+      "get": {
+        "operationId": "listWithdrawals",
         "parameters": [
-          { "name": "cursor", "in": "query", "schema": { "type": "string", "nullable": true } },
-          { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 20 } }
+          {
+            "name": "cursor",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
         ],
         "responses": {
           "200": {
-            "description": "OK",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/WalletLedgerListResponse" } } }
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WithdrawalListResponseDto"
+                }
+              }
+            }
           }
-        }
-      }
-    },
-    "/v1/withdrawals": {
-      "get": {
-        "tags": ["ConsumerWithdrawals"],
+        },
         "summary": "List Withdrawals",
-        "parameters": [
-          { "name": "cursor", "in": "query", "schema": { "type": "string", "nullable": true } },
-          { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 20 } }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/WithdrawalListResponse" } } }
-          }
-        }
+        "tags": [
+          "Consumer"
+        ]
       }
     },
-    "/v1/admin/dashboard/summary": {
+    "/v1/v1/admin/dashboard/summary": {
       "get": {
-        "tags": ["AdminDashboard"],
-        "summary": "Admin Dashboard Summary",
+        "operationId": "getDashboardSummary",
+        "parameters": [],
         "responses": {
           "200": {
-            "description": "OK",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/AdminDashboardSummaryResponse" } } }
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminDashboardSummaryResponseDto"
+                }
+              }
+            }
           }
-        }
+        },
+        "summary": "Admin Dashboard Summary",
+        "tags": [
+          "Admin"
+        ]
       }
     }
   },
+  "info": {
+    "title": "QueueFree API",
+    "description": "Initial C-end OpenAPI surface for QueueFree. This batch exposes system-level endpoints plus the minimum public rules endpoints needed by Web rules pages and packages/api-client.",
+    "version": "0.0.1",
+    "contact": {}
+  },
+  "tags": [
+    {
+      "name": "System",
+      "description": "System health and public runtime configuration."
+    },
+    {
+      "name": "Rules",
+      "description": "Public rules center documents for Web and App."
+    }
+  ],
+  "servers": [
+    {
+      "url": "http://localhost:4000",
+      "description": "local"
+    },
+    {
+      "url": "https://dev-api.queuefree.com",
+      "description": "dev"
+    },
+    {
+      "url": "https://stg-api.queuefree.com",
+      "description": "staging"
+    },
+    {
+      "url": "https://api.queuefree.com",
+      "description": "prod"
+    }
+  ],
   "components": {
     "schemas": {
-      "HealthResponse": {
-        "type": "object",
-        "properties": {
-          "status": { "type": "string", "enum": ["ok"] },
-          "version": { "type": "string" }
-        },
-        "required": ["status", "version"]
+      "AppEnv": {
+        "type": "string",
+        "enum": [
+          "local",
+          "dev",
+          "test",
+          "staging",
+          "prod"
+        ]
       },
-      "MeOverviewResponse": {
+      "HealthResponseDto": {
         "type": "object",
         "properties": {
-          "userId": { "type": "string", "format": "uuid" },
-          "phoneMasked": { "type": "string" },
-          "inviteCode": { "type": "string" },
-          "walletActivated": { "type": "boolean" },
-          "walletActivationMethod": { "type": "string", "nullable": true },
-          "accountDeleteStatus": { "type": "string" },
-          "marketCode": { "type": "string" },
-          "currency": { "type": "string" },
-          "timezone": { "type": "string" },
-          "ruleVersion": { "type": "string" }
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok"
+            ],
+            "example": "ok"
+          },
+          "service": {
+            "type": "string",
+            "example": "@queuefree/api"
+          },
+          "version": {
+            "type": "string",
+            "example": "0.0.1"
+          },
+          "environment": {
+            "example": "local",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AppEnv"
+              }
+            ]
+          },
+          "timestamp": {
+            "type": "string",
+            "example": "2026-03-11T00:00:00.000Z",
+            "format": "date-time"
+          }
         },
-        "required": ["userId", "phoneMasked", "inviteCode", "walletActivated", "accountDeleteStatus", "marketCode", "currency", "timezone", "ruleVersion"]
+        "required": [
+          "status",
+          "service",
+          "version",
+          "environment",
+          "timestamp"
+        ]
       },
-      "ProductListItem": {
+      "ApiErrorResponseDto": {
         "type": "object",
         "properties": {
-          "productId": { "type": "string", "format": "uuid" },
-          "title": { "type": "string" },
-          "coverImageUrl": { "type": "string" },
-          "priceMinor": { "type": "integer" },
-          "currency": { "type": "string" },
-          "defaultCashbackCapMinor": { "type": "integer" },
-          "queueEnabled": { "type": "boolean" },
-          "soldOut": { "type": "boolean" }
+          "code": {
+            "type": "string",
+            "example": "INTERNAL_SERVER_ERROR"
+          },
+          "message": {
+            "type": "string",
+            "example": "Unexpected server error."
+          },
+          "requestId": {
+            "type": "string",
+            "example": "req_demo_123"
+          },
+          "details": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Opaque structured error details for debugging or validation feedback."
+          }
         },
-        "required": ["productId", "title", "coverImageUrl", "priceMinor", "currency", "defaultCashbackCapMinor", "queueEnabled", "soldOut"]
+        "required": [
+          "code",
+          "message"
+        ]
       },
-      "ProductListResponse": {
+      "RuntimeConfigResponseDto": {
         "type": "object",
         "properties": {
-          "items": { "type": "array", "items": { "$ref": "#/components/schemas/ProductListItem" } }
+          "marketCode": {
+            "type": "string",
+            "example": "PH"
+          },
+          "currencyCode": {
+            "type": "string",
+            "example": "PHP"
+          },
+          "timezone": {
+            "type": "string",
+            "example": "Asia/Manila"
+          },
+          "locale": {
+            "type": "string",
+            "example": "en-PH"
+          },
+          "language": {
+            "type": "string",
+            "example": "English"
+          },
+          "ruleVersion": {
+            "type": "string",
+            "example": "v1.2"
+          },
+          "rewardedAdsEnabled": {
+            "type": "boolean",
+            "example": false
+          }
         },
-        "required": ["items"]
+        "required": [
+          "marketCode",
+          "currencyCode",
+          "timezone",
+          "locale",
+          "language",
+          "ruleVersion",
+          "rewardedAdsEnabled"
+        ]
       },
-      "ProductDetailSku": {
+      "RuleListItemDto": {
         "type": "object",
         "properties": {
-          "skuId": { "type": "string", "format": "uuid" },
-          "label": { "type": "string" },
-          "priceMinor": { "type": "integer" },
-          "soldOut": { "type": "boolean" }
+          "slug": {
+            "type": "string",
+            "example": "queue"
+          },
+          "title": {
+            "type": "string",
+            "example": "Queue Rules"
+          },
+          "summary": {
+            "type": "string",
+            "example": "How queue ranking, protection, boost, and settlement slots work."
+          },
+          "updatedAt": {
+            "type": "string",
+            "example": "2026-03-11T00:00:00.000Z",
+            "format": "date-time"
+          },
+          "ruleVersion": {
+            "type": "string",
+            "example": "v1.2"
+          }
         },
-        "required": ["skuId", "label", "priceMinor", "soldOut"]
+        "required": [
+          "slug",
+          "title",
+          "summary",
+          "updatedAt",
+          "ruleVersion"
+        ]
       },
-      "ProductDetailResponse": {
+      "RuleDetailResponseDto": {
         "type": "object",
         "properties": {
-          "productId": { "type": "string", "format": "uuid" },
-          "title": { "type": "string" },
-          "descriptionText": { "type": "string" },
-          "coverImageUrl": { "type": "string" },
-          "galleryImageUrls": { "type": "array", "items": { "type": "string" } },
-          "priceMinor": { "type": "integer" },
-          "currency": { "type": "string" },
-          "defaultCashbackCapMinor": { "type": "integer" },
-          "queueEnabled": { "type": "boolean" },
-          "soldOut": { "type": "boolean" },
-          "maxOrderQty": { "type": "integer" },
-          "skus": { "type": "array", "items": { "$ref": "#/components/schemas/ProductDetailSku" } }
+          "slug": {
+            "type": "string",
+            "example": "queue"
+          },
+          "title": {
+            "type": "string",
+            "example": "Queue Rules"
+          },
+          "sections": {
+            "example": [
+              "Queue rank is based on effective active entries only.",
+              "Settlement runs on fixed public slots."
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "updatedAt": {
+            "type": "string",
+            "example": "2026-03-11T00:00:00.000Z",
+            "format": "date-time"
+          },
+          "ruleVersion": {
+            "type": "string",
+            "example": "v1.2"
+          }
         },
-        "required": ["productId", "title", "descriptionText", "coverImageUrl", "galleryImageUrls", "priceMinor", "currency", "defaultCashbackCapMinor", "queueEnabled", "soldOut", "maxOrderQty", "skus"]
+        "required": [
+          "slug",
+          "title",
+          "sections",
+          "updatedAt",
+          "ruleVersion"
+        ]
       },
-      "UserQueueGuardResponse": {
+      "MeOverviewResponseDto": {
         "type": "object",
         "properties": {
-          "status": { "type": "string" },
-          "validUntil": { "type": "string", "format": "date-time" },
-          "graceUntil": { "type": "string", "format": "date-time" },
-          "lastCheckinAt": { "type": "string", "format": "date-time", "nullable": true },
-          "canCheckInNow": { "type": "boolean" },
-          "activeEntriesCount": { "type": "integer" },
-          "frozenEntriesCount": { "type": "integer" }
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "phoneMasked": {
+            "type": "string"
+          },
+          "inviteCode": {
+            "type": "string"
+          },
+          "walletActivated": {
+            "type": "boolean"
+          },
+          "walletActivationMethod": {
+            "type": "object",
+            "nullable": true
+          },
+          "accountDeleteStatus": {
+            "type": "string"
+          },
+          "marketCode": {
+            "type": "string"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "timezone": {
+            "type": "string"
+          },
+          "ruleVersion": {
+            "type": "string"
+          }
         },
-        "required": ["status", "validUntil", "graceUntil", "canCheckInNow", "activeEntriesCount", "frozenEntriesCount"]
+        "required": [
+          "userId",
+          "phoneMasked",
+          "inviteCode",
+          "walletActivated",
+          "walletActivationMethod",
+          "accountDeleteStatus",
+          "marketCode",
+          "currency",
+          "timezone",
+          "ruleVersion"
+        ]
       },
-      "QueueEntryListItem": {
+      "ProductListItemDto": {
         "type": "object",
         "properties": {
-          "queueEntryId": { "type": "string", "format": "uuid" },
-          "orderId": { "type": "string", "format": "uuid" },
-          "productId": { "type": "string", "format": "uuid" },
-          "productTitle": { "type": "string" },
-          "productCoverImageUrl": { "type": "string" },
-          "quantity": { "type": "integer" },
-          "status": { "type": "string" },
-          "activeRank": { "type": "integer", "nullable": true },
-          "boostUsedCount": { "type": "integer" },
-          "canBoost": { "type": "boolean" },
-          "isInProtectZone": { "type": "boolean" },
-          "nextSettlementSlotAt": { "type": "string", "format": "date-time", "nullable": true },
-          "finalCashbackMinor": { "type": "integer", "nullable": true },
-          "currency": { "type": "string" }
+          "productId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string"
+          },
+          "coverImageUrl": {
+            "type": "string"
+          },
+          "priceMinor": {
+            "type": "number"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "defaultCashbackCapMinor": {
+            "type": "number"
+          },
+          "queueEnabled": {
+            "type": "boolean"
+          },
+          "soldOut": {
+            "type": "boolean"
+          }
         },
-        "required": ["queueEntryId", "orderId", "productId", "productTitle", "productCoverImageUrl", "quantity", "status", "boostUsedCount", "canBoost", "isInProtectZone", "currency"]
+        "required": [
+          "productId",
+          "title",
+          "coverImageUrl",
+          "priceMinor",
+          "currency",
+          "defaultCashbackCapMinor",
+          "queueEnabled",
+          "soldOut"
+        ]
       },
-      "QueueEntryListResponse": {
+      "ProductListResponseDto": {
         "type": "object",
         "properties": {
-          "items": { "type": "array", "items": { "$ref": "#/components/schemas/QueueEntryListItem" } },
-          "nextCursor": { "type": "string", "nullable": true }
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProductListItemDto"
+            }
+          }
         },
-        "required": ["items"]
+        "required": [
+          "items"
+        ]
       },
-      "QueueEntryTimelineItem": {
+      "ProductDetailSkuDto": {
         "type": "object",
         "properties": {
-          "timelineId": { "type": "string", "format": "uuid" },
-          "occurredAt": { "type": "string", "format": "date-time" },
-          "title": { "type": "string" },
-          "descriptionText": { "type": "string" }
+          "skuId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "label": {
+            "type": "string"
+          },
+          "priceMinor": {
+            "type": "number"
+          },
+          "soldOut": {
+            "type": "boolean"
+          }
         },
-        "required": ["timelineId", "occurredAt", "title", "descriptionText"]
+        "required": [
+          "skuId",
+          "label",
+          "priceMinor",
+          "soldOut"
+        ]
       },
-      "QueueEntryDetailResponse": {
+      "ProductDetailResponseDto": {
         "type": "object",
         "properties": {
-          "queueEntryId": { "type": "string", "format": "uuid" },
-          "orderId": { "type": "string", "format": "uuid" },
-          "productId": { "type": "string", "format": "uuid" },
-          "productTitle": { "type": "string" },
-          "productCoverImageUrl": { "type": "string" },
-          "productSkuLabel": { "type": "string" },
-          "quantity": { "type": "integer" },
-          "paidAmountMinor": { "type": "integer" },
-          "currency": { "type": "string" },
-          "status": { "type": "string" },
-          "activeRank": { "type": "integer", "nullable": true },
-          "boostUsedCount": { "type": "integer" },
-          "canBoost": { "type": "boolean" },
-          "isInProtectZone": { "type": "boolean" },
-          "queueGuardStatus": { "type": "string" },
-          "createdAt": { "type": "string", "format": "date-time" },
-          "wonSettlementSlotAt": { "type": "string", "format": "date-time", "nullable": true },
-          "cashbackAvailableAt": { "type": "string", "format": "date-time", "nullable": true },
-          "finalCashbackMinor": { "type": "integer", "nullable": true },
-          "timeline": { "type": "array", "items": { "$ref": "#/components/schemas/QueueEntryTimelineItem" } }
+          "productId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string"
+          },
+          "descriptionText": {
+            "type": "string"
+          },
+          "coverImageUrl": {
+            "type": "string"
+          },
+          "galleryImageUrls": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "priceMinor": {
+            "type": "number"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "defaultCashbackCapMinor": {
+            "type": "number"
+          },
+          "queueEnabled": {
+            "type": "boolean"
+          },
+          "soldOut": {
+            "type": "boolean"
+          },
+          "maxOrderQty": {
+            "type": "number"
+          },
+          "skus": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProductDetailSkuDto"
+            }
+          }
         },
-        "required": ["queueEntryId", "orderId", "productId", "productTitle", "productCoverImageUrl", "productSkuLabel", "quantity", "paidAmountMinor", "currency", "status", "boostUsedCount", "canBoost", "isInProtectZone", "queueGuardStatus", "createdAt", "timeline"]
+        "required": [
+          "productId",
+          "title",
+          "descriptionText",
+          "coverImageUrl",
+          "galleryImageUrls",
+          "priceMinor",
+          "currency",
+          "defaultCashbackCapMinor",
+          "queueEnabled",
+          "soldOut",
+          "maxOrderQty",
+          "skus"
+        ]
       },
-      "TaskListItem": {
+      "UserQueueGuardResponseDto": {
         "type": "object",
         "properties": {
-          "taskId": { "type": "string", "format": "uuid" },
-          "title": { "type": "string" },
-          "descriptionText": { "type": "string" },
-          "categoryLabel": { "type": "string" },
-          "rewardSummaryText": { "type": "string" },
-          "progressCurrent": { "type": "integer" },
-          "progressTarget": { "type": "integer" },
-          "claimable": { "type": "boolean" },
-          "claimed": { "type": "boolean" },
-          "expiresAt": { "type": "string", "format": "date-time", "nullable": true }
+          "status": {
+            "type": "string"
+          },
+          "validUntil": {
+            "type": "string"
+          },
+          "graceUntil": {
+            "type": "string"
+          },
+          "lastCheckinAt": {
+            "type": "object",
+            "nullable": true
+          },
+          "canCheckInNow": {
+            "type": "boolean"
+          },
+          "activeEntriesCount": {
+            "type": "number"
+          },
+          "frozenEntriesCount": {
+            "type": "number"
+          }
         },
-        "required": ["taskId", "title", "descriptionText", "categoryLabel", "rewardSummaryText", "progressCurrent", "progressTarget", "claimable", "claimed"]
+        "required": [
+          "status",
+          "validUntil",
+          "graceUntil",
+          "lastCheckinAt",
+          "canCheckInNow",
+          "activeEntriesCount",
+          "frozenEntriesCount"
+        ]
       },
-      "TaskListResponse": {
+      "QueueEntryListItemDto": {
         "type": "object",
         "properties": {
-          "items": { "type": "array", "items": { "$ref": "#/components/schemas/TaskListItem" } }
+          "queueEntryId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "orderId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "productId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "productTitle": {
+            "type": "string"
+          },
+          "productCoverImageUrl": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "number"
+          },
+          "status": {
+            "type": "string"
+          },
+          "activeRank": {
+            "type": "object",
+            "nullable": true
+          },
+          "boostUsedCount": {
+            "type": "number"
+          },
+          "canBoost": {
+            "type": "boolean"
+          },
+          "isInProtectZone": {
+            "type": "boolean"
+          },
+          "nextSettlementSlotAt": {
+            "type": "object",
+            "nullable": true
+          },
+          "finalCashbackMinor": {
+            "type": "object",
+            "nullable": true
+          },
+          "currency": {
+            "type": "string"
+          }
         },
-        "required": ["items"]
+        "required": [
+          "queueEntryId",
+          "orderId",
+          "productId",
+          "productTitle",
+          "productCoverImageUrl",
+          "quantity",
+          "status",
+          "activeRank",
+          "boostUsedCount",
+          "canBoost",
+          "isInProtectZone",
+          "nextSettlementSlotAt",
+          "finalCashbackMinor",
+          "currency"
+        ]
       },
-      "UserInviteOverviewResponse": {
+      "QueueEntryListResponseDto": {
         "type": "object",
         "properties": {
-          "inviteCode": { "type": "string" },
-          "inviteLink": { "type": "string" },
-          "canBindInviteCode": { "type": "boolean" },
-          "bindWindowEndsAt": { "type": "string", "format": "date-time", "nullable": true },
-          "totalInviteCount": { "type": "integer" },
-          "pendingEffectiveInviteCount": { "type": "integer" },
-          "effectiveInviteCount": { "type": "integer" },
-          "invalidInviteCount": { "type": "integer" },
-          "walletActivated": { "type": "boolean" },
-          "walletActivationMethod": { "type": "string", "nullable": true }
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QueueEntryListItemDto"
+            }
+          },
+          "nextCursor": {
+            "type": "object",
+            "nullable": true
+          }
         },
-        "required": ["inviteCode", "inviteLink", "canBindInviteCode", "totalInviteCount", "pendingEffectiveInviteCount", "effectiveInviteCount", "invalidInviteCount", "walletActivated"]
+        "required": [
+          "items",
+          "nextCursor"
+        ]
       },
-      "InviteRecordListItem": {
+      "QueueEntryTimelineItemDto": {
         "type": "object",
         "properties": {
-          "relationId": { "type": "string", "format": "uuid" },
-          "inviteeMaskedPhone": { "type": "string" },
-          "status": { "type": "string" },
-          "createdAt": { "type": "string", "format": "date-time" },
-          "effectiveAt": { "type": "string", "format": "date-time", "nullable": true },
-          "invalidReasonText": { "type": "string", "nullable": true }
+          "timelineId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "occurredAt": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "descriptionText": {
+            "type": "string"
+          }
         },
-        "required": ["relationId", "inviteeMaskedPhone", "status", "createdAt"]
+        "required": [
+          "timelineId",
+          "occurredAt",
+          "title",
+          "descriptionText"
+        ]
       },
-      "InviteRecordListResponse": {
+      "QueueEntryDetailResponseDto": {
         "type": "object",
         "properties": {
-          "items": { "type": "array", "items": { "$ref": "#/components/schemas/InviteRecordListItem" } },
-          "nextCursor": { "type": "string", "nullable": true }
+          "queueEntryId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "orderId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "productId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "productTitle": {
+            "type": "string"
+          },
+          "productCoverImageUrl": {
+            "type": "string"
+          },
+          "productSkuLabel": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "number"
+          },
+          "paidAmountMinor": {
+            "type": "number"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "activeRank": {
+            "type": "object",
+            "nullable": true
+          },
+          "boostUsedCount": {
+            "type": "number"
+          },
+          "canBoost": {
+            "type": "boolean"
+          },
+          "isInProtectZone": {
+            "type": "boolean"
+          },
+          "queueGuardStatus": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "wonSettlementSlotAt": {
+            "type": "object",
+            "nullable": true
+          },
+          "cashbackAvailableAt": {
+            "type": "object",
+            "nullable": true
+          },
+          "finalCashbackMinor": {
+            "type": "object",
+            "nullable": true
+          },
+          "timeline": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QueueEntryTimelineItemDto"
+            }
+          }
         },
-        "required": ["items"]
+        "required": [
+          "queueEntryId",
+          "orderId",
+          "productId",
+          "productTitle",
+          "productCoverImageUrl",
+          "productSkuLabel",
+          "quantity",
+          "paidAmountMinor",
+          "currency",
+          "status",
+          "activeRank",
+          "boostUsedCount",
+          "canBoost",
+          "isInProtectZone",
+          "queueGuardStatus",
+          "createdAt",
+          "wonSettlementSlotAt",
+          "cashbackAvailableAt",
+          "finalCashbackMinor",
+          "timeline"
+        ]
       },
-      "WalletOverviewResponse": {
+      "TaskListItemDto": {
         "type": "object",
         "properties": {
-          "walletActivated": { "type": "boolean" },
-          "activationMethod": { "type": "string", "nullable": true },
-          "pendingBalanceMinor": { "type": "integer" },
-          "availableBalanceMinor": { "type": "integer" },
-          "frozenBalanceMinor": { "type": "integer" },
-          "currency": { "type": "string" },
-          "canWithdraw": { "type": "boolean" },
-          "hasSettlementException": { "type": "boolean" }
+          "taskId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string"
+          },
+          "descriptionText": {
+            "type": "string"
+          },
+          "categoryLabel": {
+            "type": "string"
+          },
+          "rewardSummaryText": {
+            "type": "string"
+          },
+          "progressCurrent": {
+            "type": "number"
+          },
+          "progressTarget": {
+            "type": "number"
+          },
+          "claimable": {
+            "type": "boolean"
+          },
+          "claimed": {
+            "type": "boolean"
+          },
+          "expiresAt": {
+            "type": "object",
+            "nullable": true
+          }
         },
-        "required": ["walletActivated", "pendingBalanceMinor", "availableBalanceMinor", "frozenBalanceMinor", "currency", "canWithdraw", "hasSettlementException"]
+        "required": [
+          "taskId",
+          "title",
+          "descriptionText",
+          "categoryLabel",
+          "rewardSummaryText",
+          "progressCurrent",
+          "progressTarget",
+          "claimable",
+          "claimed",
+          "expiresAt"
+        ]
       },
-      "WalletLedgerListItem": {
+      "TaskListResponseDto": {
         "type": "object",
         "properties": {
-          "ledgerId": { "type": "string", "format": "uuid" },
-          "title": { "type": "string" },
-          "balanceBucket": { "type": "string" },
-          "deltaMinor": { "type": "integer" },
-          "createdAt": { "type": "string", "format": "date-time" },
-          "relatedOrderId": { "type": "string", "format": "uuid", "nullable": true },
-          "relatedWithdrawalId": { "type": "string", "format": "uuid", "nullable": true },
-          "noteText": { "type": "string", "nullable": true }
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskListItemDto"
+            }
+          }
         },
-        "required": ["ledgerId", "title", "balanceBucket", "deltaMinor", "createdAt"]
+        "required": [
+          "items"
+        ]
       },
-      "WalletLedgerListResponse": {
+      "UserInviteOverviewResponseDto": {
         "type": "object",
         "properties": {
-          "items": { "type": "array", "items": { "$ref": "#/components/schemas/WalletLedgerListItem" } },
-          "nextCursor": { "type": "string", "nullable": true }
+          "inviteCode": {
+            "type": "string"
+          },
+          "inviteLink": {
+            "type": "string"
+          },
+          "canBindInviteCode": {
+            "type": "boolean"
+          },
+          "bindWindowEndsAt": {
+            "type": "object",
+            "nullable": true
+          },
+          "totalInviteCount": {
+            "type": "number"
+          },
+          "pendingEffectiveInviteCount": {
+            "type": "number"
+          },
+          "effectiveInviteCount": {
+            "type": "number"
+          },
+          "invalidInviteCount": {
+            "type": "number"
+          },
+          "walletActivated": {
+            "type": "boolean"
+          },
+          "walletActivationMethod": {
+            "type": "object",
+            "nullable": true
+          }
         },
-        "required": ["items"]
+        "required": [
+          "inviteCode",
+          "inviteLink",
+          "canBindInviteCode",
+          "bindWindowEndsAt",
+          "totalInviteCount",
+          "pendingEffectiveInviteCount",
+          "effectiveInviteCount",
+          "invalidInviteCount",
+          "walletActivated",
+          "walletActivationMethod"
+        ]
       },
-      "WithdrawalListItem": {
+      "InviteRecordListItemDto": {
         "type": "object",
         "properties": {
-          "withdrawalId": { "type": "string", "format": "uuid" },
-          "amountMinor": { "type": "integer" },
-          "currency": { "type": "string" },
-          "status": { "type": "string" },
-          "createdAt": { "type": "string", "format": "date-time" },
-          "updatedAt": { "type": "string", "format": "date-time" },
-          "rejectReasonText": { "type": "string", "nullable": true }
+          "relationId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "inviteeMaskedPhone": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "effectiveAt": {
+            "type": "object",
+            "nullable": true
+          },
+          "invalidReasonText": {
+            "type": "object",
+            "nullable": true
+          }
         },
-        "required": ["withdrawalId", "amountMinor", "currency", "status", "createdAt", "updatedAt"]
+        "required": [
+          "relationId",
+          "inviteeMaskedPhone",
+          "status",
+          "createdAt",
+          "effectiveAt",
+          "invalidReasonText"
+        ]
       },
-      "WithdrawalListResponse": {
+      "InviteRecordListResponseDto": {
         "type": "object",
         "properties": {
-          "items": { "type": "array", "items": { "$ref": "#/components/schemas/WithdrawalListItem" } },
-          "nextCursor": { "type": "string", "nullable": true }
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InviteRecordListItemDto"
+            }
+          },
+          "nextCursor": {
+            "type": "object",
+            "nullable": true
+          }
         },
-        "required": ["items"]
+        "required": [
+          "items",
+          "nextCursor"
+        ]
       },
-      "AdminDashboardSummaryResponse": {
+      "WalletOverviewResponseDto": {
         "type": "object",
         "properties": {
-          "paidOrderCountToday": { "type": "integer" },
-          "activeQueueEntryCount": { "type": "integer" },
-          "frozenQueueEntryCount": { "type": "integer" },
-          "scheduledSettlementSlotCount": { "type": "integer" },
-          "runningSettlementSlotCount": { "type": "integer" },
-          "pendingWithdrawalCount": { "type": "integer" },
-          "pendingRiskCaseCount": { "type": "integer" }
+          "walletActivated": {
+            "type": "boolean"
+          },
+          "activationMethod": {
+            "type": "object",
+            "nullable": true
+          },
+          "pendingBalanceMinor": {
+            "type": "number"
+          },
+          "availableBalanceMinor": {
+            "type": "number"
+          },
+          "frozenBalanceMinor": {
+            "type": "number"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "canWithdraw": {
+            "type": "boolean"
+          },
+          "hasSettlementException": {
+            "type": "boolean"
+          }
         },
-        "required": ["paidOrderCountToday", "activeQueueEntryCount", "frozenQueueEntryCount", "scheduledSettlementSlotCount", "runningSettlementSlotCount", "pendingWithdrawalCount", "pendingRiskCaseCount"]
+        "required": [
+          "walletActivated",
+          "activationMethod",
+          "pendingBalanceMinor",
+          "availableBalanceMinor",
+          "frozenBalanceMinor",
+          "currency",
+          "canWithdraw",
+          "hasSettlementException"
+        ]
+      },
+      "WalletLedgerListItemDto": {
+        "type": "object",
+        "properties": {
+          "ledgerId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string"
+          },
+          "balanceBucket": {
+            "type": "string"
+          },
+          "deltaMinor": {
+            "type": "number"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "relatedOrderId": {
+            "type": "object",
+            "format": "uuid",
+            "nullable": true
+          },
+          "relatedWithdrawalId": {
+            "type": "object",
+            "format": "uuid",
+            "nullable": true
+          },
+          "noteText": {
+            "type": "object",
+            "nullable": true
+          }
+        },
+        "required": [
+          "ledgerId",
+          "title",
+          "balanceBucket",
+          "deltaMinor",
+          "createdAt",
+          "relatedOrderId",
+          "relatedWithdrawalId",
+          "noteText"
+        ]
+      },
+      "WalletLedgerListResponseDto": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WalletLedgerListItemDto"
+            }
+          },
+          "nextCursor": {
+            "type": "object",
+            "nullable": true
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor"
+        ]
+      },
+      "WithdrawalListItemDto": {
+        "type": "object",
+        "properties": {
+          "withdrawalId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "amountMinor": {
+            "type": "number"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          },
+          "rejectReasonText": {
+            "type": "object",
+            "nullable": true
+          }
+        },
+        "required": [
+          "withdrawalId",
+          "amountMinor",
+          "currency",
+          "status",
+          "createdAt",
+          "updatedAt",
+          "rejectReasonText"
+        ]
+      },
+      "WithdrawalListResponseDto": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WithdrawalListItemDto"
+            }
+          },
+          "nextCursor": {
+            "type": "object",
+            "nullable": true
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor"
+        ]
+      },
+      "AdminDashboardSummaryResponseDto": {
+        "type": "object",
+        "properties": {
+          "paidOrderCountToday": {
+            "type": "number"
+          },
+          "activeQueueEntryCount": {
+            "type": "number"
+          },
+          "frozenQueueEntryCount": {
+            "type": "number"
+          },
+          "scheduledSettlementSlotCount": {
+            "type": "number"
+          },
+          "runningSettlementSlotCount": {
+            "type": "number"
+          },
+          "pendingWithdrawalCount": {
+            "type": "number"
+          },
+          "pendingRiskCaseCount": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "paidOrderCountToday",
+          "activeQueueEntryCount",
+          "frozenQueueEntryCount",
+          "scheduledSettlementSlotCount",
+          "runningSettlementSlotCount",
+          "pendingWithdrawalCount",
+          "pendingRiskCaseCount"
+        ]
       }
     }
   }

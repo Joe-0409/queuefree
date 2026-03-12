@@ -1,9 +1,12 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "module": "CommonJS",
+    "moduleResolution": "Node",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "strictPropertyInitialization": false,
+    "esModuleInterop": true,
     "types": ["node"]
   },
   "include": ["src/**/*.ts", "scripts/**/*.ts", "../../packages/shared/src/**/*.ts", "package.json"],
