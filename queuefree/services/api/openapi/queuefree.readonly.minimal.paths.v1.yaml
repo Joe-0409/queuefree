@@ -1,0 +1,230 @@
+openapi: 3.1.0
+info:
+  title: QueueFree Minimal Read-Only API Skeleton
+  version: 0.1.0-batch8
+  description: |
+    Path-only OpenAPI skeleton for Frontend Batch 8.
+    This file intentionally avoids unregistered request/response fields.
+    It only locks already-known read-only paths and existing path parameters.
+
+paths:
+  /v1/health:
+    get:
+      summary: Health check
+      description: Existing health endpoint reused for infrastructure probing.
+      responses:
+        '200':
+          description: OK
+
+  /v1/me:
+    get:
+      summary: Get current user summary
+      responses:
+        '200':
+          description: Success
+
+  /v1/products:
+    get:
+      summary: List products
+      responses:
+        '200':
+          description: Success
+
+  /v1/products/{productId}:
+    get:
+      summary: Get product detail
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+
+  /v1/queue-guard:
+    get:
+      summary: Get current queue guard state
+      responses:
+        '200':
+          description: Success
+
+  /v1/queue-entries:
+    get:
+      summary: List queue entries
+      responses:
+        '200':
+          description: Success
+
+  /v1/queue-entries/{queueEntryId}:
+    get:
+      summary: Get queue entry detail
+      parameters:
+        - name: queueEntryId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+
+  /v1/tasks:
+    get:
+      summary: List tasks
+      responses:
+        '200':
+          description: Success
+
+  /v1/invites/me:
+    get:
+      summary: Get invite summary for current user
+      responses:
+        '200':
+          description: Success
+
+  /v1/invites/records:
+    get:
+      summary: List invite records
+      responses:
+        '200':
+          description: Success
+
+  /v1/wallet:
+    get:
+      summary: Get wallet overview
+      responses:
+        '200':
+          description: Success
+
+  /v1/wallet/ledgers:
+    get:
+      summary: List wallet ledgers
+      responses:
+        '200':
+          description: Success
+
+  /v1/withdrawals:
+    get:
+      summary: List withdrawals
+      responses:
+        '200':
+          description: Success
+
+  /v1/rules:
+    get:
+      summary: List rules
+      responses:
+        '200':
+          description: Success
+
+  /v1/rules/{slug}:
+    get:
+      summary: Get rule detail by slug
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+
+  /v1/admin/dashboard/summary:
+    get:
+      summary: Get dashboard summary
+      responses:
+        '200':
+          description: Success
+
+  /v1/admin/products:
+    get:
+      summary: List products for admin
+      responses:
+        '200':
+          description: Success
+
+  /v1/admin/orders:
+    get:
+      summary: List orders for admin
+      responses:
+        '200':
+          description: Success
+
+  /v1/admin/queue-pools:
+    get:
+      summary: List queue pools
+      responses:
+        '200':
+          description: Success
+
+  /v1/admin/queue-entries:
+    get:
+      summary: List queue entries for admin
+      responses:
+        '200':
+          description: Success
+
+  /v1/admin/settlement-slots:
+    get:
+      summary: List settlement slots
+      responses:
+        '200':
+          description: Success
+
+  /v1/admin/campaigns:
+    get:
+      summary: List campaigns
+      responses:
+        '200':
+          description: Success
+
+  /v1/admin/tasks:
+    get:
+      summary: List tasks for admin
+      responses:
+        '200':
+          description: Success
+
+  /v1/admin/invites:
+    get:
+      summary: List invites for admin
+      responses:
+        '200':
+          description: Success
+
+  /v1/admin/withdrawals:
+    get:
+      summary: List withdrawals for admin
+      responses:
+        '200':
+          description: Success
+
+  /v1/admin/risk-cases:
+    get:
+      summary: List risk cases
+      responses:
+        '200':
+          description: Success
+
+  /v1/admin/risk-cases/{id}:
+    get:
+      summary: Get risk case detail
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+
+  /v1/admin/audit-logs:
+    get:
+      summary: List audit logs
+      responses:
+        '200':
+          description: Success
