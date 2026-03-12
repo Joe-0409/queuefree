@@ -1,61 +1,85 @@
 import { resolveMobileReadAdapter } from '../adapters/mobile-read-adapter.resolve';
+import {
+ validateDeleteAccountPreviewData,
+ validateHomeScreenData,
+ validateInvitesScreenData,
+ validateOrderSuccessData,
+ validateProductCard,
+ validateProfileScreenData,
+ validateQueueEntryCard,
+ validateQueueScreenData,
+ validateRulesCenterData,
+ validateTasksScreenData,
+ validateWalletScreenData
+} from './mobile-screen-validators';
 
 export type {
-  DeleteAccountPreviewData,
-  HomeScreenData,
-  InvitesScreenData,
-  OrderSuccessData,
-  ProfileScreenData,
-  QueueScreenData,
-  RulesCenterData,
-  TasksScreenData,
-  WalletScreenData
+ DeleteAccountPreviewData,
+ HomeScreenData,
+ InvitesScreenData,
+ OrderSuccessData,
+ ProfileScreenData,
+ QueueScreenData,
+ RulesCenterData,
+ TasksScreenData,
+ WalletScreenData
 } from '../adapters/mobile-read-adapter';
 
 function getAdapter() {
-  return resolveMobileReadAdapter();
+ return resolveMobileReadAdapter();
 }
 
-export function fetchHomeScreenData() {
-  return getAdapter().fetchHomeScreenData();
+export async function fetchHomeScreenData() {
+ const data = await getAdapter().fetchHomeScreenData();
+ return validateHomeScreenData(data);
 }
 
-export function fetchQueueScreenData() {
-  return getAdapter().fetchQueueScreenData();
+export async function fetchQueueScreenData() {
+ const data = await getAdapter().fetchQueueScreenData();
+ return validateQueueScreenData(data);
 }
 
-export function fetchTasksScreenData() {
-  return getAdapter().fetchTasksScreenData();
+export async function fetchTasksScreenData() {
+ const data = await getAdapter().fetchTasksScreenData();
+ return validateTasksScreenData(data);
 }
 
-export function fetchInvitesScreenData() {
-  return getAdapter().fetchInvitesScreenData();
+export async function fetchInvitesScreenData() {
+ const data = await getAdapter().fetchInvitesScreenData();
+ return validateInvitesScreenData(data);
 }
 
-export function fetchWalletScreenData() {
-  return getAdapter().fetchWalletScreenData();
+export async function fetchWalletScreenData() {
+ const data = await getAdapter().fetchWalletScreenData();
+ return validateWalletScreenData(data);
 }
 
-export function fetchProfileScreenData() {
-  return getAdapter().fetchProfileScreenData();
+export async function fetchProfileScreenData() {
+ const data = await getAdapter().fetchProfileScreenData();
+ return validateProfileScreenData(data);
 }
 
-export function fetchProductDetail(productId: string) {
-  return getAdapter().fetchProductDetail(productId);
+export async function fetchProductDetail(productId: string) {
+ const data = await getAdapter().fetchProductDetail(productId);
+ return validateProductCard(data);
 }
 
-export function fetchQueueEntryDetail(entryId: string) {
-  return getAdapter().fetchQueueEntryDetail(entryId);
+export async function fetchQueueEntryDetail(entryId: string) {
+ const data = await getAdapter().fetchQueueEntryDetail(entryId);
+ return validateQueueEntryCard(data);
 }
 
-export function fetchRulesCenterData() {
-  return getAdapter().fetchRulesCenterData();
+export async function fetchRulesCenterData() {
+ const data = await getAdapter().fetchRulesCenterData();
+ return validateRulesCenterData(data);
 }
 
-export function fetchOrderSuccessData(orderId: string) {
-  return getAdapter().fetchOrderSuccessData(orderId);
+export async function fetchOrderSuccessData(orderId: string) {
+ const data = await getAdapter().fetchOrderSuccessData(orderId);
+ return validateOrderSuccessData(data);
 }
 
-export function fetchDeleteAccountPreview() {
-  return getAdapter().fetchDeleteAccountPreview();
+export async function fetchDeleteAccountPreview() {
+ const data = await getAdapter().fetchDeleteAccountPreview();
+ return validateDeleteAccountPreviewData(data);
 }

@@ -1,6 +1,6 @@
 # QueueFree Frontend Guardrail Checks v1.2
 
-状态：Informational  
+状态：Informational 
 唯一规则源：`queuefree_prd_v1_2`
 
 本文件不是新的共享契约。
@@ -69,7 +69,15 @@
 - 校验 spec、生成物、`packages/api-client/src/index.ts` 三者是否同步
 - 校验 `packages/api-client/src` 没有长出额外手写业务文件
 
-### 9. `pnpm verify:frontend-guardrails`
+### 9. `pnpm verify:screen-model-validation`
+
+作用：
+
+- 校验 mobile / admin repository 必须对 adapter 返回值做 screen-model validation
+- 校验 adapters 不直接依赖 schema / validator
+- 校验 page route files 不直接依赖 schema / validator
+
+### 10. `pnpm verify:frontend-guardrails`
 
 作用：
 
@@ -85,6 +93,7 @@
 3. `packages/shared` 被污染成后端运行时代码仓库
 4. generated SDK 直接泄漏到 page / query / repository 层
 5. SDK 已生成但 screen-model mapping 尚未完成时，被误切到 generated 模式
+6. mock / generated adapter 输出未经过统一 screen-model 校验就直接进入页面
 
 ## 当前边界
 
