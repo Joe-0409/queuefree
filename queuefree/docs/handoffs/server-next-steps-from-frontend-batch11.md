@@ -1,16 +1,31 @@
-# Frontend-Server Handoff: Batch 11 Screen Model Validation
+# 给服务器线程的衔接说明（Frontend Batch 11）
 
-**Current State**: Frontend has entered Batch 11. Infrastructure for data validation is now local to the apps.
+本轮前端没有新增 env var，也没有修改任何域名或冻结路由。
 
-**Constraints for Server/Backend**:
-1. **Source of Truth**: Still strictly `PRD v1.2` -> `Collaboration Contract` -> `Registry Baseline`.
-2. **No New Frozen Items**: This batch did NOT add new paths, enums, or env vars.
-3. **App-Local Validation**: The newly added `src/schemas` in Mobile/Admin are for UI consumption only and do NOT define the API contract.
+你这边当前仍然只需要维持现有 registry baseline：
 
-**Next Steps for Backend**:
-- Please prioritize providing the **minimal read-only OpenAPI** as defined in the Registry.
-- Ensure the OpenAPI schemas align with the field names in the Registry (e.g., `priceMinor`, `phoneMasked`).
+- web: `queuefree.com`
+- admin: `admin.queuefree.com`
+- api: `api.queuefree.com`
+- assets: `assets.queuefree.com`
 
-**Next Steps for Server**:
-- Do NOT add new frontend environment variables.
-- Maintain existing frozen public routes and domains.
+## 本轮对你意味着什么
+
+前端新增的是 app 内部 screen-model validation 边界，不涉及：
+
+- mobile env var
+- web env var
+- admin env var
+- 公开域名
+- Web 公共路由
+- Admin 路由
+
+## 你下一步该准备什么
+
+等 backend 最小只读 OpenAPI 到位后，再协助补：
+
+1. CI 中 OpenAPI intake + SDK 生成 + 前端 guardrail 的串联顺序
+2. staging 环境联调顺序
+3. generated SDK 产物在流水线中的缓存与失效策略
+
+当前仍然不要抢先新增前端 env。
