@@ -53,7 +53,7 @@ export function getApiClientPaths(repoRoot = getRepoRoot()) {
   const openapiRoot = path.join(packageRoot, 'openapi');
   const srcRoot = path.join(packageRoot, 'src');
   const generatedRoot = path.join(srcRoot, 'generated');
-  const generatedClientRoot = path.join(generatedRoot, 'client');
+  const generatedClientRoot = generatedRoot; // Hey API with flat strategy outputs directly here
 
   return {
     packageRoot,

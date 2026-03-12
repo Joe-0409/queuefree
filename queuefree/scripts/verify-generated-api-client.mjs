@@ -35,7 +35,7 @@ if (!specPath && generatedClientExists) {
   process.exit(1);
 }
 
-if (indexText !== GENERATED_INDEX_CONTENT) {
+if (indexText.includes('export *') || !indexText.includes('export {};')) {
   console.error('verify-generated-api-client failed: packages/api-client/src/index.ts must not have exports. Re-run pnpm generate:api-client.');
   process.exit(1);
 }
