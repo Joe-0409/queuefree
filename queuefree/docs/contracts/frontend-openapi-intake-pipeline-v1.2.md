@@ -125,9 +125,9 @@ pnpm reset:api-client-placeholder
 ## 对 server 的要求
 
 - CI 可以在 spec 存在时串联：
-  - `pnpm verify:openapi-intake`
-  - `pnpm generate:api-client`
-  - `pnpm verify:generated-api-client`
-  - `pnpm verify:frontend-guardrails`
+ - `pnpm verify:openapi-intake`
+ - `pnpm generate:api-client`
+ - `pnpm verify:generated-api-client`
+ - `pnpm verify:frontend-guardrails`
 - 当前不需要新增任何前端公开 env
 - 当前不需要改公开域名和冻结路由
