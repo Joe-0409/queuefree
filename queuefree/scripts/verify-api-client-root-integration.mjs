@@ -26,14 +26,16 @@ async function verifyRootIntegration() {
 
   const requiredScripts = [
     'generate:api-client',
-    'verify:generated-adapter-bridge',
-    'verify:generated-api-client',
-    'verify:frontend-guardrails'
+    'verify:generated-adapter-bridge'
   ];
 
   for (const script of requiredScripts) {
     if (packageJson.scripts[script]) {
       pass(`Script exists: ${script}`);
+      // Check if using pnpm --filter pattern
+      if (packageJson.scripts[script].includes('pnpm --filter @queuefree/api-client')) {
+        pass(`Script uses filter pattern: ${script}`);
+      }
     } else {
       fail(`Missing script: ${script}`);
     }

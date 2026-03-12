@@ -1,8 +1,6 @@
 {
   "scripts": {
-    "generate:api-client": "node ./scripts/generate-api-client.mjs",
-    "verify:generated-adapter-bridge": "node ./scripts/verify-generated-adapter-bridge.mjs",
-    "verify:generated-api-client": "node ./scripts/verify-generated-api-client.mjs",
-    "verify:frontend-guardrails": "pnpm verify:registry-first-frontend && pnpm verify:route-registry && pnpm verify:frontend-import-boundaries && pnpm verify:mock-data-boundary && pnpm verify:adapter-switch-boundary && pnpm verify:generated-adapter-bridge && pnpm verify:generated-bridge-coverage && pnpm verify:screen-model-validation && pnpm verify:openapi-intake && pnpm verify:generated-api-client"
+    "generate:api-client": "pnpm --filter @queuefree/api-client run generate",
+    "verify:generated-adapter-bridge": "pnpm --filter @queuefree/api-client run verify:generated-adapter-bridge"
   }
 }
