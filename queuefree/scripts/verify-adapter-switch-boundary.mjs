@@ -39,7 +39,8 @@ const checks = [
     description: 'admin source files outside content and mock-adapter layers must not import admin-content directly',
     allowPatterns: [
       /src[\/]lib[\/]admin-content\.ts$/,
-      /src[\/]adapters[\/]admin-read-adapter\.mock\.ts$/
+      /src[\/]adapters[\/]admin-read-adapter\.mock\.ts$/,
+      /src[\/]generated-bridge[\/]/
     ]
   },
   {

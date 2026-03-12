@@ -16,8 +16,8 @@ export type MobileGeneratedAdapterReadiness = {
 };
 
 /**
- * Flip this to true only after batch-level generated adapter mapping is implemented.
- * This keeps the repository safe even if packages/api-client has already been generated.
+ * Keep false until backend DTOs are finalized and field mapping is implemented.
+ * Generated bridge functions are stubbed to avoid type errors from incomplete API contracts.
  */
 export const MOBILE_GENERATED_ADAPTER_READY = false;
 

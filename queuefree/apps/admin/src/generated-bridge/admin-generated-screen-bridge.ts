@@ -7,24 +7,24 @@ import type { DetailPageConfig, ListPageConfig } from '@/models/admin-screen-mod
 
 async function unsupported<T>(bridgeMethod: string): Promise<T> {
   throw new Error(
-    `[QueueFree admin skeleton] ${bridgeMethod} is not wired yet. ` +
-      'Backend must export registered OpenAPI first, then frontend can replace this generated bridge with DTO-to-screen-model mapping.'
+    `[QueueFree admin generated bridge] ${bridgeMethod} is not wired yet. ` +
+      'Backend must finalize OpenAPI DTOs, then frontend can map DTOs to screen models.'
   );
 }
 
 export async function fetchAdminDashboardDataFromGeneratedBridge(): Promise<AdminDashboardData> {
-  return unsupported<AdminDashboardData>('fetchAdminDashboardDataFromGeneratedBridge');
+  return unsupported('fetchAdminDashboardDataFromGeneratedBridge');
 }
 
 export async function fetchAdminListPageConfigFromGeneratedBridge(
   _kind: AdminListPageKind
 ): Promise<ListPageConfig> {
-  return unsupported<ListPageConfig>('fetchAdminListPageConfigFromGeneratedBridge');
+  return unsupported('fetchAdminListPageConfigFromGeneratedBridge');
 }
 
 export async function fetchAdminDetailPageConfigFromGeneratedBridge(
   _kind: AdminDetailPageKind,
   _id: string
 ): Promise<DetailPageConfig> {
-  return unsupported<DetailPageConfig>('fetchAdminDetailPageConfigFromGeneratedBridge');
+  return unsupported('fetchAdminDetailPageConfigFromGeneratedBridge');
 }

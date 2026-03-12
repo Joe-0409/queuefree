@@ -16,7 +16,8 @@ export type AdminGeneratedAdapterReadiness = {
 };
 
 /**
- * Flip this to true only after Admin screen-model mapping is implemented against generated SDK methods.
+ * Keep false until backend DTOs are finalized and field mapping is implemented.
+ * Generated bridge functions are stubbed to avoid type errors from incomplete API contracts.
  */
 export const ADMIN_GENERATED_ADAPTER_READY = false;
 
