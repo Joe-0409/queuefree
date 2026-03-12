@@ -1,0 +1,10 @@
+import { ModuleListPage } from '@/components/module-list-page';
+import { getListPageConfig } from '@/lib/admin-content';
+
+export const metadata = {
+  title: 'Queues'
+};
+
+export default function QueuesPage(): React.ReactElement {
+  return <ModuleListPage config={getListPageConfig('queues')} />;
+}

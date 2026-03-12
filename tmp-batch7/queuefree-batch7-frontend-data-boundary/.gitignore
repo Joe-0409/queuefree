@@ -1,0 +1,15 @@
+node_modules
+.pnpm-store
+.turbo
+.expo
+dist
+coverage
+.DS_Store
+*.log
+.env
+.env.local
+apps/mobile/.expo
+apps/mobile/dist
+
+.next
+apps/web/.next

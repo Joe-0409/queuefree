@@ -1,0 +1,10 @@
+  export const ACCOUNT_DELETE_STATUSES = [
+    "NOT_REQUESTED",
+"DELETE_REQUESTED",
+"PENDING_SETTLEMENT",
+"READY_TO_ANONYMIZE",
+"ANONYMIZED",
+"CANCELED_BY_USER"
+  ] as const;
+
+  export type AccountDeleteStatus = (typeof ACCOUNT_DELETE_STATUSES)[number];

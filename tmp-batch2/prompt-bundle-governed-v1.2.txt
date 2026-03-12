@@ -1,0 +1,38 @@
+# QueueFree Prompt Bundle（受控协作版 v1.2）
+
+## 使用前先做这件事
+
+三个对话框都必须同时遵守：
+
+1. `queuefree_prd_v1_2`
+2. `docs/contracts/queuefree-collaboration-contract-v1.2.md`
+3. `docs/registry/registry-baseline-v1.2.md`
+
+任何新增字段、状态、路由、事件、queue、cron、环境变量，必须先登记，再生成代码。
+
+三个线程每一轮输出都必须包含：
+
+- `Assumptions`
+- `Shared Contract Changes`
+- `Risks / Blockers`
+- `Files Changed`
+
+若本轮需要新增共享契约，必须先进入“登记模式”，只输出 registry / shared / OpenAPI 变更，不得直接写业务代码。
+
+---
+
+## Frontend Prompt
+
+请使用文件：`frontend-prompt-governed-v1.2.txt`
+
+---
+
+## Backend Prompt
+
+请使用文件：`backend-prompt-governed-v1.2.txt`
+
+---
+
+## Server Prompt
+
+请使用文件：`server-prompt-governed-v1.2.txt`

@@ -1,0 +1,377 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "QueueFree API",
+    "description": "Initial C-end OpenAPI surface for QueueFree. This batch exposes system-level endpoints plus the minimum public rules endpoints needed by Web rules pages and packages/api-client.",
+    "version": "0.0.1"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:4000",
+      "description": "local"
+    },
+    {
+      "url": "https://dev-api.queuefree.com",
+      "description": "dev"
+    },
+    {
+      "url": "https://stg-api.queuefree.com",
+      "description": "staging"
+    },
+    {
+      "url": "https://api.queuefree.com",
+      "description": "prod"
+    }
+  ],
+  "tags": [
+    {
+      "name": "System",
+      "description": "System health and public runtime configuration."
+    },
+    {
+      "name": "Rules",
+      "description": "Public rules center documents for Web and App."
+    }
+  ],
+  "paths": {
+    "/v1/health": {
+      "get": {
+        "tags": [
+          "System"
+        ],
+        "summary": "Health probe for the API service",
+        "operationId": "getHealth",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/system/runtime-config": {
+      "get": {
+        "tags": [
+          "System"
+        ],
+        "summary": "Get public runtime configuration needed by mobile/web/admin clients",
+        "operationId": "getRuntimeConfig",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuntimeConfigResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/rules": {
+      "get": {
+        "tags": [
+          "Rules"
+        ],
+        "summary": "List public rule documents for the Web/App rules center",
+        "operationId": "listRules",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RuleListItem"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/rules/{slug}": {
+      "get": {
+        "tags": [
+          "Rules"
+        ],
+        "summary": "Get a public rule document by slug",
+        "operationId": "getRuleBySlug",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "queue"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuleDetailResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Rule document not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AppEnv": {
+        "type": "string",
+        "enum": [
+          "local",
+          "dev",
+          "test",
+          "staging",
+          "prod"
+        ]
+      },
+      "HealthResponse": {
+        "type": "object",
+        "required": [
+          "status",
+          "service",
+          "version",
+          "environment",
+          "timestamp"
+        ],
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok"
+            ]
+          },
+          "service": {
+            "type": "string",
+            "example": "@queuefree/api"
+          },
+          "version": {
+            "type": "string",
+            "example": "0.0.1"
+          },
+          "environment": {
+            "$ref": "#/components/schemas/AppEnv"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RuntimeConfigResponse": {
+        "type": "object",
+        "required": [
+          "marketCode",
+          "currencyCode",
+          "timezone",
+          "locale",
+          "language",
+          "ruleVersion",
+          "rewardedAdsEnabled"
+        ],
+        "properties": {
+          "marketCode": {
+            "type": "string",
+            "example": "PH"
+          },
+          "currencyCode": {
+            "type": "string",
+            "example": "PHP"
+          },
+          "timezone": {
+            "type": "string",
+            "example": "Asia/Manila"
+          },
+          "locale": {
+            "type": "string",
+            "example": "en-PH"
+          },
+          "language": {
+            "type": "string",
+            "example": "English"
+          },
+          "ruleVersion": {
+            "type": "string",
+            "example": "v1.2"
+          },
+          "rewardedAdsEnabled": {
+            "type": "boolean",
+            "example": false
+          }
+        },
+        "additionalProperties": false
+      },
+      "RuleListItem": {
+        "type": "object",
+        "required": [
+          "slug",
+          "title",
+          "summary",
+          "updatedAt",
+          "ruleVersion"
+        ],
+        "properties": {
+          "slug": {
+            "type": "string",
+            "example": "queue"
+          },
+          "title": {
+            "type": "string",
+            "example": "Queue Rules"
+          },
+          "summary": {
+            "type": "string",
+            "example": "How queue ranking, protection, boost, and settlement slots work."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-03-11T00:00:00.000Z"
+          },
+          "ruleVersion": {
+            "type": "string",
+            "example": "v1.2"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RuleDetailResponse": {
+        "type": "object",
+        "required": [
+          "slug",
+          "title",
+          "sections",
+          "updatedAt",
+          "ruleVersion"
+        ],
+        "properties": {
+          "slug": {
+            "type": "string",
+            "example": "queue"
+          },
+          "title": {
+            "type": "string",
+            "example": "Queue Rules"
+          },
+          "sections": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "Queue rank is based on effective active entries only.",
+              "Settlement runs on fixed public slots."
+            ]
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-03-11T00:00:00.000Z"
+          },
+          "ruleVersion": {
+            "type": "string",
+            "example": "v1.2"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ApiErrorResponse": {
+        "type": "object",
+        "required": [
+          "code",
+          "message"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "example": "INTERNAL_SERVER_ERROR"
+          },
+          "message": {
+            "type": "string",
+            "example": "Unexpected server error."
+          },
+          "requestId": {
+            "type": "string",
+            "example": "req_demo_123"
+          },
+          "details": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

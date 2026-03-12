@@ -17,6 +17,7 @@ import {
   formatDateTime,
   formatMinorMoney
 } from '@queuefree/shared';
+import type { BadgeTone } from '@/components/ui/badge';
 import type { DataTableConfig } from '@/components/ui/data-table';
 import type { DetailPageConfig, ListPageConfig, Metric } from '@/models/admin-screen-models';
 

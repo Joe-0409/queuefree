@@ -20,13 +20,14 @@ export const PLACEHOLDER_INDEX_CONTENT = `/**
 export {};
 `;
 
-export const GENERATED_INDEX_CONTENT = `/**
- * QueueFree generated SDK barrel.
- *
- * This file is rewritten by scripts/generate-api-client.mjs.
- * Do not hand-edit.
- */
-export * from './generated/client';
+export const GENERATED_INDEX_CONTENT = `import createClient from 'openapi-fetch';
+import type { paths, components } from './generated/schema';
+
+export type { paths, components };
+
+export function createApiClient(baseUrl: string) {
+  return createClient<paths>({ baseUrl });
+}
 `;
 
 export function getRepoRoot() {

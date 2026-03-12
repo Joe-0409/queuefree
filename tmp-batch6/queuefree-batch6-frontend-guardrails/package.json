@@ -1,0 +1,29 @@
+{
+  "name": "queuefree",
+  "private": true,
+  "version": "0.1.0",
+  "packageManager": "pnpm@10.32.0",
+  "engines": {
+    "node": ">=22.22.0 <23"
+  },
+  "scripts": {
+    "dev:mobile": "pnpm --filter @queuefree/mobile dev",
+    "android": "pnpm --filter @queuefree/mobile android",
+    "ios": "pnpm --filter @queuefree/mobile ios",
+    "web:mobile": "pnpm --filter @queuefree/mobile web",
+    "typecheck": "pnpm verify:frontend-guardrails && turbo run typecheck",
+    "dev:web": "pnpm --filter @queuefree/web dev",
+    "build:web": "pnpm --filter @queuefree/web build",
+    "dev:admin": "pnpm --filter @queuefree/admin dev",
+    "build:admin": "pnpm --filter @queuefree/admin build",
+    "verify:registry-first-frontend": "node ./scripts/verify-registry-first-frontend.mjs",
+    "typecheck:frontends": "pnpm verify:frontend-guardrails && turbo run typecheck --filter=@queuefree/shared --filter=@queuefree/ui-tokens --filter=@queuefree/api-client --filter=@queuefree/mobile --filter=@queuefree/web --filter=@queuefree/admin",
+    "verify:route-registry": "node ./scripts/verify-route-registry.mjs",
+    "verify:frontend-import-boundaries": "node ./scripts/verify-frontend-import-boundaries.mjs",
+    "verify:frontend-guardrails": "pnpm verify:registry-first-frontend && pnpm verify:route-registry && pnpm verify:frontend-import-boundaries"
+  },
+  "devDependencies": {
+    "turbo": "^2.4.4",
+    "typescript": "^5.8.3"
+  }
+}
