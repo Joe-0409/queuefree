@@ -134,6 +134,7 @@
 
 - C 端：`/v1`
 - Admin：`/v1/admin`
+- System：`/v1/health`
 
 ### 必须幂等的 C 端动作
 
@@ -387,3 +388,16 @@ shared 只定义：
 - Language: `English`
 - Rule Version: `v1.2`
 - Rewarded Ads Default: `false`
+
+---
+
+## 8. CI/CD Secret Registry
+
+- `Current Phase Required`：无
+- `Future Automation Reserved`：
+  - `VERCEL_TOKEN`
+  - `RENDER_DEPLOY_HOOK_URL_*`
+  - `EXPO_TOKEN`
+  - `APPLE_ASC_API_KEY_P8`
+  - `EXPO_APPLE_APP_SPECIFIC_PASSWORD`
+  - `GOOGLE_PLAY_SERVICE_ACCOUNT_JSON`
