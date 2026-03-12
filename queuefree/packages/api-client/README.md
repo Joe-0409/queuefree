@@ -1,42 +1,61 @@
 # @queuefree/api-client
 
-状态：OpenAPI Intake Ready / Pre-Generation Placeholder
+状态：pre-OpenAPI placeholder / generated SDK target
 
-这个包当前**仍然不包含任何手写业务 API contract**。
+## 目的
 
-根据 `queuefree_prd_v1_2`、协作契约、registry baseline：
+`packages/api-client` 是 QueueFree 前端唯一允许消费的 SDK 包之一。
 
-- `packages/api-client` 只能由 **OpenAPI 生成**
-- 前端在没有 OpenAPI 的阶段，**不能**在这里手写 path / request / response / DTO / schema
-- 前端当前只能继续使用：
-  - `packages/shared`
-  - 各 app 内部的本地 mock / placeholder 数据
+根据 PRD v1.2 与协作契约：
 
-## 当前目录职责
+- 前端只能消费 `packages/shared` 和 `packages/api-client`
+- `packages/api-client` 只能由 OpenAPI 生成
+- 不允许在这里手写猜测型业务 path / DTO / response contract
 
-- `openapi/`：backend 导出的 OpenAPI 原始输入文件
-- `src/index.ts`：生成前的 placeholder barrel，生成后会被脚本改写
-- `src/generated/`：生成产物目录
+## 当前模式
 
-## 正确顺序
+在 backend 还没有导出 OpenAPI 之前，本包保持 **placeholder 模式**，对外只暴露最小运行时元信息：
 
-1. 后端先更新 registry（如果触碰冻结项）
-2. 后端导出 OpenAPI 到 `packages/api-client/openapi`
-3. 前端执行 `pnpm verify:openapi-intake`
-4. 前端执行 `pnpm generate:api-client`
-5. 前端再把 adapter 从 mock 切到 generated SDK
+- `API_CLIENT_RUNTIME_MODE`
+- `API_CLIENT_IS_GENERATED`
+- `loadGeneratedApiClient()`
 
-## 当前允许保留的内容
+这些导出不是业务 contract，只用于前端适配器判断当前仓库是否已经进入 generated SDK 模式。
 
-- 这个包的位置
-- `src/index.ts` 的 placeholder barrel
-- `openapi/` 目录占位与说明文档
-- `src/generated/` 目录占位与生成产物
+## 输入目录
 
-## 当前明确不允许
+OpenAPI 原始文件只允许放在：
 
-- 手写 REST path 常量
-- 手写请求 / 响应字段
-- 手写业务 DTO
-- 把 NestJS DTO / Swagger 类型复制到这里
-- 让前端页面直接依赖未生成的 service path 文本
+```text
+packages/api-client/openapi/
+```
+
+支持：
+
+- `openapi.json`
+- `openapi.yaml`
+- `openapi.yml`
+- `spec.json`
+- `spec.yaml`
+- `spec.yml`
+
+## 生成命令
+
+```bash
+pnpm verify:openapi-intake
+pnpm generate:api-client
+pnpm verify:generated-api-client
+```
+
+## 回到 placeholder
+
+```bash
+pnpm reset:api-client-placeholder
+```
+
+## 重要限制
+
+- 不要把手写 REST path 塞进本包
+- 不要把页面 view-model 放进本包
+- 不要把 NestJS DTO / Swagger 类型塞进本包
+- 真正的业务 SDK 必须来自 backend 已登记、已导出的 OpenAPI

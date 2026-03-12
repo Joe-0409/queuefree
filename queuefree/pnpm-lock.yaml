@@ -23,6 +23,9 @@ importers:
 
   apps/admin:
     dependencies:
+      '@queuefree/api-client':
+        specifier: workspace:*
+        version: link:../../packages/api-client
       '@queuefree/shared':
         specifier: workspace:*
         version: link:../../packages/shared

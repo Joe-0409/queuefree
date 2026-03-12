@@ -10,7 +10,7 @@ import {
 
 const paths = getApiClientPaths();
 const specPath = findOpenApiSpec(paths);
-const generatedClientExists = fs.existsSync(path.join(paths.generatedRoot, 'schema.d.ts'));
+const generatedClientExists = hasGeneratedClient(paths);
 const indexText = fs.readFileSync(paths.indexPath, 'utf8');
 
 if (!specPath && !generatedClientExists) {

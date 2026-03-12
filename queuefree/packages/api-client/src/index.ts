@@ -1,8 +1,16 @@
-import createClient from 'openapi-fetch';
-import type { paths, components } from './generated/schema';
+/**
+ * QueueFree generated SDK barrel.
+ *
+ * This file is rewritten by scripts/generate-api-client.mjs.
+ * Do not hand-edit.
+ */
+export * from './generated/client';
 
-export type { paths, components };
+export type ApiClientRuntimeMode = 'placeholder' | 'generated';
 
-export function createApiClient(baseUrl: string) {
-  return createClient<paths>({ baseUrl });
+export const API_CLIENT_RUNTIME_MODE: ApiClientRuntimeMode = 'generated';
+export const API_CLIENT_IS_GENERATED = true;
+
+export async function loadGeneratedApiClient() {
+ return import('./generated/client');
 }

@@ -14,46 +14,6 @@
           }
         }
       }
-    },
-    "/v1/system/runtime-config": {
-      "get": {
-        "operationId": "getRuntimeConfig",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/v1/rules": {
-      "get": {
-        "operationId": "listRules",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/v1/rules/{slug}": {
-      "get": {
-        "operationId": "getRuleBySlug",
-        "parameters": [
-          {
-            "name": "slug",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
     }
   }
 }
