@@ -1,16 +1,17 @@
 /**
- * QueueFree generated SDK barrel.
+ * QueueFree pre-OpenAPI placeholder.
  *
- * This file is rewritten by scripts/generate-api-client.mjs.
- * Do not hand-edit.
+ * Do not add hand-written business contracts here.
+ * Replace this file with a generated SDK entrypoint only after backend exports OpenAPI.
  */
-export * from './generated/client';
-
 export type ApiClientRuntimeMode = 'placeholder' | 'generated';
 
-export const API_CLIENT_RUNTIME_MODE: ApiClientRuntimeMode = 'generated';
-export const API_CLIENT_IS_GENERATED = true;
+export const API_CLIENT_RUNTIME_MODE: ApiClientRuntimeMode = 'placeholder';
+export const API_CLIENT_IS_GENERATED = false;
 
-export async function loadGeneratedApiClient() {
- return import('./generated/client');
+export async function loadGeneratedApiClient(): Promise<never> {
+ throw new Error(
+ '[QueueFree api-client] packages/api-client is still in placeholder mode. ' +
+ 'Ask backend to export OpenAPI first, then run pnpm generate:api-client.'
+ );
 }
