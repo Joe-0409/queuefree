@@ -1,17 +1,11 @@
 # USER.md - About Your Human
 
-_Learn about the person you're helping. Update this as you go._
-
-- **Name:**
-- **What to call them:**
-- **Pronouns:** _(optional)_
-- **Timezone:**
-- **Notes:**
+- **Name:** Joe
+- **What to call them:** Joe
+- **Pronouns:** 
+- **Timezone:** Asia/Manila
+- **Notes:** Working on the QueueFree project. Prefers local execution and coordination of thread outputs.
 
 ## Context
 
-_(What do they care about? What projects are they working on? What annoys them? What makes them laugh? Build this over time.)_
-
----
-
-The more you know, the better you can help. But remember — you're learning about a person, not building a dossier. Respect the difference.
+Joe is building QueueFree. We've just landed Batch 11, which includes full workspace content and screen model validation. The project is moving through specific "Batches" of features and contracts.
