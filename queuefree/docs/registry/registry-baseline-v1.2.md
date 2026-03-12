@@ -145,6 +145,60 @@
 - `POST /v1/withdrawals`
 - `POST /v1/me/delete-account-requests`
 
+### C 端写操作 Core API（Batch 12A）
+
+- `POST /v1/orders`
+- `POST /v1/orders/:orderId/payment-intents`
+- `POST /v1/queue-guard/check-in`
+
+### C 端写操作 Header Field Registry（Batch 12A）
+
+#### `POST /v1/orders`
+- `Idempotency-Key: string`
+
+#### `POST /v1/orders/:orderId/payment-intents`
+- `Idempotency-Key: string`
+
+#### `POST /v1/queue-guard/check-in`
+- `Idempotency-Key: string`
+
+### C 端写操作 Request Field Registry（Batch 12A）
+
+#### `POST /v1/orders`
+- `productId: string`
+- `skuId: string`
+- `quantity: number`
+- `addressId: string`
+
+#### `POST /v1/orders/:orderId/payment-intents`
+- `orderId: string`
+
+#### `POST /v1/queue-guard/check-in`
+- 无 body 字段
+
+### C 端写操作 Response Schema Registry（Batch 12A）
+
+#### `CreateOrderResponse`
+- `orderId: string`
+- `status: OrderStatus`
+- `productId: string`
+- `skuId: string`
+- `quantity: number`
+
+#### `CreatePaymentIntentResponse`
+- `paymentIntentId: string`
+- `orderId: string`
+- `provider: string`
+- `amountMinor: number`
+- `currencyCode: string`
+- `checkoutUrl: string`
+
+#### `CheckInResponse`
+- `status: UserQueueGuardStatus`
+- `lastCheckinAt: string | null`
+- `validUntil: string`
+- `graceUntil: string | null`
+
 ### 必须幂等的服务端回调 / Worker 动作
 
 - 支付回调
