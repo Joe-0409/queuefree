@@ -8,5 +8,8 @@
  *   - `@queuefree/api-client/client`
  * - Type imports should use:
  *   - `@queuefree/api-client/types`
+ *
+ * The generated output is written to `src/generated` by
+ * `scripts/generate-api-client.mjs`.
  */
 export {};
