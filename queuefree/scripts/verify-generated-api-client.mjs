@@ -36,7 +36,7 @@ if (!specPath && generatedClientExists) {
 }
 
 if (indexText !== GENERATED_INDEX_CONTENT) {
-  console.error('verify-generated-api-client failed: packages/api-client/src/index.ts is not pointing at ./generated/client. Re-run pnpm generate:api-client.');
+  console.error('verify-generated-api-client failed: packages/api-client/src/index.ts must not have exports. Re-run pnpm generate:api-client.');
   process.exit(1);
 }
 
