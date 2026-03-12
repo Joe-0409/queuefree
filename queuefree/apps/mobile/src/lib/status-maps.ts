@@ -1,4 +1,5 @@
 import type {
+  AccountDeleteStatus,
   InviteRelationStatus,
   QueueEntryStatus,
   UserQueueGuardStatus,
@@ -55,4 +56,19 @@ export function getWithdrawalStatusTone(status: WithdrawalStatus): Tone {
 
 export function getGuardStatusTone(status: UserQueueGuardStatus): Tone {
   return status === "VALID" ? "success" : "warning";
+}
+
+export function getAccountDeleteStatusTone(status: AccountDeleteStatus): Tone {
+  switch (status) {
+    case "ANONYMIZED":
+      return "success";
+    case "DELETE_REQUESTED":
+    case "PENDING_SETTLEMENT":
+    case "READY_TO_ANONYMIZE":
+      return "warning";
+    case "CANCELED_BY_USER":
+      return "danger";
+    default:
+      return "neutral";
+  }
 }

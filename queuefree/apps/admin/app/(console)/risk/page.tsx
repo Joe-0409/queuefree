@@ -1,10 +1,9 @@
 import { ModuleListPage } from '@/components/module-list-page';
-import { getListPageConfig } from '@/lib/admin-content';
 
 export const metadata = {
-  title: 'Risk'
+  title: 'Risk cases'
 };
 
 export default function RiskPage(): React.ReactElement {
-  return <ModuleListPage config={getListPageConfig('risk')} />;
+  return <ModuleListPage kind="risk" />;
 }

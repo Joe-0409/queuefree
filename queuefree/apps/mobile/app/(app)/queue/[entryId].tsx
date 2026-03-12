@@ -1,69 +1,74 @@
-import { useMemo, useState } from "react";
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { Text, View } from "react-native";
 import { formatDateTime, formatMinorMoney } from "@queuefree/shared";
 import { DemoBanner } from "../../../src/components/demo-banner";
 import { KeyValueRow } from "../../../src/components/key-value-row";
+import { NavRow } from "../../../src/components/nav-row";
 import { PrimaryButton } from "../../../src/components/primary-button";
+import { QueryStateCard } from "../../../src/components/query-state-card";
 import { Screen } from "../../../src/components/screen";
 import { SectionCard } from "../../../src/components/section-card";
 import { StatusPill } from "../../../src/components/status-pill";
-import { getQueueEntryById } from "../../../src/lib/demo-data";
 import { getQueueStatusTone } from "../../../src/lib/status-maps";
 import { useRuntimeConfig } from "../../../src/hooks/use-runtime-config";
+import { useQueueEntryDetailQuery } from "../../../src/queries/use-mobile-queries";
 
 export default function QueueDetailScreen() {
-  const params = useLocalSearchParams<{ entryId: string }>();
-  const entryId = params.entryId || "entry-1001";
-  const entry = useMemo(() => getQueueEntryById(entryId), [entryId]);
+  const params = useLocalSearchParams<{ entryId: string | string[] }>();
+  const entryId = Array.isArray(params.entryId) ? params.entryId[0] : params.entryId || "entry-1001";
+  const entryQuery = useQueueEntryDetailQuery(entryId);
   const { config } = useRuntimeConfig();
-  const [boostUsedDemo, setBoostUsedDemo] = useState(entry.boostUsed);
-
-  const isProtectedZone = typeof entry.currentRank === "number" && entry.currentRank <= config.protectZoneSize;
-  const boostRemaining = Math.max(config.boostLimitPerEntry - boostUsedDemo, 0);
-  const canBoost = entry.status === "ACTIVE" && boostRemaining > 0 && !isProtectedZone;
-
-  const eventLog = [
-    "Order paid and queue entry created",
-    "Current effective rank recalculated",
-    "User queue guard valid",
-    boostUsedDemo > 0 ? `Boost used ${boostUsedDemo} time(s)` : "No boost used yet"
-  ];
 
   return (
     <Screen
       title="Queue detail"
-      subtitle="This page should explain exactly why the entry is active, frozen, winning, or removed."
+      subtitle="This page explains rank, next slot, and queue events in a way the user can follow."
     >
       <DemoBanner />
 
-      <SectionCard
-        title={entry.productTitle}
-        description={`Order ${entry.orderId}`}
-        rightSlot={<StatusPill label={entry.status} tone={getQueueStatusTone(entry.status)} />}
-      >
-        <KeyValueRow label="Current rank" value={entry.currentRank ? `#${entry.currentRank}` : "Not ranked"} />
-        <KeyValueRow label="Next slot" value={formatDateTime(entry.nextSlotAt)} />
-        <KeyValueRow label="Eligible cashback base" value={formatMinorMoney(entry.eligibleCashbackMinor)} />
-        <KeyValueRow label="Boost remaining" value={String(boostRemaining)} emphasize />
-      </SectionCard>
-
-      <SectionCard title="Boost" description="Boost is order-level, limited per entry, and cannot cross the Top30 protection zone.">
-        <Text>{isProtectedZone ? `This entry is already in Top${config.protectZoneSize}, so boost is disabled.` : "Boost can still be used if the backend confirms availability."}</Text>
-        <PrimaryButton
-          label={canBoost ? "Use demo boost" : "Boost unavailable"}
-          disabled={!canBoost}
-          onPress={() => setBoostUsedDemo((current) => current + 1)}
+      {entryQuery.isPending ? (
+        <QueryStateCard
+          mode="loading"
+          title="Preparing queue detail"
+          description="Queue detail now reads through the repository-backed query boundary."
         />
-      </SectionCard>
+      ) : null}
 
-      <SectionCard title="Event log" description="Queue event trails should remain traceable for users and admins.">
-        <View style={{ gap: 8 }}>
-          {eventLog.map((eventItem) => (
-            <Text key={eventItem}>• {eventItem}</Text>
-          ))}
-        </View>
-      </SectionCard>
+      {entryQuery.isError ? (
+        <QueryStateCard
+          mode="error"
+          title="Queue detail is unavailable"
+          description="Retry the queue-detail query."
+          onRetry={() => {
+            void entryQuery.refetch();
+          }}
+        />
+      ) : null}
+
+      {entryQuery.data ? (
+        <>
+          <SectionCard
+            title={entryQuery.data.productTitle}
+            description={`Order ${entryQuery.data.orderId}`}
+            rightSlot={<StatusPill label={entryQuery.data.status} tone={getQueueStatusTone(entryQuery.data.status)} />}
+          >
+            <KeyValueRow label="Current effective rank" value={entryQuery.data.currentRank ? `#${entryQuery.data.currentRank}` : "Frozen or removed"} />
+            <KeyValueRow label="Boost used" value={`${entryQuery.data.boostUsed} / ${config.boostLimitPerEntry}`} />
+            <KeyValueRow label="Next settlement slot" value={formatDateTime(entryQuery.data.nextSlotAt)} />
+            <KeyValueRow label="Eligible cashback base" value={formatMinorMoney(entryQuery.data.eligibleCashbackMinor)} emphasize />
+          </SectionCard>
+
+          <SectionCard title="What changed" description="All rank changes should map to explainable queue events later.">
+            <View style={{ gap: 10 }}>
+              <NavRow label="Paid order entered the public queue" description="Event source: payment success + risk pass" />
+              <NavRow label="Active rank recalculated" description="Derived from active entries only" />
+              <NavRow label="Top30 protection respected" description={`Best boost result cannot cross rank ${config.protectZoneSize + 1}`} />
+            </View>
+          </SectionCard>
+
+          <PrimaryButton label="Back to queue tab" onPress={() => router.back()} />
+        </>
+      ) : null}
     </Screen>
   );
 }

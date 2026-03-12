@@ -35,6 +35,9 @@ importers:
       '@queuefree/ui-tokens':
         specifier: workspace:*
         version: link:../../packages/ui-tokens
+      '@tanstack/react-query':
+        specifier: ^5.66.0
+        version: 5.90.21(react@19.1.0)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1

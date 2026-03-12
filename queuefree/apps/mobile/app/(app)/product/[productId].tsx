@@ -1,71 +1,84 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { router, useLocalSearchParams } from "expo-router";
 import { Text, View } from "react-native";
 import { formatMinorMoney } from "@queuefree/shared";
 import { DemoBanner } from "../../../src/components/demo-banner";
 import { KeyValueRow } from "../../../src/components/key-value-row";
 import { PrimaryButton } from "../../../src/components/primary-button";
+import { QueryStateCard } from "../../../src/components/query-state-card";
 import { Screen } from "../../../src/components/screen";
 import { SectionCard } from "../../../src/components/section-card";
-import { getProductById } from "../../../src/lib/demo-data";
 import { useRuntimeConfig } from "../../../src/hooks/use-runtime-config";
+import { useProductDetailQuery } from "../../../src/queries/use-mobile-queries";
 
 export default function ProductDetailScreen() {
-  const params = useLocalSearchParams<{ productId: string }>();
-  const productId = params.productId || "prod-earbuds";
-  const product = useMemo(() => getProductById(productId), [productId]);
+  const params = useLocalSearchParams<{ productId: string | string[] }>();
+  const productId = Array.isArray(params.productId) ? params.productId[0] : params.productId || "prod-earbuds";
+  const productQuery = useProductDetailQuery(productId);
   const { config } = useRuntimeConfig();
   const [quantity, setQuantity] = useState(1);
 
-  const totalMinor = product.priceMinor * quantity;
+  const totalMinor = (productQuery.data?.priceMinor ?? 0) * quantity;
 
   return (
     <Screen
-      title={product.title}
+      title={productQuery.data?.title ?? "Product"}
       subtitle="One order contains one product only, but quantity may be greater than one."
     >
       <DemoBanner />
 
-      <SectionCard title="Product summary" description={product.subtitle}>
-        <KeyValueRow label="Unit price" value={formatMinorMoney(product.priceMinor)} />
-        <KeyValueRow label="Queue cashback cap" value={formatMinorMoney(product.cashbackCapMinor)} />
-        <KeyValueRow label="Stock" value={product.stockLabel} />
-        <Text>There is no cart. Checkout starts directly from this page in MVP.</Text>
-      </SectionCard>
+      {productQuery.isPending ? (
+        <QueryStateCard
+          mode="loading"
+          title="Preparing product detail"
+          description="Product detail now reads through a repository-backed query."
+        />
+      ) : null}
 
-      <SectionCard title="Choose quantity" description={`Default maximum quantity fallback is ${config.defaultOrderMaxQty}.`}>
-        <KeyValueRow label="Current quantity" value={String(quantity)} emphasize />
-        <KeyValueRow label="Estimated total" value={formatMinorMoney(totalMinor)} emphasize />
-        <View style={{ flexDirection: "row", gap: 12 }}>
-          <PrimaryButton
-            label="−"
-            variant="secondary"
-            disabled={quantity <= 1}
-            onPress={() => setQuantity((current) => Math.max(1, current - 1))}
-          />
-          <PrimaryButton
-            label="+"
-            disabled={quantity >= config.defaultOrderMaxQty}
-            onPress={() => setQuantity((current) => Math.min(config.defaultOrderMaxQty, current + 1))}
-          />
-        </View>
-      </SectionCard>
+      {productQuery.isError ? (
+        <QueryStateCard
+          mode="error"
+          title="Product detail is unavailable"
+          description="Retry the product detail query."
+          onRetry={() => {
+            void productQuery.refetch();
+          }}
+        />
+      ) : null}
 
-      <SectionCard title="What the order means" description="Quantity affects the payment amount, not the number of queue seats.">
-        <Text>• One paid order equals one queue seat</Text>
-        <Text>• Quantity does not create multiple seats</Text>
-        <Text>• Split orders may still be reviewed by risk rules if behavior looks abnormal</Text>
-      </SectionCard>
+      {productQuery.data ? (
+        <>
+          <SectionCard title="Product summary" description={productQuery.data.subtitle}>
+            <KeyValueRow label="Unit price" value={formatMinorMoney(productQuery.data.priceMinor)} />
+            <KeyValueRow label="Queue cashback cap" value={formatMinorMoney(productQuery.data.cashbackCapMinor)} />
+            <KeyValueRow label="Stock hint" value={productQuery.data.stockLabel} />
+            <Text>The frontend may show summary hints, but queue eligibility and price truth stay on backend snapshots.</Text>
+          </SectionCard>
 
-      <PrimaryButton
-        label="Go to checkout"
-        onPress={() =>
-          router.push({
-            pathname: "/(app)/checkout/[productId]",
-            params: { productId: product.id, quantity: String(quantity) }
-          })
-        }
-      />
+          <SectionCard title="Choose quantity" description={`Default max quantity fallback: ${config.defaultOrderMaxQty}`}>
+            <View style={{ gap: 10 }}>
+              <KeyValueRow label="Quantity" value={String(quantity)} />
+              <KeyValueRow label="Estimated subtotal" value={formatMinorMoney(totalMinor)} />
+              <View style={{ flexDirection: "row", gap: 10 }}>
+                <PrimaryButton label="-1" disabled={quantity <= 1} onPress={() => setQuantity((value) => Math.max(1, value - 1))} />
+                <PrimaryButton label="+1" disabled={quantity >= config.defaultOrderMaxQty} onPress={() => setQuantity((value) => Math.min(config.defaultOrderMaxQty, value + 1))} />
+              </View>
+            </View>
+          </SectionCard>
+
+          <SectionCard title="Checkout path" description="There is no cart in MVP. The route goes straight from product detail to checkout.">
+            <PrimaryButton
+              label="Continue to checkout"
+              onPress={() =>
+                router.push({
+                  pathname: "/(app)/checkout/[productId]",
+                  params: { productId, quantity: String(quantity) }
+                })
+              }
+            />
+          </SectionCard>
+        </>
+      ) : null}
     </Screen>
   );
 }
