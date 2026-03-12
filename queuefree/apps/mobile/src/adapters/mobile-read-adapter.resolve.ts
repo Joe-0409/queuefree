@@ -8,13 +8,13 @@ export type MobileReadAdapterMode = 'mock' | 'generated';
 export const MOBILE_READ_ADAPTER_MODE: MobileReadAdapterMode = getMobileGeneratedAdapterReadiness().screenDataMode;
 
 export function getMobileReadAdapterStatusSummary() {
- return getMobileGeneratedAdapterReadiness();
+  return getMobileGeneratedAdapterReadiness();
 }
 
 export function resolveMobileReadAdapter(): MobileReadAdapter {
- if (MOBILE_READ_ADAPTER_MODE === 'generated') {
- return generatedMobileReadAdapter;
- }
+  if (MOBILE_READ_ADAPTER_MODE === 'generated') {
+    return generatedMobileReadAdapter;
+  }
 
- return mockMobileReadAdapter;
+  return mockMobileReadAdapter;
 }

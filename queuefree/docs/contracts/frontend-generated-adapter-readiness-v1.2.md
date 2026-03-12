@@ -14,7 +14,7 @@
 
 仅仅生成 SDK，并不代表 mobile / admin 已经具备可用的数据链路。
 
-前端页面当前依赖的是 app-local screen model，而不是直接把 generated SDK response丢给页面。
+前端页面当前依赖的是 app-local screen model，而不是直接把 generated SDK response 丢给页面。
 因此在 generated SDK 到位后，还需要额外一层 **mapping readiness**。
 
 ## 当前规则

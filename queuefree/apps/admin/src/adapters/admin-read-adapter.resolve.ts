@@ -8,13 +8,13 @@ export type AdminReadAdapterMode = 'mock' | 'generated';
 export const ADMIN_READ_ADAPTER_MODE: AdminReadAdapterMode = getAdminGeneratedAdapterReadiness().screenDataMode;
 
 export function getAdminReadAdapterStatusSummary() {
- return getAdminGeneratedAdapterReadiness();
+  return getAdminGeneratedAdapterReadiness();
 }
 
 export function resolveAdminReadAdapter(): AdminReadAdapter {
- if (ADMIN_READ_ADAPTER_MODE === 'generated') {
- return generatedAdminReadAdapter;
- }
+  if (ADMIN_READ_ADAPTER_MODE === 'generated') {
+    return generatedAdminReadAdapter;
+  }
 
- return mockAdminReadAdapter;
+  return mockAdminReadAdapter;
 }

@@ -12,9 +12,9 @@
 ## 这批做了什么
 
 - `packages/api-client` placeholder / generated barrel 现在会导出：
- - `API_CLIENT_RUNTIME_MODE`
- - `API_CLIENT_IS_GENERATED`
- - `loadGeneratedApiClient()`
+  - `API_CLIENT_RUNTIME_MODE`
+  - `API_CLIENT_IS_GENERATED`
+  - `loadGeneratedApiClient()`
 - mobile 增加 generated adapter readiness 文件
 - runtime-config adapter 增加 generated readiness 文件
 - admin 增加 generated adapter readiness 文件

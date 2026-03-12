@@ -1,349 +1,349 @@
 /
 ├── apps
-│ ├── admin
-│ │ ├── app
-│ │ │ ├── (console)
-│ │ │ │ ├── audit
-│ │ │ │ │ └── page.tsx
-│ │ │ │ ├── campaigns
-│ │ │ │ │ ├── [campaignId]
-│ │ │ │ │ │ └── page.tsx
-│ │ │ │ │ └── page.tsx
-│ │ │ │ ├── governance
-│ │ │ │ │ └── page.tsx
-│ │ │ │ ├── invites
-│ │ │ │ │ ├── [relationId]
-│ │ │ │ │ │ └── page.tsx
-│ │ │ │ │ └── page.tsx
-│ │ │ │ ├── orders
-│ │ │ │ │ ├── [orderId]
-│ │ │ │ │ │ └── page.tsx
-│ │ │ │ │ └── page.tsx
-│ │ │ │ ├── products
-│ │ │ │ │ ├── [productId]
-│ │ │ │ │ │ └── page.tsx
-│ │ │ │ │ └── page.tsx
-│ │ │ │ ├── queues
-│ │ │ │ │ ├── [entryId]
-│ │ │ │ │ │ └── page.tsx
-│ │ │ │ │ └── page.tsx
-│ │ │ │ ├── risk
-│ │ │ │ │ ├── [caseId]
-│ │ │ │ │ │ └── page.tsx
-│ │ │ │ │ └── page.tsx
-│ │ │ │ ├── slots
-│ │ │ │ │ ├── [slotId]
-│ │ │ │ │ │ └── page.tsx
-│ │ │ │ │ └── page.tsx
-│ │ │ │ ├── tasks
-│ │ │ │ │ ├── [taskId]
-│ │ │ │ │ │ └── page.tsx
-│ │ │ │ │ └── page.tsx
-│ │ │ │ ├── wallet
-│ │ │ │ │ └── page.tsx
-│ │ │ │ ├── withdrawals
-│ │ │ │ │ └── page.tsx
-│ │ │ │ ├── error.tsx
-│ │ │ │ ├── layout.tsx
-│ │ │ │ ├── loading.tsx
-│ │ │ │ └── page.tsx
-│ │ │ ├── login
-│ │ │ │ └── page.tsx
-│ │ │ ├── error.tsx
-│ │ │ ├── globals.css
-│ │ │ ├── layout.tsx
-│ │ │ ├── loading.tsx
-│ │ │ └── not-found.tsx
-│ │ ├── src
-│ │ │ ├── adapters
-│ │ │ │ ├── admin-read-adapter.generated.ts
-│ │ │ │ ├── admin-read-adapter.mock.ts
-│ │ │ │ ├── admin-read-adapter.readiness.ts
-│ │ │ │ ├── admin-read-adapter.resolve.ts
-│ │ │ │ └── admin-read-adapter.ts
-│ │ │ ├── components
-│ │ │ │ ├── ui
-│ │ │ │ │ ├── badge.tsx
-│ │ │ │ │ ├── button.tsx
-│ │ │ │ │ ├── card.tsx
-│ │ │ │ │ ├── data-table.tsx
-│ │ │ │ │ └── input.tsx
-│ │ │ │ ├── admin-page-header.tsx
-│ │ │ │ ├── admin-shell.tsx
-│ │ │ │ ├── admin-sidebar.tsx
-│ │ │ │ ├── admin-skeleton-banner.tsx
-│ │ │ │ ├── admin-topbar.tsx
-│ │ │ │ ├── dashboard-screen.tsx
-│ │ │ │ ├── metric-card.tsx
-│ │ │ │ ├── module-detail-page.tsx
-│ │ │ │ ├── module-list-page.tsx
-│ │ │ │ ├── page-shell.tsx
-│ │ │ │ ├── query-state-panel.tsx
-│ │ │ │ └── section-title.tsx
-│ │ │ ├── lib
-│ │ │ │ ├── admin-content.ts
-│ │ │ │ ├── admin-repository.ts
-│ │ │ │ ├── env.ts
-│ │ │ │ ├── mock-delay.ts
-│ │ │ │ ├── navigation.ts
-│ │ │ │ └── utils.ts
-│ │ │ ├── models
-│ │ │ │ └── admin-screen-models.ts
-│ │ │ ├── providers
-│ │ │ │ ├── admin-app-providers.tsx
-│ │ │ │ └── query-provider.tsx
-│ │ │ └── queries
-│ │ │ └── use-admin-queries.ts
-│ │ ├── .env.example
-│ │ ├── next-env.d.ts
-│ │ ├── next.config.mjs
-│ │ ├── package.json
-│ │ ├── postcss.config.mjs
-│ │ ├── tailwind.config.ts
-│ │ └── tsconfig.json
-│ ├── mobile
-│ │ ├── app
-│ │ │ ├── (app)
-│ │ │ │ ├── (tabs)
-│ │ │ │ │ ├── _layout.tsx
-│ │ │ │ │ ├── home.tsx
-│ │ │ │ │ ├── invites.tsx
-│ │ │ │ │ ├── me.tsx
-│ │ │ │ │ ├── queue.tsx
-│ │ │ │ │ ├── tasks.tsx
-│ │ │ │ │ └── wallet.tsx
-│ │ │ │ ├── checkout
-│ │ │ │ │ └── [productId].tsx
-│ │ │ │ ├── me
-│ │ │ │ │ ├── addresses.tsx
-│ │ │ │ │ └── security.tsx
-│ │ │ │ ├── orders
-│ │ │ │ │ └── success
-│ │ │ │ │ └── [orderId].tsx
-│ │ │ │ ├── product
-│ │ │ │ │ └── [productId].tsx
-│ │ │ │ ├── queue
-│ │ │ │ │ └── [entryId].tsx
-│ │ │ │ ├── rules
-│ │ │ │ │ ├── activity
-│ │ │ │ │ │ └── [campaignId].tsx
-│ │ │ │ │ ├── index.tsx
-│ │ │ │ │ ├── queue.tsx
-│ │ │ │ │ └── wallet.tsx
-│ │ │ │ ├── wallet
-│ │ │ │ │ └── withdraw.tsx
-│ │ │ │ ├── _layout.tsx
-│ │ │ │ ├── delete-account.tsx
-│ │ │ │ ├── privacy.tsx
-│ │ │ │ ├── support.tsx
-│ │ │ │ └── terms.tsx
-│ │ │ ├── (public)
-│ │ │ │ ├── auth
-│ │ │ │ │ ├── otp.tsx
-│ │ │ │ │ └── phone.tsx
-│ │ │ │ ├── _layout.tsx
-│ │ │ │ └── welcome.tsx
-│ │ │ ├── _layout.tsx
-│ │ │ └── index.tsx
-│ │ ├── src
-│ │ │ ├── adapters
-│ │ │ │ ├── mobile-read-adapter.generated.ts
-│ │ │ │ ├── mobile-read-adapter.mock.ts
-│ │ │ │ ├── mobile-read-adapter.readiness.ts
-│ │ │ │ ├── mobile-read-adapter.resolve.ts
-│ │ │ │ ├── mobile-read-adapter.ts
-│ │ │ │ ├── runtime-config-adapter.generated.ts
-│ │ │ │ ├── runtime-config-adapter.mock.ts
-│ │ │ │ ├── runtime-config-adapter.readiness.ts
-│ │ │ │ ├── runtime-config-adapter.resolve.ts
-│ │ │ │ └── runtime-config-adapter.ts
-│ │ │ ├── components
-│ │ │ │ ├── checkbox-row.tsx
-│ │ │ │ ├── demo-banner.tsx
-│ │ │ │ ├── empty-state.tsx
-│ │ │ │ ├── key-value-row.tsx
-│ │ │ │ ├── nav-row.tsx
-│ │ │ │ ├── primary-button.tsx
-│ │ │ │ ├── query-state-card.tsx
-│ │ │ │ ├── screen.tsx
-│ │ │ │ ├── section-card.tsx
-│ │ │ │ ├── status-pill.tsx
-│ │ │ │ └── text-field.tsx
-│ │ │ ├── hooks
-│ │ │ │ └── use-runtime-config.ts
-│ │ │ ├── lib
-│ │ │ │ ├── demo-data.ts
-│ │ │ │ ├── env.ts
-│ │ │ │ ├── mobile-repository.ts
-│ │ │ │ ├── mock-delay.ts
-│ │ │ │ └── status-maps.ts
-│ │ │ ├── models
-│ │ │ │ └── mobile-screen-models.ts
-│ │ │ ├── providers
-│ │ │ │ ├── app-providers.tsx
-│ │ │ │ └── query-provider.tsx
-│ │ │ ├── queries
-│ │ │ │ └── use-mobile-queries.ts
-│ │ │ └── store
-│ │ │ ├── auth-store.ts
-│ │ │ └── runtime-config-store.ts
-│ │ ├── .env.example
-│ │ ├── app.json
-│ │ ├── babel.config.js
-│ │ ├── expo-env.d.ts
-│ │ ├── package.json
-│ │ └── tsconfig.json
-│ └── web
-│ ├── app
-│ │ ├── contact
-│ │ │ └── page.tsx
-│ │ ├── delete-account
-│ │ │ └── page.tsx
-│ │ ├── privacy
-│ │ │ └── page.tsx
-│ │ ├── rules
-│ │ │ ├── activity
-│ │ │ │ └── [slug]
-│ │ │ │ └── page.tsx
-│ │ │ ├── queue
-│ │ │ │ └── page.tsx
-│ │ │ ├── wallet
-│ │ │ │ └── page.tsx
-│ │ │ └── page.tsx
-│ │ ├── terms
-│ │ │ └── page.tsx
-│ │ ├── error.tsx
-│ │ ├── globals.css
-│ │ ├── layout.tsx
-│ │ ├── loading.tsx
-│ │ ├── not-found.tsx
-│ │ └── page.tsx
-│ ├── src
-│ │ ├── components
-│ │ │ ├── ui
-│ │ │ │ ├── button.tsx
-│ │ │ │ └── card.tsx
-│ │ │ ├── page-hero.tsx
-│ │ │ ├── page-shell.tsx
-│ │ │ ├── section-card.tsx
-│ │ │ ├── site-footer.tsx
-│ │ │ └── site-header.tsx
-│ │ └── lib
-│ │ ├── env.ts
-│ │ ├── site-content.ts
-│ │ └── utils.ts
-│ ├── .env.example
-│ ├── next-env.d.ts
-│ ├── next.config.mjs
-│ ├── package.json
-│ ├── postcss.config.mjs
-│ ├── tailwind.config.ts
-│ └── tsconfig.json
+│   ├── admin
+│   │   ├── app
+│   │   │   ├── (console)
+│   │   │   │   ├── audit
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── campaigns
+│   │   │   │   │   ├── [campaignId]
+│   │   │   │   │   │   └── page.tsx
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── governance
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── invites
+│   │   │   │   │   ├── [relationId]
+│   │   │   │   │   │   └── page.tsx
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── orders
+│   │   │   │   │   ├── [orderId]
+│   │   │   │   │   │   └── page.tsx
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── products
+│   │   │   │   │   ├── [productId]
+│   │   │   │   │   │   └── page.tsx
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── queues
+│   │   │   │   │   ├── [entryId]
+│   │   │   │   │   │   └── page.tsx
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── risk
+│   │   │   │   │   ├── [caseId]
+│   │   │   │   │   │   └── page.tsx
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── slots
+│   │   │   │   │   ├── [slotId]
+│   │   │   │   │   │   └── page.tsx
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── tasks
+│   │   │   │   │   ├── [taskId]
+│   │   │   │   │   │   └── page.tsx
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── wallet
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── withdrawals
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── error.tsx
+│   │   │   │   ├── layout.tsx
+│   │   │   │   ├── loading.tsx
+│   │   │   │   └── page.tsx
+│   │   │   ├── login
+│   │   │   │   └── page.tsx
+│   │   │   ├── error.tsx
+│   │   │   ├── globals.css
+│   │   │   ├── layout.tsx
+│   │   │   ├── loading.tsx
+│   │   │   └── not-found.tsx
+│   │   ├── src
+│   │   │   ├── adapters
+│   │   │   │   ├── admin-read-adapter.generated.ts
+│   │   │   │   ├── admin-read-adapter.mock.ts
+│   │   │   │   ├── admin-read-adapter.readiness.ts
+│   │   │   │   ├── admin-read-adapter.resolve.ts
+│   │   │   │   └── admin-read-adapter.ts
+│   │   │   ├── components
+│   │   │   │   ├── ui
+│   │   │   │   │   ├── badge.tsx
+│   │   │   │   │   ├── button.tsx
+│   │   │   │   │   ├── card.tsx
+│   │   │   │   │   ├── data-table.tsx
+│   │   │   │   │   └── input.tsx
+│   │   │   │   ├── admin-page-header.tsx
+│   │   │   │   ├── admin-shell.tsx
+│   │   │   │   ├── admin-sidebar.tsx
+│   │   │   │   ├── admin-skeleton-banner.tsx
+│   │   │   │   ├── admin-topbar.tsx
+│   │   │   │   ├── dashboard-screen.tsx
+│   │   │   │   ├── metric-card.tsx
+│   │   │   │   ├── module-detail-page.tsx
+│   │   │   │   ├── module-list-page.tsx
+│   │   │   │   ├── page-shell.tsx
+│   │   │   │   ├── query-state-panel.tsx
+│   │   │   │   └── section-title.tsx
+│   │   │   ├── lib
+│   │   │   │   ├── admin-content.ts
+│   │   │   │   ├── admin-repository.ts
+│   │   │   │   ├── env.ts
+│   │   │   │   ├── mock-delay.ts
+│   │   │   │   ├── navigation.ts
+│   │   │   │   └── utils.ts
+│   │   │   ├── models
+│   │   │   │   └── admin-screen-models.ts
+│   │   │   ├── providers
+│   │   │   │   ├── admin-app-providers.tsx
+│   │   │   │   └── query-provider.tsx
+│   │   │   └── queries
+│   │   │       └── use-admin-queries.ts
+│   │   ├── .env.example
+│   │   ├── next-env.d.ts
+│   │   ├── next.config.mjs
+│   │   ├── package.json
+│   │   ├── postcss.config.mjs
+│   │   ├── tailwind.config.ts
+│   │   └── tsconfig.json
+│   ├── mobile
+│   │   ├── app
+│   │   │   ├── (app)
+│   │   │   │   ├── (tabs)
+│   │   │   │   │   ├── _layout.tsx
+│   │   │   │   │   ├── home.tsx
+│   │   │   │   │   ├── invites.tsx
+│   │   │   │   │   ├── me.tsx
+│   │   │   │   │   ├── queue.tsx
+│   │   │   │   │   ├── tasks.tsx
+│   │   │   │   │   └── wallet.tsx
+│   │   │   │   ├── checkout
+│   │   │   │   │   └── [productId].tsx
+│   │   │   │   ├── me
+│   │   │   │   │   ├── addresses.tsx
+│   │   │   │   │   └── security.tsx
+│   │   │   │   ├── orders
+│   │   │   │   │   └── success
+│   │   │   │   │       └── [orderId].tsx
+│   │   │   │   ├── product
+│   │   │   │   │   └── [productId].tsx
+│   │   │   │   ├── queue
+│   │   │   │   │   └── [entryId].tsx
+│   │   │   │   ├── rules
+│   │   │   │   │   ├── activity
+│   │   │   │   │   │   └── [campaignId].tsx
+│   │   │   │   │   ├── index.tsx
+│   │   │   │   │   ├── queue.tsx
+│   │   │   │   │   └── wallet.tsx
+│   │   │   │   ├── wallet
+│   │   │   │   │   └── withdraw.tsx
+│   │   │   │   ├── _layout.tsx
+│   │   │   │   ├── delete-account.tsx
+│   │   │   │   ├── privacy.tsx
+│   │   │   │   ├── support.tsx
+│   │   │   │   └── terms.tsx
+│   │   │   ├── (public)
+│   │   │   │   ├── auth
+│   │   │   │   │   ├── otp.tsx
+│   │   │   │   │   └── phone.tsx
+│   │   │   │   ├── _layout.tsx
+│   │   │   │   └── welcome.tsx
+│   │   │   ├── _layout.tsx
+│   │   │   └── index.tsx
+│   │   ├── src
+│   │   │   ├── adapters
+│   │   │   │   ├── mobile-read-adapter.generated.ts
+│   │   │   │   ├── mobile-read-adapter.mock.ts
+│   │   │   │   ├── mobile-read-adapter.readiness.ts
+│   │   │   │   ├── mobile-read-adapter.resolve.ts
+│   │   │   │   ├── mobile-read-adapter.ts
+│   │   │   │   ├── runtime-config-adapter.generated.ts
+│   │   │   │   ├── runtime-config-adapter.mock.ts
+│   │   │   │   ├── runtime-config-adapter.readiness.ts
+│   │   │   │   ├── runtime-config-adapter.resolve.ts
+│   │   │   │   └── runtime-config-adapter.ts
+│   │   │   ├── components
+│   │   │   │   ├── checkbox-row.tsx
+│   │   │   │   ├── demo-banner.tsx
+│   │   │   │   ├── empty-state.tsx
+│   │   │   │   ├── key-value-row.tsx
+│   │   │   │   ├── nav-row.tsx
+│   │   │   │   ├── primary-button.tsx
+│   │   │   │   ├── query-state-card.tsx
+│   │   │   │   ├── screen.tsx
+│   │   │   │   ├── section-card.tsx
+│   │   │   │   ├── status-pill.tsx
+│   │   │   │   └── text-field.tsx
+│   │   │   ├── hooks
+│   │   │   │   └── use-runtime-config.ts
+│   │   │   ├── lib
+│   │   │   │   ├── demo-data.ts
+│   │   │   │   ├── env.ts
+│   │   │   │   ├── mobile-repository.ts
+│   │   │   │   ├── mock-delay.ts
+│   │   │   │   └── status-maps.ts
+│   │   │   ├── models
+│   │   │   │   └── mobile-screen-models.ts
+│   │   │   ├── providers
+│   │   │   │   ├── app-providers.tsx
+│   │   │   │   └── query-provider.tsx
+│   │   │   ├── queries
+│   │   │   │   └── use-mobile-queries.ts
+│   │   │   └── store
+│   │   │       ├── auth-store.ts
+│   │   │       └── runtime-config-store.ts
+│   │   ├── .env.example
+│   │   ├── app.json
+│   │   ├── babel.config.js
+│   │   ├── expo-env.d.ts
+│   │   ├── package.json
+│   │   └── tsconfig.json
+│   └── web
+│       ├── app
+│       │   ├── contact
+│       │   │   └── page.tsx
+│       │   ├── delete-account
+│       │   │   └── page.tsx
+│       │   ├── privacy
+│       │   │   └── page.tsx
+│       │   ├── rules
+│       │   │   ├── activity
+│       │   │   │   └── [slug]
+│       │   │   │       └── page.tsx
+│       │   │   ├── queue
+│       │   │   │   └── page.tsx
+│       │   │   ├── wallet
+│       │   │   │   └── page.tsx
+│       │   │   └── page.tsx
+│       │   ├── terms
+│       │   │   └── page.tsx
+│       │   ├── error.tsx
+│       │   ├── globals.css
+│       │   ├── layout.tsx
+│       │   ├── loading.tsx
+│       │   ├── not-found.tsx
+│       │   └── page.tsx
+│       ├── src
+│       │   ├── components
+│       │   │   ├── ui
+│       │   │   │   ├── button.tsx
+│       │   │   │   └── card.tsx
+│       │   │   ├── page-hero.tsx
+│       │   │   ├── page-shell.tsx
+│       │   │   ├── section-card.tsx
+│       │   │   ├── site-footer.tsx
+│       │   │   └── site-header.tsx
+│       │   └── lib
+│       │       ├── env.ts
+│       │       ├── site-content.ts
+│       │       └── utils.ts
+│       ├── .env.example
+│       ├── next-env.d.ts
+│       ├── next.config.mjs
+│       ├── package.json
+│       ├── postcss.config.mjs
+│       ├── tailwind.config.ts
+│       └── tsconfig.json
 ├── docs
-│ ├── contracts
-│ │ ├── admin-route-module-map-v1.2.md
-│ │ ├── frontend-generated-adapter-readiness-v1.2.md
-│ │ ├── frontend-guardrail-checks-v1.2.md
-│ │ ├── frontend-openapi-intake-pipeline-v1.2.md
-│ │ ├── frontend-preopenapi-boundary-v1.2.md
-│ │ ├── frontend-read-adapter-switch-plan-v1.2.md
-│ │ ├── frontend-route-registry-audit-v1.2.md
-│ │ ├── frontend-screen-data-boundary-v1.2.md
-│ │ ├── mobile-screen-api-map-v1.2.md
-│ │ ├── queuefree-collaboration-contract-v1.2.md
-│ │ └── web-public-route-map-v1.2.md
-│ ├── handoffs
-│ │ ├── backend-next-steps-from-admin-batch4.md
-│ │ ├── backend-next-steps-from-frontend-batch10.md
-│ │ ├── backend-next-steps-from-frontend-batch5.md
-│ │ ├── backend-next-steps-from-frontend-batch6.md
-│ │ ├── backend-next-steps-from-frontend-batch7.md
-│ │ ├── backend-next-steps-from-frontend-batch8.md
-│ │ ├── backend-next-steps-from-frontend-batch9.md
-│ │ ├── backend-next-steps-from-mobile-batch2.md
-│ │ ├── backend-next-steps-from-web-batch3.md
-│ │ ├── server-next-steps-from-admin-batch4.md
-│ │ ├── server-next-steps-from-frontend-batch10.md
-│ │ ├── server-next-steps-from-frontend-batch5.md
-│ │ ├── server-next-steps-from-frontend-batch6.md
-│ │ ├── server-next-steps-from-frontend-batch7.md
-│ │ ├── server-next-steps-from-frontend-batch8.md
-│ │ ├── server-next-steps-from-frontend-batch9.md
-│ │ ├── server-next-steps-from-mobile-batch2.md
-│ │ ├── server-next-steps-from-web-batch3.md
-│ │ ├── 三个对话框怎么继续发.md
-│ │ ├── 第10批-发给后端和服务器的话术.md
-│ │ ├── 第3批-发给后端和服务器的话术.md
-│ │ ├── 第4批-发给后端和服务器的话术.md
-│ │ ├── 第5批-发给后端和服务器的话术.md
-│ │ ├── 第6批-发给后端和服务器的话术.md
-│ │ ├── 第7批-发给后端和服务器的话术.md
-│ │ ├── 第8批-发给后端和服务器的话术.md
-│ │ └── 第9批-发给后端和服务器的话术.md
-│ └── registry
-│ └── registry-baseline-v1.2.md
+│   ├── contracts
+│   │   ├── admin-route-module-map-v1.2.md
+│   │   ├── frontend-generated-adapter-readiness-v1.2.md
+│   │   ├── frontend-guardrail-checks-v1.2.md
+│   │   ├── frontend-openapi-intake-pipeline-v1.2.md
+│   │   ├── frontend-preopenapi-boundary-v1.2.md
+│   │   ├── frontend-read-adapter-switch-plan-v1.2.md
+│   │   ├── frontend-route-registry-audit-v1.2.md
+│   │   ├── frontend-screen-data-boundary-v1.2.md
+│   │   ├── mobile-screen-api-map-v1.2.md
+│   │   ├── queuefree-collaboration-contract-v1.2.md
+│   │   └── web-public-route-map-v1.2.md
+│   ├── handoffs
+│   │   ├── backend-next-steps-from-admin-batch4.md
+│   │   ├── backend-next-steps-from-frontend-batch10.md
+│   │   ├── backend-next-steps-from-frontend-batch5.md
+│   │   ├── backend-next-steps-from-frontend-batch6.md
+│   │   ├── backend-next-steps-from-frontend-batch7.md
+│   │   ├── backend-next-steps-from-frontend-batch8.md
+│   │   ├── backend-next-steps-from-frontend-batch9.md
+│   │   ├── backend-next-steps-from-mobile-batch2.md
+│   │   ├── backend-next-steps-from-web-batch3.md
+│   │   ├── server-next-steps-from-admin-batch4.md
+│   │   ├── server-next-steps-from-frontend-batch10.md
+│   │   ├── server-next-steps-from-frontend-batch5.md
+│   │   ├── server-next-steps-from-frontend-batch6.md
+│   │   ├── server-next-steps-from-frontend-batch7.md
+│   │   ├── server-next-steps-from-frontend-batch8.md
+│   │   ├── server-next-steps-from-frontend-batch9.md
+│   │   ├── server-next-steps-from-mobile-batch2.md
+│   │   ├── server-next-steps-from-web-batch3.md
+│   │   ├── 三个对话框怎么继续发.md
+│   │   ├── 第10批-发给后端和服务器的话术.md
+│   │   ├── 第3批-发给后端和服务器的话术.md
+│   │   ├── 第4批-发给后端和服务器的话术.md
+│   │   ├── 第5批-发给后端和服务器的话术.md
+│   │   ├── 第6批-发给后端和服务器的话术.md
+│   │   ├── 第7批-发给后端和服务器的话术.md
+│   │   ├── 第8批-发给后端和服务器的话术.md
+│   │   └── 第9批-发给后端和服务器的话术.md
+│   └── registry
+│       └── registry-baseline-v1.2.md
 ├── packages
-│ ├── api-client
-│ │ ├── openapi
-│ │ │ ├── .gitkeep
-│ │ │ └── README.md
-│ │ ├── src
-│ │ │ ├── generated
-│ │ │ │ └── .gitkeep
-│ │ │ └── index.ts
-│ │ ├── package.json
-│ │ ├── README.md
-│ │ └── tsconfig.json
-│ ├── shared
-│ │ ├── src
-│ │ │ ├── constants
-│ │ │ │ ├── business-rules.ts
-│ │ │ │ ├── launch.ts
-│ │ │ │ ├── routes.ts
-│ │ │ │ └── runtime-config-defaults.ts
-│ │ │ ├── enums
-│ │ │ │ ├── account-delete-status.ts
-│ │ │ │ ├── admin-role.ts
-│ │ │ │ ├── cron-name.ts
-│ │ │ │ ├── event-name.ts
-│ │ │ │ ├── invite-relation-status.ts
-│ │ │ │ ├── order-status.ts
-│ │ │ │ ├── queue-entry-status.ts
-│ │ │ │ ├── queue-name.ts
-│ │ │ │ ├── settlement-slot-status.ts
-│ │ │ │ ├── user-queue-guard-status.ts
-│ │ │ │ ├── wallet-activation-method.ts
-│ │ │ │ ├── withdrawal-status.ts
-│ │ │ │ └── worker-job-name.ts
-│ │ │ ├── formatters
-│ │ │ │ ├── datetime.ts
-│ │ │ │ └── money.ts
-│ │ │ ├── schemas
-│ │ │ │ └── runtime-config.schema.ts
-│ │ │ ├── types
-│ │ │ │ └── runtime-config.ts
-│ │ │ └── index.ts
-│ │ ├── package.json
-│ │ └── tsconfig.json
-│ └── ui-tokens
-│ ├── src
-│ │ ├── index.ts
-│ │ ├── mobile-theme.ts
-│ │ └── web-theme.ts
-│ ├── package.json
-│ └── tsconfig.json
+│   ├── api-client
+│   │   ├── openapi
+│   │   │   ├── .gitkeep
+│   │   │   └── README.md
+│   │   ├── src
+│   │   │   ├── generated
+│   │   │   │   └── .gitkeep
+│   │   │   └── index.ts
+│   │   ├── package.json
+│   │   ├── README.md
+│   │   └── tsconfig.json
+│   ├── shared
+│   │   ├── src
+│   │   │   ├── constants
+│   │   │   │   ├── business-rules.ts
+│   │   │   │   ├── launch.ts
+│   │   │   │   ├── routes.ts
+│   │   │   │   └── runtime-config-defaults.ts
+│   │   │   ├── enums
+│   │   │   │   ├── account-delete-status.ts
+│   │   │   │   ├── admin-role.ts
+│   │   │   │   ├── cron-name.ts
+│   │   │   │   ├── event-name.ts
+│   │   │   │   ├── invite-relation-status.ts
+│   │   │   │   ├── order-status.ts
+│   │   │   │   ├── queue-entry-status.ts
+│   │   │   │   ├── queue-name.ts
+│   │   │   │   ├── settlement-slot-status.ts
+│   │   │   │   ├── user-queue-guard-status.ts
+│   │   │   │   ├── wallet-activation-method.ts
+│   │   │   │   ├── withdrawal-status.ts
+│   │   │   │   └── worker-job-name.ts
+│   │   │   ├── formatters
+│   │   │   │   ├── datetime.ts
+│   │   │   │   └── money.ts
+│   │   │   ├── schemas
+│   │   │   │   └── runtime-config.schema.ts
+│   │   │   ├── types
+│   │   │   │   └── runtime-config.ts
+│   │   │   └── index.ts
+│   │   ├── package.json
+│   │   └── tsconfig.json
+│   └── ui-tokens
+│       ├── src
+│       │   ├── index.ts
+│       │   ├── mobile-theme.ts
+│       │   └── web-theme.ts
+│       ├── package.json
+│       └── tsconfig.json
 ├── scripts
-│ ├── _openapi-helpers.mjs
-│ ├── generate-api-client.mjs
-│ ├── reset-api-client-placeholder.mjs
-│ ├── verify-adapter-switch-boundary.mjs
-│ ├── verify-frontend-import-boundaries.mjs
-│ ├── verify-generated-adapter-bridge.mjs
-│ ├── verify-generated-api-client.mjs
-│ ├── verify-mock-data-boundary.mjs
-│ ├── verify-openapi-intake.mjs
-│ ├── verify-registry-first-frontend.mjs
-│ └── verify-route-registry.mjs
+│   ├── _openapi-helpers.mjs
+│   ├── generate-api-client.mjs
+│   ├── reset-api-client-placeholder.mjs
+│   ├── verify-adapter-switch-boundary.mjs
+│   ├── verify-frontend-import-boundaries.mjs
+│   ├── verify-generated-adapter-bridge.mjs
+│   ├── verify-generated-api-client.mjs
+│   ├── verify-mock-data-boundary.mjs
+│   ├── verify-openapi-intake.mjs
+│   ├── verify-registry-first-frontend.mjs
+│   └── verify-route-registry.mjs
 ├── .gitignore
 ├── .npmrc
 ├── .nvmrc

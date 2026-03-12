@@ -12,5 +12,5 @@ export const API_CLIENT_RUNTIME_MODE: ApiClientRuntimeMode = 'generated';
 export const API_CLIENT_IS_GENERATED = true;
 
 export async function loadGeneratedApiClient() {
- return import('./generated/client');
+  return import('./generated/client');
 }

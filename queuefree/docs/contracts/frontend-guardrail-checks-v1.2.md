@@ -1,6 +1,6 @@
 # QueueFree Frontend Guardrail Checks v1.2
 
-状态：Informational 
+状态：Informational  
 唯一规则源：`queuefree_prd_v1_2`
 
 本文件不是新的共享契约。

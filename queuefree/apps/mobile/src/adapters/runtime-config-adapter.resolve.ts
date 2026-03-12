@@ -8,13 +8,13 @@ export type RuntimeConfigAdapterMode = 'mock' | 'generated';
 export const RUNTIME_CONFIG_ADAPTER_MODE: RuntimeConfigAdapterMode = getRuntimeConfigAdapterReadiness().runtimeConfigMode;
 
 export function getRuntimeConfigAdapterStatusSummary() {
- return getRuntimeConfigAdapterReadiness();
+  return getRuntimeConfigAdapterReadiness();
 }
 
 export function resolveRuntimeConfigAdapter(): RuntimeConfigAdapter {
- if (RUNTIME_CONFIG_ADAPTER_MODE === 'generated') {
- return generatedRuntimeConfigAdapter;
- }
+  if (RUNTIME_CONFIG_ADAPTER_MODE === 'generated') {
+    return generatedRuntimeConfigAdapter;
+  }
 
- return mockRuntimeConfigAdapter;
+  return mockRuntimeConfigAdapter;
 }
