@@ -10,19 +10,19 @@
       "default": "./src/index.ts"
     },
     "./sdk": {
-      "types": "./src/generated/client/sdk.gen.d.ts",
-      "import": "./src/generated/client/sdk.gen.js",
-      "default": "./src/generated/client/sdk.gen.js"
+      "types": "./src/generated/sdk.gen.d.ts",
+      "import": "./src/generated/sdk.gen.js",
+      "default": "./src/generated/sdk.gen.js"
     },
     "./client": {
-      "types": "./src/generated/client/client.gen.d.ts",
-      "import": "./src/generated/client/client.gen.js",
-      "default": "./src/generated/client/client.gen.js"
+      "types": "./src/generated/client.gen.d.ts",
+      "import": "./src/generated/client.gen.js",
+      "default": "./src/generated/client.gen.js"
     },
     "./types": {
-      "types": "./src/generated/client/types.gen.d.ts",
-      "import": "./src/generated/client/types.gen.js",
-      "default": "./src/generated/client/types.gen.js"
+      "types": "./src/generated/types.gen.d.ts",
+      "import": "./src/generated/types.gen.js",
+      "default": "./src/generated/types.gen.js"
     }
   },
   "scripts": {

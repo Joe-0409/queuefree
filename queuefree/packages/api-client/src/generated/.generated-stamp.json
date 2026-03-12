@@ -1,6 +1,0 @@
-{
-  "specFile": "packages/api-client/openapi/openapi.json",
-  "generatedAt": "2026-03-12T09:10:53.069Z",
-  "generator": "openapi-typescript-codegen",
-  "operationCount": 17
-}

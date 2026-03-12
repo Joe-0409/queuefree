@@ -16,7 +16,7 @@ const repoRoot = path.resolve(__dirname, '..');
 const packageRoot = path.resolve(repoRoot, 'packages/api-client');
 const packageJsonPath = path.resolve(packageRoot, 'package.json');
 const rootIndexPath = path.resolve(packageRoot, 'src/index.ts');
-const generatedDir = path.resolve(packageRoot, 'src/generated/client');
+const generatedDir = path.resolve(packageRoot, 'src/generated');
 
 const publicDomainMarkers = [
   'queuefree.com',
