@@ -401,3 +401,82 @@ shared 只定义：
   - `APPLE_ASC_API_KEY_P8`
   - `EXPO_APPLE_APP_SPECIFIC_PASSWORD`
   - `GOOGLE_PLAY_SERVICE_ACCOUNT_JSON`
+
+### C 端只读 Core API（Batch 8A）
+
+- `GET /v1/me`
+- `GET /v1/products`
+- `GET /v1/products/:productId`
+- `GET /v1/queue-guard`
+- `GET /v1/queue-entries`
+- `GET /v1/queue-entries/:queueEntryId`
+
+### C 端只读 Core Request Field Registry（Batch 8A）
+
+#### `GET /v1/products/:productId`
+- `productId: string`
+
+#### `GET /v1/queue-entries/:queueEntryId`
+- `queueEntryId: string`
+
+### C 端只读 Core Response Schema Registry（Batch 8A）
+
+#### `MeOverviewResponse`
+- `userId: string`
+- `phoneMasked: string`
+- `accountDeleteStatus: AccountDeleteStatus`
+- `walletActivationMethod: WalletActivationMethod | null`
+
+#### `ProductListItem`
+- `productId: string`
+- `title: string`
+- `coverImageUrl: string`
+- `priceMinor: number`
+- `currencyCode: string`
+- `maxQty: number`
+- `isQueueEligible: boolean`
+
+#### `ProductListResponse`
+- `items: ProductListItem[]`
+
+#### `ProductDetailResponse`
+- `productId: string`
+- `title: string`
+- `description: string`
+- `imageUrls: string[]`
+- `priceMinor: number`
+- `currencyCode: string`
+- `maxQty: number`
+- `isQueueEligible: boolean`
+
+#### `UserQueueGuardResponse`
+- `status: UserQueueGuardStatus`
+- `lastCheckinAt: string | null`
+- `validUntil: string`
+- `graceUntil: string | null`
+
+#### `QueueEntryListItem`
+- `queueEntryId: string`
+- `orderId: string`
+- `productId: string`
+- `productTitle: string`
+- `coverImageUrl: string`
+- `status: QueueEntryStatus`
+- `activeRank: number | null`
+- `boostUsedCount: number`
+- `wonCashbackAmountMinor: number | null`
+
+#### `QueueEntryListResponse`
+- `items: QueueEntryListItem[]`
+
+#### `QueueEntryDetailResponse`
+- `queueEntryId: string`
+- `orderId: string`
+- `productId: string`
+- `productTitle: string`
+- `coverImageUrl: string`
+- `status: QueueEntryStatus`
+- `activeRank: number | null`
+- `boostUsedCount: number`
+- `wonCashbackAmountMinor: number | null`
+- `enteredAt: string`
