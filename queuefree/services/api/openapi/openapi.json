@@ -2,25 +2,11 @@
   "openapi": "3.0.0",
   "info": {
     "title": "QueueFree API",
-    "description": "Batch 9B: Typed Read-Only Core OpenAPI. Exposes system, rules, and consumer core read-only endpoints (Me, Products, Queue, Tasks, Invites, Wallet, Withdrawals).",
-    "version": "0.0.1"
+    "description": "Batch 9 Final: Typed Read-Only Core OpenAPI (Consumer & Admin).",
+    "version": "0.1.0"
   },
   "servers": [
-    {
-      "url": "http://localhost:4000",
-      "description": "local"
-    }
-  ],
-  "tags": [
-    { "name": "System" },
-    { "name": "Rules" },
-    { "name": "ConsumerMe" },
-    { "name": "ConsumerProducts" },
-    { "name": "ConsumerQueue" },
-    { "name": "ConsumerTasks" },
-    { "name": "ConsumerInvites" },
-    { "name": "ConsumerWallet" },
-    { "name": "ConsumerWithdrawals" }
+    { "url": "http://localhost:4000", "description": "local" }
   ],
   "paths": {
     "/v1/health": {
@@ -30,9 +16,7 @@
         "responses": {
           "200": {
             "description": "OK",
-            "content": {
-              "application/json": { "schema": { "$ref": "#/components/schemas/HealthResponse" } }
-            }
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HealthResponse" } } }
           }
         }
       }
@@ -44,9 +28,7 @@
         "responses": {
           "200": {
             "description": "OK",
-            "content": {
-              "application/json": { "schema": { "$ref": "#/components/schemas/MeOverviewResponse" } }
-            }
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MeOverviewResponse" } } }
           }
         }
       }
@@ -58,9 +40,7 @@
         "responses": {
           "200": {
             "description": "OK",
-            "content": {
-              "application/json": { "schema": { "$ref": "#/components/schemas/ProductListResponse" } }
-            }
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ProductListResponse" } } }
           }
         }
       }
@@ -75,9 +55,7 @@
         "responses": {
           "200": {
             "description": "OK",
-            "content": {
-              "application/json": { "schema": { "$ref": "#/components/schemas/ProductDetailResponse" } }
-            }
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ProductDetailResponse" } } }
           }
         }
       }
@@ -85,13 +63,11 @@
     "/v1/queue-guard": {
       "get": {
         "tags": ["ConsumerQueue"],
-        "summary": "Get User Queue Guard Status",
+        "summary": "Get Queue Guard Status",
         "responses": {
           "200": {
             "description": "OK",
-            "content": {
-              "application/json": { "schema": { "$ref": "#/components/schemas/UserQueueGuardResponse" } }
-            }
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/UserQueueGuardResponse" } } }
           }
         }
       }
@@ -100,29 +76,14 @@
       "get": {
         "tags": ["ConsumerQueue"],
         "summary": "List My Queue Entries",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": { "schema": { "$ref": "#/components/schemas/QueueEntryListResponse" } }
-            }
-          }
-        }
-      }
-    },
-    "/v1/queue-entries/{queueEntryId}": {
-      "get": {
-        "tags": ["ConsumerQueue"],
-        "summary": "Get Queue Entry Detail",
         "parameters": [
-          { "name": "queueEntryId", "in": "path", "required": true, "schema": { "type": "string" } }
+          { "name": "cursor", "in": "query", "schema": { "type": "string", "nullable": true } },
+          { "name": "limit", "in": "query", "schema": { "type": "number", "default": 20 } }
         ],
         "responses": {
           "200": {
             "description": "OK",
-            "content": {
-              "application/json": { "schema": { "$ref": "#/components/schemas/QueueEntryDetailResponse" } }
-            }
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/QueueEntryListResponse" } } }
           }
         }
       }
@@ -134,9 +95,7 @@
         "responses": {
           "200": {
             "description": "OK",
-            "content": {
-              "application/json": { "schema": { "$ref": "#/components/schemas/TaskListResponse" } }
-            }
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/TaskListResponse" } } }
           }
         }
       }
@@ -148,23 +107,7 @@
         "responses": {
           "200": {
             "description": "OK",
-            "content": {
-              "application/json": { "schema": { "$ref": "#/components/schemas/UserInviteOverviewResponse" } }
-            }
-          }
-        }
-      }
-    },
-    "/v1/invites/records": {
-      "get": {
-        "tags": ["ConsumerInvites"],
-        "summary": "List My Invite Records",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": { "schema": { "$ref": "#/components/schemas/InviteRecordListResponse" } }
-            }
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/UserInviteOverviewResponse" } } }
           }
         }
       }
@@ -176,41 +119,19 @@
         "responses": {
           "200": {
             "description": "OK",
-            "content": {
-              "application/json": { "schema": { "$ref": "#/components/schemas/WalletOverviewResponse" } }
-            }
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/WalletOverviewResponse" } } }
           }
         }
       }
     },
-    "/v1/wallet/ledgers": {
+    "/v1/admin/dashboard/summary": {
       "get": {
-        "tags": ["ConsumerWallet"],
-        "summary": "List Wallet Ledgers",
-        "parameters": [
-          { "name": "cursor", "in": "query", "schema": { "type": "string", "nullable": true } },
-          { "name": "limit", "in": "query", "schema": { "type": "number", "default": 20 } }
-        ],
+        "tags": ["AdminDashboard"],
+        "summary": "Admin Dashboard Summary",
         "responses": {
           "200": {
             "description": "OK",
-            "content": {
-              "application/json": { "schema": { "$ref": "#/components/schemas/WalletLedgerListResponse" } }
-            }
-          }
-        }
-      }
-    },
-    "/v1/withdrawals": {
-      "get": {
-        "tags": ["ConsumerWithdrawals"],
-        "summary": "List Withdrawals",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": { "schema": { "$ref": "#/components/schemas/WithdrawalListResponse" } }
-            }
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/AdminDashboardSummaryResponse" } } }
           }
         }
       }
@@ -231,10 +152,12 @@
         "properties": {
           "userId": { "type": "string" },
           "phoneMasked": { "type": "string" },
+          "inviteCode": { "type": "string" },
+          "walletActivated": { "type": "boolean" },
           "accountDeleteStatus": { "type": "string" },
-          "walletActivationMethod": { "type": "string", "nullable": true }
+          "ruleVersion": { "type": "string" }
         },
-        "required": ["userId", "phoneMasked", "accountDeleteStatus"]
+        "required": ["userId", "phoneMasked", "inviteCode", "walletActivated", "accountDeleteStatus", "ruleVersion"]
       },
       "ProductListItem": {
         "type": "object",
@@ -243,10 +166,11 @@
           "title": { "type": "string" },
           "coverImageUrl": { "type": "string" },
           "priceMinor": { "type": "number" },
-          "currencyCode": { "type": "string" },
-          "isQueueEligible": { "type": "boolean" }
+          "currency": { "type": "string" },
+          "queueEnabled": { "type": "boolean" },
+          "soldOut": { "type": "boolean" }
         },
-        "required": ["productId", "title", "coverImageUrl", "priceMinor", "currencyCode", "isQueueEligible"]
+        "required": ["productId", "title", "coverImageUrl", "priceMinor", "currency", "queueEnabled", "soldOut"]
       },
       "ProductListResponse": {
         "type": "object",
@@ -260,22 +184,24 @@
         "properties": {
           "productId": { "type": "string" },
           "title": { "type": "string" },
-          "description": { "type": "string" },
-          "imageUrls": { "type": "array", "items": { "type": "string" } },
+          "descriptionText": { "type": "string" },
+          "coverImageUrl": { "type": "string" },
           "priceMinor": { "type": "number" },
-          "currencyCode": { "type": "string" },
-          "isQueueEligible": { "type": "boolean" }
+          "currency": { "type": "string" },
+          "queueEnabled": { "type": "boolean" },
+          "soldOut": { "type": "boolean" }
         },
-        "required": ["productId", "title", "description", "imageUrls", "priceMinor", "currencyCode", "isQueueEligible"]
+        "required": ["productId", "title", "descriptionText", "coverImageUrl", "priceMinor", "currency", "queueEnabled", "soldOut"]
       },
       "UserQueueGuardResponse": {
         "type": "object",
         "properties": {
           "status": { "type": "string" },
-          "lastCheckinAt": { "type": "string", "nullable": true },
-          "validUntil": { "type": "string" }
+          "validUntil": { "type": "string" },
+          "activeEntriesCount": { "type": "number" },
+          "frozenEntriesCount": { "type": "number" }
         },
-        "required": ["status", "validUntil"]
+        "required": ["status", "validUntil", "activeEntriesCount", "frozenEntriesCount"]
       },
       "QueueEntryListItem": {
         "type": "object",
@@ -284,28 +210,18 @@
           "productId": { "type": "string" },
           "productTitle": { "type": "string" },
           "status": { "type": "string" },
-          "activeRank": { "type": "number", "nullable": true }
+          "activeRank": { "type": "number", "nullable": true },
+          "boostUsedCount": { "type": "number" }
         },
-        "required": ["queueEntryId", "productId", "productTitle", "status"]
+        "required": ["queueEntryId", "productId", "productTitle", "status", "boostUsedCount"]
       },
       "QueueEntryListResponse": {
         "type": "object",
         "properties": {
-          "items": { "type": "array", "items": { "$ref": "#/components/schemas/QueueEntryListItem" } }
+          "items": { "type": "array", "items": { "$ref": "#/components/schemas/QueueEntryListItem" } },
+          "nextCursor": { "type": "string", "nullable": true }
         },
         "required": ["items"]
-      },
-      "QueueEntryDetailResponse": {
-        "type": "object",
-        "properties": {
-          "queueEntryId": { "type": "string" },
-          "productId": { "type": "string" },
-          "productTitle": { "type": "string" },
-          "status": { "type": "string" },
-          "activeRank": { "type": "number", "nullable": true },
-          "enteredAt": { "type": "string" }
-        },
-        "required": ["queueEntryId", "productId", "productTitle", "status", "enteredAt"]
       },
       "TaskListResponse": {
         "type": "object",
@@ -319,81 +235,38 @@
         "properties": {
           "taskId": { "type": "string" },
           "title": { "type": "string" },
-          "rewardCashbackAmountMinor": { "type": "number" },
-          "isClaimed": { "type": "boolean" }
+          "rewardSummaryText": { "type": "string" },
+          "claimed": { "type": "boolean" }
         },
-        "required": ["taskId", "title", "rewardCashbackAmountMinor", "isClaimed"]
+        "required": ["taskId", "title", "rewardSummaryText", "claimed"]
       },
       "UserInviteOverviewResponse": {
         "type": "object",
         "properties": {
           "inviteCode": { "type": "string" },
-          "totalInvitedCount": { "type": "number" },
-          "effectiveInvitedCount": { "type": "number" }
+          "totalInviteCount": { "type": "number" },
+          "effectiveInviteCount": { "type": "number" }
         },
-        "required": ["inviteCode", "totalInvitedCount", "effectiveInvitedCount"]
-      },
-      "InviteRecordListResponse": {
-        "type": "object",
-        "properties": {
-          "items": { "type": "array", "items": { "$ref": "#/components/schemas/InviteRecordListItem" } }
-        },
-        "required": ["items"]
-      },
-      "InviteRecordListItem": {
-        "type": "object",
-        "properties": {
-          "relationId": { "type": "string" },
-          "inviteePhoneMasked": { "type": "string" },
-          "status": { "type": "string" },
-          "createdAt": { "type": "string" }
-        },
-        "required": ["relationId", "inviteePhoneMasked", "status", "createdAt"]
+        "required": ["inviteCode", "totalInviteCount", "effectiveInviteCount"]
       },
       "WalletOverviewResponse": {
         "type": "object",
         "properties": {
-          "balanceMinor": { "type": "number" },
-          "pendingCashbackMinor: number": { "type": "number" },
-          "totalWithdrawnMinor": { "type": "number" }
+          "walletActivated": { "type": "boolean" },
+          "availableBalanceMinor": { "type": "number" },
+          "pendingBalanceMinor": { "type": "number" },
+          "currency": { "type": "string" }
         },
-        "required": ["balanceMinor", "pendingCashbackMinor: number", "totalWithdrawnMinor"]
+        "required": ["walletActivated", "availableBalanceMinor", "pendingBalanceMinor", "currency"]
       },
-      "WalletLedgerListResponse": {
+      "AdminDashboardSummaryResponse": {
         "type": "object",
         "properties": {
-          "items": { "type": "array", "items": { "$ref": "#/components/schemas/WalletLedgerListItem" } },
-          "nextCursor": { "type": "string", "nullable": true }
+          "paidOrderCountToday": { "type": "number" },
+          "activeQueueEntryCount": { "type": "number" },
+          "pendingWithdrawalCount": { "type": "number" }
         },
-        "required": ["items"]
-      },
-      "WalletLedgerListItem": {
-        "type": "object",
-        "properties": {
-          "ledgerId": { "type": "string" },
-          "amountMinor": { "type": "number" },
-          "type": { "type": "string" },
-          "description": { "type": "string" },
-          "createdAt": { "type": "string" }
-        },
-        "required": ["ledgerId", "amountMinor", "type", "description", "createdAt"]
-      },
-      "WithdrawalListResponse": {
-        "type": "object",
-        "properties": {
-          "items": { "type": "array", "items": { "$ref": "#/components/schemas/WithdrawalListItem" } }
-        },
-        "required": ["items"]
-      },
-      "WithdrawalListItem": {
-        "type": "object",
-        "properties": {
-          "withdrawalId": { "type": "string" },
-          "amountMinor": { "type": "number" },
-          "status": { "type": "string" },
-          "createdAt": { "type": "string" }
-        },
-        "required": ["withdrawalId", "amountMinor", "status", "createdAt"]
+        "required": ["paidOrderCountToday", "activeQueueEntryCount", "pendingWithdrawalCount"]
       }
     }
   }
