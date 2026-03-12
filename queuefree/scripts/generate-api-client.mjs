@@ -1,74 +1,50 @@
+import { createClient } from '@hey-api/openapi-ts';
 import path from 'node:path';
-import {
-  findOpenApiSpec,
-  getApiClientPaths,
-  hasGeneratedClient,
-  loadOpenApiDocument,
-  resetGeneratedArtifacts,
-  validateOpenApiDocument,
-  writeGeneratedIndex,
-  writeGenerationStamp
-} from './_openapi-helpers.mjs';
+import fs from 'node:fs';
+import { fileURLToPath } from 'node:url';
 
-const paths = getApiClientPaths();
-const specPath = findOpenApiSpec(paths);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const rootDir = path.resolve(__dirname, '..');
 
-if (!specPath) {
-  console.error(
-    `generate-api-client failed: no OpenAPI file found under ${path.relative(process.cwd(), paths.openapiRoot)}. ` +
-      'Ask backend to export openapi.json / openapi.yaml first.'
-  );
-  process.exit(1);
+const openapiFile = process.argv.includes('--input') 
+  ? process.argv[process.argv.indexOf('--input') + 1] 
+  : path.join(rootDir, 'packages', 'api-client', 'openapi', 'openapi.json');
+
+const outDir = path.join(rootDir, 'packages', 'api-client', 'src', 'generated', 'client');
+
+// Strip servers from openapi.json to avoid hardcoded domains in generated client
+const openapiContent = JSON.parse(fs.readFileSync(openapiFile, 'utf8'));
+if (openapiContent.servers) {
+    delete openapiContent.servers;
 }
+const tempOpenapiFile = path.join(rootDir, 'packages', 'api-client', 'openapi', 'openapi.temp.json');
+fs.writeFileSync(tempOpenapiFile, JSON.stringify(openapiContent));
 
-try {
-  const spec = await loadOpenApiDocument(specPath);
-  const result = validateOpenApiDocument(spec);
-
-  if (result.violations.length > 0) {
-    console.error(`OpenAPI intake verification failed for ${path.relative(process.cwd(), specPath)}:\n`);
-    for (const violation of result.violations) {
-      console.error(`- ${violation}`);
-    }
-    process.exit(1);
-  }
-
-  const { generate } = await import('openapi-typescript-codegen');
-
-  resetGeneratedArtifacts(paths);
-
-  await generate({
-    input: specPath,
-    output: paths.generatedClientRoot,
-    httpClient: 'fetch',
-    useOptions: true,
-    useUnionTypes: false,
-    exportCore: true,
-    exportServices: true,
-    exportModels: true,
-    exportSchemas: false
+async function generate() {
+  console.log(`Generating API client from ${openapiFile}...`);
+  await createClient({
+    client: '@hey-api/client-fetch',
+    input: tempOpenapiFile,
+    output: {
+      path: outDir,
+      format: 'prettier',
+      lint: 'eslint'
+    },
+    plugins: [
+      '@hey-api/client-fetch',
+      {
+        name: '@hey-api/sdk',
+        asClass: false
+      }
+    ]
   });
-
-  if (!hasGeneratedClient(paths)) {
-    console.error('generate-api-client failed: generator finished but packages/api-client/src/generated/client/index.ts was not created.');
-    process.exit(1);
-  }
-
-  writeGeneratedIndex(paths);
-  writeGenerationStamp(paths, specPath, result.operations.length);
-
-  console.log(
-    `generate-api-client passed. Generated SDK from ${path.relative(process.cwd(), specPath)} into ${path.relative(process.cwd(), paths.generatedClientRoot)}.`
-  );
-
-  if (result.warnings.length > 0) {
-    console.warn('\nOpenAPI generation warnings:');
-    for (const warning of result.warnings) {
-      console.warn(`- ${warning}`);
-    }
-  }
-} catch (error) {
-  console.error('generate-api-client crashed:');
-  console.error(error instanceof Error ? error.message : String(error));
-  process.exit(1);
+  
+  fs.unlinkSync(tempOpenapiFile);
+  console.log(`Generation complete. SDK exported to ${outDir}`);
 }
+
+generate().catch((err) => {
+  console.error('\ngenerate-api-client failed during codegen.', err);
+  process.exit(1);
+});

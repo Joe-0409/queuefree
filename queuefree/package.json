@@ -33,6 +33,8 @@
     "verify:generated-bridge-coverage": "node ./scripts/verify-generated-bridge-coverage.mjs"
   },
   "devDependencies": {
+    "@hey-api/client-fetch": "0.13.1",
+    "@hey-api/openapi-ts": "0.94.0",
     "openapi-typescript-codegen": "^0.29.0",
     "turbo": "^2.4.4",
     "typescript": "^5.8.3",

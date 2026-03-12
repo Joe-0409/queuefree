@@ -2,9 +2,27 @@
   "name": "@queuefree/api-client",
   "private": true,
   "version": "0.1.0",
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
+  "exports": {
+    "./sdk": {
+      "types": "./src/generated/client/sdk.gen.d.ts",
+      "import": "./src/generated/client/sdk.gen.js",
+      "default": "./src/generated/client/sdk.gen.js"
+    },
+    "./client": {
+      "types": "./src/generated/client/client.gen.d.ts",
+      "import": "./src/generated/client/client.gen.js",
+      "default": "./src/generated/client/client.gen.js"
+    },
+    "./types": {
+      "types": "./src/generated/client/types.gen.d.ts",
+      "import": "./src/generated/client/types.gen.js",
+      "default": "./src/generated/client/types.gen.js"
+    }
+  },
   "scripts": {
     "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@hey-api/client-fetch": "0.13.1"
   }
 }

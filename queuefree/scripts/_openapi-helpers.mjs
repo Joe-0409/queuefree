@@ -30,23 +30,7 @@ export async function loadGeneratedApiClient(): Promise<never> {
 }
 `;
 
-export const GENERATED_INDEX_CONTENT = `/**
- * QueueFree generated SDK barrel.
- *
- * This file is rewritten by scripts/generate-api-client.mjs.
- * Do not hand-edit.
- */
-export * from './generated/client';
-
-export type ApiClientRuntimeMode = 'placeholder' | 'generated';
-
-export const API_CLIENT_RUNTIME_MODE: ApiClientRuntimeMode = 'generated';
-export const API_CLIENT_IS_GENERATED = true;
-
-export async function loadGeneratedApiClient() {
-  return import('./generated/client');
-}
-`;
+export const GENERATED_INDEX_CONTENT = `// Narrow exports enforced. Import from /sdk, /client, or /types instead.\nexport {};\n`;
 
 export function getRepoRoot() {
   return process.cwd();
@@ -99,7 +83,7 @@ export function resetGeneratedArtifacts(paths = getApiClientPaths()) {
 }
 
 export function hasGeneratedClient(paths = getApiClientPaths()) {
-  return fs.existsSync(path.join(paths.generatedClientRoot, 'index.ts'));
+  return fs.existsSync(path.join(paths.generatedClientRoot, 'client.gen.ts')) || fs.existsSync(path.join(paths.generatedClientRoot, 'client.gen.js'));
 }
 
 export function findOpenApiSpec(paths = getApiClientPaths()) {

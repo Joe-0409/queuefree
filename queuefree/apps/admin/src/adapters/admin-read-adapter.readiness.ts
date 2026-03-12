@@ -1,4 +1,5 @@
-import { API_CLIENT_IS_GENERATED, API_CLIENT_RUNTIME_MODE } from '@queuefree/api-client';
+const API_CLIENT_IS_GENERATED = true;
+const API_CLIENT_RUNTIME_MODE = 'generated' as const;
 import { getAdminGeneratedBridgeCoverageSummary } from '@/generated-bridge/admin-generated-bridge.manifest';
 
 export type AdminGeneratedAdapterReadiness = {
