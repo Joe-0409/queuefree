@@ -38,6 +38,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/rules": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List public rule documents for the Web/App rules center */
+        get: operations["listRules"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/rules/{slug}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get a public rule document by slug */
+        get: operations["getRuleBySlug"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -90,6 +124,41 @@ export interface components {
             /** @example false */
             rewardedAdsEnabled: boolean;
         };
+        RuleListItemDto: {
+            /** @example queue */
+            slug: string;
+            /** @example Queue Rules */
+            title: string;
+            /** @example How queue ranking, protection, boost, and settlement slots work. */
+            summary: string;
+            /**
+             * Format: date-time
+             * @example 2026-03-11T00:00:00.000Z
+             */
+            updatedAt: string;
+            /** @example v1.2 */
+            ruleVersion: string;
+        };
+        RuleDetailResponseDto: {
+            /** @example queue */
+            slug: string;
+            /** @example Queue Rules */
+            title: string;
+            /**
+             * @example [
+             *       "Queue rank is based on effective active entries only.",
+             *       "Settlement runs on fixed public slots."
+             *     ]
+             */
+            sections: string[];
+            /**
+             * Format: date-time
+             * @example 2026-03-11T00:00:00.000Z
+             */
+            updatedAt: string;
+            /** @example v1.2 */
+            ruleVersion: string;
+        };
     };
     responses: never;
     parameters: never;
@@ -141,6 +210,70 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["RuntimeConfigResponseDto"];
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponseDto"];
+                };
+            };
+        };
+    };
+    listRules: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RuleListItemDto"][];
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponseDto"];
+                };
+            };
+        };
+    };
+    getRuleBySlug: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: unknown;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RuleDetailResponseDto"];
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponseDto"];
                 };
             };
             500: {

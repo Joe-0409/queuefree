@@ -64,15 +64,110 @@
           "System"
         ]
       }
+    },
+    "/v1/rules": {
+      "get": {
+        "operationId": "listRules",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RuleListItemDto"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "List public rule documents for the Web/App rules center",
+        "tags": [
+          "Rules"
+        ]
+      }
+    },
+    "/v1/rules/{slug}": {
+      "get": {
+        "operationId": "getRuleBySlug",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "example": "queue"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuleDetailResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponseDto"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get a public rule document by slug",
+        "tags": [
+          "Rules"
+        ]
+      }
     }
   },
   "info": {
     "title": "QueueFree API",
-    "description": "Initial C-end OpenAPI surface for QueueFree. This batch only exposes system-level endpoints required to bootstrap packages/api-client and runtime config delivery.",
+    "description": "Initial C-end OpenAPI surface for QueueFree. This batch exposes system-level endpoints plus the minimum public rules endpoints needed by Web rules pages and packages/api-client.",
     "version": "0.0.1",
     "contact": {}
   },
-  "tags": [],
+  "tags": [
+    {
+      "name": "System",
+      "description": "System health and public runtime configuration."
+    },
+    {
+      "name": "Rules",
+      "description": "Public rules center documents for Web and App."
+    }
+  ],
   "servers": [
     {
       "url": "http://localhost:4000",
@@ -209,6 +304,78 @@
           "language",
           "ruleVersion",
           "rewardedAdsEnabled"
+        ]
+      },
+      "RuleListItemDto": {
+        "type": "object",
+        "properties": {
+          "slug": {
+            "type": "string",
+            "example": "queue"
+          },
+          "title": {
+            "type": "string",
+            "example": "Queue Rules"
+          },
+          "summary": {
+            "type": "string",
+            "example": "How queue ranking, protection, boost, and settlement slots work."
+          },
+          "updatedAt": {
+            "type": "string",
+            "example": "2026-03-11T00:00:00.000Z",
+            "format": "date-time"
+          },
+          "ruleVersion": {
+            "type": "string",
+            "example": "v1.2"
+          }
+        },
+        "required": [
+          "slug",
+          "title",
+          "summary",
+          "updatedAt",
+          "ruleVersion"
+        ]
+      },
+      "RuleDetailResponseDto": {
+        "type": "object",
+        "properties": {
+          "slug": {
+            "type": "string",
+            "example": "queue"
+          },
+          "title": {
+            "type": "string",
+            "example": "Queue Rules"
+          },
+          "sections": {
+            "example": [
+              "Queue rank is based on effective active entries only.",
+              "Settlement runs on fixed public slots."
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "updatedAt": {
+            "type": "string",
+            "example": "2026-03-11T00:00:00.000Z",
+            "format": "date-time"
+          },
+          "ruleVersion": {
+            "type": "string",
+            "example": "v1.2"
+          }
+        },
+        "required": [
+          "slug",
+          "title",
+          "sections",
+          "updatedAt",
+          "ruleVersion"
         ]
       }
     }
