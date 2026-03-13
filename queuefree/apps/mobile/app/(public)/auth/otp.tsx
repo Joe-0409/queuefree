@@ -1,11 +1,13 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
 import { Controller, useForm } from "react-hook-form";
-import { Text } from "react-native";
+import { Pressable, StyleSheet, Text } from "react-native";
 import { z } from "zod";
+import { mobileTheme } from "@queuefree/ui-tokens";
+import { PrimaryButton } from "../../../src/components/primary-button";
+import { PromoHeroCard } from "../../../src/components/promo-hero-card";
 import { Screen } from "../../../src/components/screen";
 import { SectionCard } from "../../../src/components/section-card";
-import { PrimaryButton } from "../../../src/components/primary-button";
 import { TextField } from "../../../src/components/text-field";
 import { useAuthStore } from "../../../src/store/auth-store";
 
@@ -37,9 +39,15 @@ export default function OtpScreen() {
   return (
     <Screen
       title="Verify OTP"
-      subtitle={`We are using a demo flow now. Enter any 6 digits to continue for ${phoneNumber || "your phone number"}.`}
+      subtitle={`Enter the 6-digit code for ${phoneNumber || "your phone number"}.`}
     >
-      <SectionCard title="Step 2" description="Real backend flow later verifies the OTP through generated OpenAPI client calls.">
+      <PromoHeroCard
+        eyebrow="OTP verification"
+        title="Finish sign in with one code"
+        description="The real backend later verifies OTP through generated client calls. This batch keeps the visual flow ready without adding a password path."
+      />
+
+      <SectionCard title="Verification code" description="Enter any 6 digits in demo mode.">
         <Controller
           control={form.control}
           name="otpCode"
@@ -55,19 +63,21 @@ export default function OtpScreen() {
           )}
         />
 
-        <PrimaryButton label="Verify and enter app" onPress={submit} />
-        <PrimaryButton
-          label="Back to phone step"
-          variant="secondary"
-          onPress={() => router.back()}
-        />
-      </SectionCard>
+        <PrimaryButton label="Verify and enter app" variant="promo" size="lg" onPress={submit} />
 
-      <SectionCard title="Reminder" description="The real app must keep privacy policy, terms, support, rules, and delete account access available in-app.">
-        <Text>• Language stays English for MVP</Text>
-        <Text>• No country selector in MVP</Text>
-        <Text>• Session refresh later comes from the generated auth client after backend exports OpenAPI</Text>
+        <Pressable onPress={() => router.back()}>
+          <Text style={styles.backLink}>Edit phone number</Text>
+        </Pressable>
       </SectionCard>
     </Screen>
   );
 }
+
+const styles = StyleSheet.create({
+  backLink: {
+    color: mobileTheme.colors.textSecondary,
+    fontSize: 14,
+    textAlign: "center",
+    marginTop: 4
+  }
+});

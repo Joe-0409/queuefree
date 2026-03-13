@@ -8,7 +8,9 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "storybook": "storybook dev -p 6007 --config-dir ./.storybook",
+    "storybook:build": "storybook build --config-dir ./.storybook"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -33,6 +35,11 @@
   "devDependencies": {
     "@types/react": "^19.1.10",
     "babel-preset-expo": "^54.0.0",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "@storybook/addon-essentials": "^8.6.14",
+    "@storybook/react-vite": "^8.6.14",
+    "react-native-web": "^0.21.0",
+    "storybook": "^8.6.14",
+    "vite": "^5.4.14"
   }
 }

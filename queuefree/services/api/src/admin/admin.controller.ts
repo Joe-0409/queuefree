@@ -3,7 +3,7 @@ import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AdminDashboardSummaryResponseDto } from './dto/admin-dashboard-summary-response.dto';
 
 @ApiTags('Admin')
-@Controller('v1/admin')
+@Controller('admin')
 export class AdminController {
   @Get('dashboard/summary')
   @ApiOperation({ summary: 'Admin Dashboard Summary' })

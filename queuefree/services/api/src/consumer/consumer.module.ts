@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { ConsumerController } from './consumer.controller';
+// import { ConsumerController } from './consumer.controller';
 
 @Module({
-  controllers: [ConsumerController],
+  // controllers: [ConsumerController],
 })
 export class ConsumerModule {}

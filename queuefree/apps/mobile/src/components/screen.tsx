@@ -60,8 +60,8 @@ const styles = StyleSheet.create({
     gap: mobileTheme.spacing.xs
   },
   title: {
-    fontSize: 28,
-    fontWeight: "700",
+    fontSize: 30,
+    fontWeight: "800",
     color: mobileTheme.colors.textPrimary
   },
   subtitle: {

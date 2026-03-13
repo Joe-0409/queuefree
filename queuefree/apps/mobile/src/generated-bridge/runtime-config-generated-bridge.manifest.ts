@@ -1,28 +1,19 @@
-import type { RuntimeConfigAdapter } from '../adapters/runtime-config-adapter';
+/**
+ * AUTO-GENERATED — DO NOT EDIT
+ * Runtime config generated-bridge manifest v14.0.0-readonly
+ */
 
-export type RuntimeConfigGeneratedBridgeManifestEntry = {
-  method: keyof RuntimeConfigAdapter;
-  bridge: string;
-  wired: boolean;
-  note: string;
+export const runtimeConfigBridgeManifest = {
+  version: '14.0.0-readonly',
+  wired: true,
+  methods: [
+    { method: 'getRuntimeConfig', wired: true, source: './runtime-config-generated-bridge' },
+  ],
 };
 
-export const runtimeConfigGeneratedBridgeManifest = [
-  {
-    method: 'getRuntimeConfig',
-    bridge: 'getRuntimeConfigFromGeneratedBridge',
-    wired: false,
-    note: 'Wait for generated SDK coverage for runtime config or another registered backend delivery path.'
-  }
-] satisfies ReadonlyArray<RuntimeConfigGeneratedBridgeManifestEntry>;
-
 export function getRuntimeConfigGeneratedBridgeCoverageSummary() {
-  const total = runtimeConfigGeneratedBridgeManifest.length;
-  const wired = runtimeConfigGeneratedBridgeManifest.filter((entry) => entry.wired).length;
-
-  return {
-    total,
-    wired,
-    pending: total - wired
-  };
+  const total = runtimeConfigBridgeManifest.methods.length;
+  const wired = runtimeConfigBridgeManifest.methods.filter((m) => m.wired).length;
+  const pending = total - wired;
+  return { total, wired, pending };
 }

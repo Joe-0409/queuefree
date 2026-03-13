@@ -1,13 +1,15 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
 import { Controller, useForm } from "react-hook-form";
-import { Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { z } from "zod";
+import { mobileTheme } from "@queuefree/ui-tokens";
+import { CheckboxRow } from "../../../src/components/checkbox-row";
+import { PrimaryButton } from "../../../src/components/primary-button";
+import { PromoHeroCard } from "../../../src/components/promo-hero-card";
 import { Screen } from "../../../src/components/screen";
 import { SectionCard } from "../../../src/components/section-card";
-import { PrimaryButton } from "../../../src/components/primary-button";
 import { TextField } from "../../../src/components/text-field";
-import { CheckboxRow } from "../../../src/components/checkbox-row";
 import { useAuthStore } from "../../../src/store/auth-store";
 
 const schema = z.object({
@@ -43,9 +45,19 @@ export default function PhoneAuthScreen() {
   return (
     <Screen
       title="Phone sign in"
-      subtitle="Use one phone number for both registration and login. Invite code binding stays optional."
+      subtitle="One phone number handles both registration and login. No password flow is added in MVP."
     >
-      <SectionCard title="Step 1" description="Enter your phone number and confirm legal consent.">
+      <PromoHeroCard
+        eyebrow="Phone → OTP"
+        title="Sign in with one clear step"
+        description="Keep the flow lightweight: one phone number, optional invite code, one primary action."
+        chips={[
+          { label: "Market", value: "PH" },
+          { label: "Language", value: "English" }
+        ]}
+      />
+
+      <SectionCard title="Continue with phone" description="Country switching stays lightweight in MVP. Enter one PH-format number and proceed.">
         <Controller
           control={form.control}
           name="phoneNumber"
@@ -79,26 +91,39 @@ export default function PhoneAuthScreen() {
           control={form.control}
           name="agreeToLegal"
           render={({ field, fieldState }) => (
-            <View style={{ gap: 6 }}>
+            <View style={styles.checkboxBlock}>
               <CheckboxRow
                 checked={Boolean(field.value)}
                 onPress={() => field.onChange(!field.value)}
                 label="I agree to the Privacy Policy and Terms of Service."
-                hint="The app will keep in-app privacy, terms, support, and delete account access."
+                hint="The app keeps in-app privacy, terms, support, rules, and delete-account access."
               />
-              {fieldState.error ? <Text style={{ color: "#B91C1C", fontSize: 12 }}>{fieldState.error.message}</Text> : null}
+              {fieldState.error ? <Text style={styles.error}>{fieldState.error.message}</Text> : null}
             </View>
           )}
         />
 
-        <PrimaryButton label="Send demo OTP" onPress={submit} />
+        <PrimaryButton label="Continue with OTP" variant="promo" size="lg" onPress={submit} />
       </SectionCard>
 
-      <SectionCard title="What happens next" description="OTP success will create the user account, default wallet, and default queue guard record on the real backend.">
-        <Text>• This starter uses demo flow only</Text>
-        <Text>• Backend should later register and export the OTP send contract through OpenAPI</Text>
-        <Text>• Frontend should swap mock flow after OpenAPI SDK is generated</Text>
-      </SectionCard>
+      <Text style={styles.helperText}>
+        Demo reminder: OTP verification is still local in this batch. The visual patch does not change auth contract scope.
+      </Text>
     </Screen>
   );
 }
+
+const styles = StyleSheet.create({
+  checkboxBlock: {
+    gap: 6
+  },
+  error: {
+    color: mobileTheme.colors.danger,
+    fontSize: 12
+  },
+  helperText: {
+    color: mobileTheme.colors.textSecondary,
+    fontSize: 13,
+    lineHeight: 18
+  }
+});

@@ -52,6 +52,49 @@ export type RuleDetailResponseDto = {
     ruleVersion: string;
 };
 
+export type UserQueueGuardStatus = 'VALID' | 'EXPIRED_GRACE';
+
+export type UserQueueGuardResponseDto = {
+    status: string;
+    validUntil: string;
+    graceUntil: string;
+    lastCheckinAt: {
+        [key: string]: unknown;
+    } | null;
+    canCheckInNow: boolean;
+    activeEntriesCount: number;
+    frozenEntriesCount: number;
+};
+
+export type CreateOrderRequestDto = {
+    productId: string;
+    skuId: string;
+    quantity: number;
+    addressId: string;
+};
+
+export type OrderStatus = 'CREATED' | 'WAIT_PAY' | 'PAID' | 'FULFILLING' | 'SHIPPED' | 'DELIVERED' | 'COMPLETED' | 'CANCELED' | 'AFTERSALE_OPEN' | 'PARTIAL_REFUNDED' | 'FULL_REFUNDED';
+
+export type CreateOrderResponseDto = {
+    orderId: string;
+    status: OrderStatus;
+    productId: string;
+    skuId: string;
+    quantity: number;
+};
+
+export type CreatePaymentIntentResponseDto = {
+    paymentIntentId: string;
+    orderId: string;
+    provider: string;
+    /**
+     * Minor unit amount that should be paid for the order.
+     */
+    amountMinor: number;
+    currencyCode: string;
+    checkoutUrl: string;
+};
+
 export type MeOverviewResponseDto = {
     userId: string;
     phoneMasked: string;
@@ -102,18 +145,6 @@ export type ProductDetailResponseDto = {
     soldOut: boolean;
     maxOrderQty: number;
     skus: Array<ProductDetailSkuDto>;
-};
-
-export type UserQueueGuardResponseDto = {
-    status: string;
-    validUntil: string;
-    graceUntil: string;
-    lastCheckinAt: {
-        [key: string]: unknown;
-    } | null;
-    canCheckInNow: boolean;
-    activeEntriesCount: number;
-    frozenEntriesCount: number;
 };
 
 export type QueueEntryListItemDto = {
@@ -385,11 +416,134 @@ export type GetRuleBySlugResponses = {
 
 export type GetRuleBySlugResponse = GetRuleBySlugResponses[keyof GetRuleBySlugResponses];
 
+export type GetQueueGuardData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/v1/queue-guard';
+};
+
+export type GetQueueGuardResponses = {
+    200: UserQueueGuardResponseDto;
+};
+
+export type GetQueueGuardResponse = GetQueueGuardResponses[keyof GetQueueGuardResponses];
+
+export type CheckInQueueGuardData = {
+    body?: never;
+    headers: {
+        /**
+         * Idempotency key for safely retryable write actions.
+         */
+        'Idempotency-Key': string;
+    };
+    path?: never;
+    query?: never;
+    url: '/v1/queue-guard/check-in';
+};
+
+export type CheckInQueueGuardErrors = {
+    /**
+     * Missing or invalid Idempotency-Key header.
+     */
+    400: ApiErrorResponseDto;
+    /**
+     * Internal server error
+     */
+    500: ApiErrorResponseDto;
+};
+
+export type CheckInQueueGuardError = CheckInQueueGuardErrors[keyof CheckInQueueGuardErrors];
+
+export type CheckInQueueGuardResponses = {
+    200: UserQueueGuardResponseDto;
+};
+
+export type CheckInQueueGuardResponse = CheckInQueueGuardResponses[keyof CheckInQueueGuardResponses];
+
+export type CreateOrderData = {
+    body: CreateOrderRequestDto;
+    headers: {
+        /**
+         * Idempotency key for safely retryable write actions.
+         */
+        'Idempotency-Key': string;
+    };
+    path?: never;
+    query?: never;
+    url: '/v1/orders';
+};
+
+export type CreateOrderErrors = {
+    /**
+     * Invalid order creation request.
+     */
+    400: ApiErrorResponseDto;
+    /**
+     * Product, SKU, or address not found.
+     */
+    404: ApiErrorResponseDto;
+    /**
+     * Internal server error
+     */
+    500: ApiErrorResponseDto;
+};
+
+export type CreateOrderError = CreateOrderErrors[keyof CreateOrderErrors];
+
+export type CreateOrderResponses = {
+    201: CreateOrderResponseDto;
+};
+
+export type CreateOrderResponse = CreateOrderResponses[keyof CreateOrderResponses];
+
+export type CreatePaymentIntentData = {
+    body?: never;
+    headers: {
+        /**
+         * Idempotency key for safely retryable write actions.
+         */
+        'Idempotency-Key': string;
+    };
+    path: {
+        orderId: string;
+    };
+    query?: never;
+    url: '/v1/orders/{orderId}/payment-intents';
+};
+
+export type CreatePaymentIntentErrors = {
+    /**
+     * Missing or invalid Idempotency-Key header.
+     */
+    400: ApiErrorResponseDto;
+    /**
+     * Order not found.
+     */
+    404: ApiErrorResponseDto;
+    /**
+     * Order cannot create a payment intent in its current status.
+     */
+    409: ApiErrorResponseDto;
+    /**
+     * Internal server error
+     */
+    500: ApiErrorResponseDto;
+};
+
+export type CreatePaymentIntentError = CreatePaymentIntentErrors[keyof CreatePaymentIntentErrors];
+
+export type CreatePaymentIntentResponses = {
+    201: CreatePaymentIntentResponseDto;
+};
+
+export type CreatePaymentIntentResponse = CreatePaymentIntentResponses[keyof CreatePaymentIntentResponses];
+
 export type GetMeData = {
     body?: never;
     path?: never;
     query?: never;
-    url: '/v1/v1/me';
+    url: '/v1/me';
 };
 
 export type GetMeResponses = {
@@ -402,7 +556,7 @@ export type ListProductsData = {
     body?: never;
     path?: never;
     query?: never;
-    url: '/v1/v1/products';
+    url: '/v1/products';
 };
 
 export type ListProductsResponses = {
@@ -415,7 +569,7 @@ export type GetProductDetailData = {
     body?: never;
     path?: never;
     query?: never;
-    url: '/v1/v1/products/{productId}';
+    url: '/v1/products/{productId}';
 };
 
 export type GetProductDetailResponses = {
@@ -424,19 +578,6 @@ export type GetProductDetailResponses = {
 
 export type GetProductDetailResponse = GetProductDetailResponses[keyof GetProductDetailResponses];
 
-export type GetQueueGuardData = {
-    body?: never;
-    path?: never;
-    query?: never;
-    url: '/v1/v1/queue-guard';
-};
-
-export type GetQueueGuardResponses = {
-    200: UserQueueGuardResponseDto;
-};
-
-export type GetQueueGuardResponse = GetQueueGuardResponses[keyof GetQueueGuardResponses];
-
 export type ListQueueEntriesData = {
     body?: never;
     path?: never;
@@ -444,7 +585,7 @@ export type ListQueueEntriesData = {
         cursor: string;
         limit: number;
     };
-    url: '/v1/v1/queue-entries';
+    url: '/v1/queue-entries';
 };
 
 export type ListQueueEntriesResponses = {
@@ -457,7 +598,7 @@ export type GetQueueEntryDetailData = {
     body?: never;
     path?: never;
     query?: never;
-    url: '/v1/v1/queue-entries/{queueEntryId}';
+    url: '/v1/queue-entries/{queueEntryId}';
 };
 
 export type GetQueueEntryDetailResponses = {
@@ -470,7 +611,7 @@ export type ListTasksData = {
     body?: never;
     path?: never;
     query?: never;
-    url: '/v1/v1/tasks';
+    url: '/v1/tasks';
 };
 
 export type ListTasksResponses = {
@@ -483,7 +624,7 @@ export type GetInviteOverviewData = {
     body?: never;
     path?: never;
     query?: never;
-    url: '/v1/v1/invites/me';
+    url: '/v1/invites/me';
 };
 
 export type GetInviteOverviewResponses = {
@@ -499,7 +640,7 @@ export type ListInviteRecordsData = {
         cursor: string;
         limit: number;
     };
-    url: '/v1/v1/invites/records';
+    url: '/v1/invites/records';
 };
 
 export type ListInviteRecordsResponses = {
@@ -512,7 +653,7 @@ export type GetWalletOverviewData = {
     body?: never;
     path?: never;
     query?: never;
-    url: '/v1/v1/wallet';
+    url: '/v1/wallet';
 };
 
 export type GetWalletOverviewResponses = {
@@ -528,7 +669,7 @@ export type ListWalletLedgersData = {
         cursor: string;
         limit: number;
     };
-    url: '/v1/v1/wallet/ledgers';
+    url: '/v1/wallet/ledgers';
 };
 
 export type ListWalletLedgersResponses = {
@@ -544,7 +685,7 @@ export type ListWithdrawalsData = {
         cursor: string;
         limit: number;
     };
-    url: '/v1/v1/withdrawals';
+    url: '/v1/withdrawals';
 };
 
 export type ListWithdrawalsResponses = {
@@ -557,7 +698,7 @@ export type GetDashboardSummaryData = {
     body?: never;
     path?: never;
     query?: never;
-    url: '/v1/v1/admin/dashboard/summary';
+    url: '/v1/admin/dashboard/summary';
 };
 
 export type GetDashboardSummaryResponses = {

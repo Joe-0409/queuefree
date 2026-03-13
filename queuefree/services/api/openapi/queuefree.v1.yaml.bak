@@ -1,0 +1,835 @@
+openapi: 3.0.3
+info:
+  title: QueueFree Readonly API
+  version: v1
+  description: 'Readonly GET-only contract for QueueFree C-end integration.
+
+
+    This snapshot intentionally excludes all write actions.
+
+    The API base URL must NOT include the `/v1` prefix. Use a base such as `http://localhost:4000`
+
+    and call the paths in this document as-is to avoid `/v1/v1/...` duplication.
+
+    '
+servers:
+- url: http://localhost:4000
+  description: Local API base URL without the /v1 prefix
+- url: https://dev-api.queuefree.com
+  description: Dev API base URL without the /v1 prefix
+- url: https://stg-api.queuefree.com
+  description: Staging API base URL without the /v1 prefix
+- url: https://api.queuefree.com
+  description: Production API base URL without the /v1 prefix
+tags:
+- name: System
+- name: Rules
+- name: Me
+- name: Products
+- name: Queue Guard
+- name: Queue Entries
+- name: Orders
+- name: Payments
+- name: QueueGuard
+paths:
+  /v1/health:
+    get:
+      tags:
+      - System
+      summary: Get API health status
+      operationId: getHealth
+      responses:
+        '200':
+          description: Health status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+  /v1/system/runtime-config:
+    get:
+      tags:
+      - System
+      summary: Get runtime configuration for the current launch baseline
+      operationId: getRuntimeConfig
+      responses:
+        '200':
+          description: Runtime configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RuntimeConfigResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+  /v1/rules:
+    get:
+      tags:
+      - Rules
+      summary: List public rules documents
+      operationId: listRules
+      responses:
+        '200':
+          description: Rules list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RuleListItem'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+  /v1/rules/{slug}:
+    get:
+      tags:
+      - Rules
+      summary: Get a rule document by slug
+      operationId: getRuleBySlug
+      parameters:
+      - name: slug
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Rule detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RuleDetailResponse'
+        '404':
+          description: Rule not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+  /v1/me:
+    get:
+      tags:
+      - Me
+      summary: Get current user overview
+      operationId: getMeOverview
+      responses:
+        '200':
+          description: Current user overview
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeOverviewResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+  /v1/products:
+    get:
+      tags:
+      - Products
+      summary: List queue-eligible products
+      operationId: listProducts
+      parameters:
+      - name: cursor
+        in: query
+        required: false
+        description: Opaque pagination cursor. Omit on the first request.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Product list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductListResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+  /v1/products/{productId}:
+    get:
+      tags:
+      - Products
+      summary: Get a product by productId
+      operationId: getProductById
+      parameters:
+      - name: productId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Product detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDetailResponse'
+        '404':
+          description: Product not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+  /v1/queue-guard:
+    get:
+      tags:
+      - Queue Guard
+      summary: Get current user queue guard status
+      operationId: getQueueGuard
+      responses:
+        '200':
+          description: Queue guard status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserQueueGuardResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+  /v1/queue-entries:
+    get:
+      tags:
+      - Queue Entries
+      summary: List queue entries belonging to the current user
+      operationId: listQueueEntries
+      parameters:
+      - name: cursor
+        in: query
+        required: false
+        description: Opaque pagination cursor. Omit on the first request.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Queue entry list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueueEntryListResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+  /v1/queue-entries/{queueEntryId}:
+    get:
+      tags:
+      - Queue Entries
+      summary: Get a queue entry by queueEntryId
+      operationId: getQueueEntryById
+      parameters:
+      - name: queueEntryId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Queue entry detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueueEntryDetailResponse'
+        '404':
+          description: Queue entry not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+  /v1/orders:
+    post:
+      tags:
+      - Orders
+      operationId: createOrder
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKeyHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrderRequest'
+      responses:
+        '201':
+          description: Order created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateOrderResponse'
+  /v1/orders/{orderId}/payment-intents:
+    post:
+      tags:
+      - Payments
+      operationId: createPaymentIntent
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKeyHeader'
+      - $ref: '#/components/parameters/OrderIdPath'
+      responses:
+        '201':
+          description: Payment intent created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatePaymentIntentResponse'
+  /v1/queue-guard/check-in:
+    post:
+      tags:
+      - QueueGuard
+      operationId: checkInQueueGuard
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKeyHeader'
+      responses:
+        '200':
+          description: Queue guard check-in succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserQueueGuardResponse'
+components:
+  schemas:
+    AppEnv:
+      type: string
+      enum:
+      - local
+      - dev
+      - test
+      - staging
+      - prod
+    AccountDeleteStatus:
+      type: string
+      enum:
+      - NOT_REQUESTED
+      - DELETE_REQUESTED
+      - PENDING_SETTLEMENT
+      - READY_TO_ANONYMIZE
+      - ANONYMIZED
+      - CANCELED_BY_USER
+    WalletActivationMethod:
+      type: string
+      enum:
+      - INVITE
+      - TASK
+      - ADMIN_OVERRIDE
+    UserQueueGuardStatus:
+      type: string
+      enum:
+      - VALID
+      - EXPIRED_GRACE
+    QueueEntryStatus:
+      type: string
+      enum:
+      - PENDING_RISK
+      - ACTIVE
+      - FROZEN
+      - SUSPENDED_REVIEW
+      - REMOVED
+      - WON_PENDING_RELEASE
+      - CASHBACK_RELEASED
+      - CLAWBACK_DONE
+    HealthResponse:
+      type: object
+      additionalProperties: false
+      required:
+      - status
+      - service
+      - version
+      - environment
+      - timestamp
+      properties:
+        status:
+          type: string
+          enum:
+          - ok
+        service:
+          type: string
+          example: '@queuefree/api'
+        version:
+          type: string
+          example: 0.0.1
+        environment:
+          $ref: '#/components/schemas/AppEnv'
+        timestamp:
+          type: string
+          format: date-time
+    RuntimeConfigResponse:
+      type: object
+      additionalProperties: false
+      required:
+      - marketCode
+      - currencyCode
+      - timezone
+      - locale
+      - language
+      - ruleVersion
+      - rewardedAdsEnabled
+      properties:
+        marketCode:
+          type: string
+          example: PH
+        currencyCode:
+          type: string
+          example: PHP
+        timezone:
+          type: string
+          example: Asia/Manila
+        locale:
+          type: string
+          example: en-PH
+        language:
+          type: string
+          example: English
+        ruleVersion:
+          type: string
+          example: v1.2
+        rewardedAdsEnabled:
+          type: boolean
+          example: false
+    ApiErrorResponse:
+      type: object
+      additionalProperties: false
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: INTERNAL_SERVER_ERROR
+        message:
+          type: string
+          example: Unexpected server error.
+        requestId:
+          type: string
+          example: req_demo_123
+        details:
+          type: object
+          additionalProperties: true
+    RuleListItem:
+      type: object
+      additionalProperties: false
+      required:
+      - slug
+      - title
+      - summary
+      - updatedAt
+      - ruleVersion
+      properties:
+        slug:
+          type: string
+          example: queue
+        title:
+          type: string
+          example: Queue Rules
+        summary:
+          type: string
+          example: How queue ranking, protection, boost, and settlement slots work.
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2026-03-11T00:00:00.000Z'
+        ruleVersion:
+          type: string
+          example: v1.2
+    RuleDetailResponse:
+      type: object
+      additionalProperties: false
+      required:
+      - slug
+      - title
+      - sections
+      - updatedAt
+      - ruleVersion
+      properties:
+        slug:
+          type: string
+          example: queue
+        title:
+          type: string
+          example: Queue Rules
+        sections:
+          type: array
+          items:
+            type: string
+          example:
+          - Queue rank is based on effective active entries only.
+          - Settlement runs on fixed public slots.
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2026-03-11T00:00:00.000Z'
+        ruleVersion:
+          type: string
+          example: v1.2
+    MeOverviewResponse:
+      type: object
+      additionalProperties: false
+      required:
+      - userId
+      - phoneMasked
+      - accountDeleteStatus
+      - walletActivationMethod
+      properties:
+        userId:
+          type: string
+          example: usr_demo_01
+        phoneMasked:
+          type: string
+          example: +63 *** *** 1234
+        accountDeleteStatus:
+          $ref: '#/components/schemas/AccountDeleteStatus'
+        walletActivationMethod:
+          allOf:
+          - $ref: '#/components/schemas/WalletActivationMethod'
+          nullable: true
+    ProductListItem:
+      type: object
+      additionalProperties: false
+      required:
+      - productId
+      - title
+      - coverImageUrl
+      - priceMinor
+      - currencyCode
+      - maxQty
+      - isQueueEligible
+      properties:
+        productId:
+          type: string
+          example: prod_demo_01
+        title:
+          type: string
+          example: Wireless Earbuds
+        coverImageUrl:
+          type: string
+          format: uri
+          example: https://assets.queuefree.com/products/prod_demo_01/cover.jpg
+        priceMinor:
+          type: integer
+          example: 129900
+          description: Minor unit price in the market currency.
+        currencyCode:
+          type: string
+          example: PHP
+        maxQty:
+          type: integer
+          example: 5
+        isQueueEligible:
+          type: boolean
+          example: true
+    ProductListResponse:
+      type: object
+      additionalProperties: false
+      required:
+      - items
+      - cursor
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductListItem'
+        cursor:
+          type: string
+          nullable: true
+          example: null
+          description: Opaque pagination cursor for the next page. Null means exhausted.
+    ProductDetailResponse:
+      type: object
+      additionalProperties: false
+      required:
+      - productId
+      - title
+      - description
+      - imageUrls
+      - priceMinor
+      - currencyCode
+      - maxQty
+      - isQueueEligible
+      properties:
+        productId:
+          type: string
+          example: prod_demo_01
+        title:
+          type: string
+          example: Wireless Earbuds
+        description:
+          type: string
+          example: Compact wireless earbuds with charging case and queue-eligible
+            cashback participation.
+        imageUrls:
+          type: array
+          items:
+            type: string
+            format: uri
+          example:
+          - https://assets.queuefree.com/products/prod_demo_01/cover.jpg
+          - https://assets.queuefree.com/products/prod_demo_01/detail-1.jpg
+        priceMinor:
+          type: integer
+          example: 129900
+          description: Minor unit price in the market currency.
+        currencyCode:
+          type: string
+          example: PHP
+        maxQty:
+          type: integer
+          example: 5
+        isQueueEligible:
+          type: boolean
+          example: true
+    UserQueueGuardResponse:
+      type: object
+      additionalProperties: false
+      required:
+      - status
+      - lastCheckinAt
+      - validUntil
+      - graceUntil
+      properties:
+        status:
+          $ref: '#/components/schemas/UserQueueGuardStatus'
+        lastCheckinAt:
+          type: string
+          format: date-time
+          nullable: true
+          example: '2026-03-12T08:30:00.000Z'
+        validUntil:
+          type: string
+          format: date-time
+          example: '2026-03-13T20:00:00.000Z'
+        graceUntil:
+          type: string
+          format: date-time
+          nullable: true
+          example: null
+    QueueEntryListItem:
+      type: object
+      additionalProperties: false
+      required:
+      - queueEntryId
+      - orderId
+      - productId
+      - productTitle
+      - coverImageUrl
+      - status
+      - activeRank
+      - boostUsedCount
+      - wonCashbackAmountMinor
+      properties:
+        queueEntryId:
+          type: string
+          example: entry_demo_01
+        orderId:
+          type: string
+          example: order_demo_01
+        productId:
+          type: string
+          example: prod_demo_01
+        productTitle:
+          type: string
+          example: Wireless Earbuds
+        coverImageUrl:
+          type: string
+          format: uri
+          example: https://assets.queuefree.com/products/prod_demo_01/cover.jpg
+        status:
+          $ref: '#/components/schemas/QueueEntryStatus'
+        activeRank:
+          type: integer
+          nullable: true
+          example: 31
+        boostUsedCount:
+          type: integer
+          example: 1
+        wonCashbackAmountMinor:
+          type: integer
+          nullable: true
+          example: null
+          description: Minor unit cashback amount if this entry already won; null
+            otherwise.
+    QueueEntryListResponse:
+      type: object
+      additionalProperties: false
+      required:
+      - items
+      - cursor
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/QueueEntryListItem'
+        cursor:
+          type: string
+          nullable: true
+          example: null
+          description: Opaque pagination cursor for the next page. Null means exhausted.
+    QueueEntryDetailResponse:
+      type: object
+      additionalProperties: false
+      required:
+      - queueEntryId
+      - orderId
+      - productId
+      - productTitle
+      - coverImageUrl
+      - status
+      - activeRank
+      - boostUsedCount
+      - wonCashbackAmountMinor
+      - enteredAt
+      properties:
+        queueEntryId:
+          type: string
+          example: entry_demo_01
+        orderId:
+          type: string
+          example: order_demo_01
+        productId:
+          type: string
+          example: prod_demo_01
+        productTitle:
+          type: string
+          example: Wireless Earbuds
+        coverImageUrl:
+          type: string
+          format: uri
+          example: https://assets.queuefree.com/products/prod_demo_01/cover.jpg
+        status:
+          $ref: '#/components/schemas/QueueEntryStatus'
+        activeRank:
+          type: integer
+          nullable: true
+          example: 31
+        boostUsedCount:
+          type: integer
+          example: 1
+        wonCashbackAmountMinor:
+          type: integer
+          nullable: true
+          example: null
+          description: Minor unit cashback amount if this entry already won; null
+            otherwise.
+        enteredAt:
+          type: string
+          format: date-time
+          example: '2026-03-12T08:45:00.000Z'
+    CreateOrderRequest:
+      type: object
+      required:
+      - productId
+      - skuId
+      - quantity
+      - addressId
+      properties:
+        productId:
+          type: string
+        skuId:
+          type: string
+        quantity:
+          type: number
+        addressId:
+          type: string
+    CreateOrderResponse:
+      type: object
+      required:
+      - orderId
+      - status
+      - productId
+      - skuId
+      - quantity
+      properties:
+        orderId:
+          type: string
+        status:
+          $ref: '#/components/schemas/OrderStatus'
+        productId:
+          type: string
+        skuId:
+          type: string
+        quantity:
+          type: number
+    CreatePaymentIntentResponse:
+      type: object
+      required:
+      - paymentIntentId
+      - orderId
+      - provider
+      - amountMinor
+      - currencyCode
+      - checkoutUrl
+      properties:
+        paymentIntentId:
+          type: string
+        orderId:
+          type: string
+        provider:
+          type: string
+        amountMinor:
+          type: number
+        currencyCode:
+          type: string
+        checkoutUrl:
+          type: string
+    OrderStatus:
+      type: string
+      enum:
+      - CREATED
+      - WAIT_PAY
+      - PAID
+      - FULFILLING
+      - SHIPPED
+      - DELIVERED
+      - COMPLETED
+      - CANCELED
+      - AFTERSALE_OPEN
+      - PARTIAL_REFUNDED
+      - FULL_REFUNDED
+  parameters:
+    IdempotencyKeyHeader:
+      name: Idempotency-Key
+      in: header
+      required: true
+      schema:
+        type: string
+    OrderIdPath:
+      name: orderId
+      in: path
+      required: true
+      schema:
+        type: string

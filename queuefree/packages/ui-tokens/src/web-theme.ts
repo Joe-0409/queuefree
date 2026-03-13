@@ -16,6 +16,14 @@ export const webTheme = {
     danger: '#B91C1C',
     dangerSoft: '#FEE2E2'
   },
+  promo: {
+    gradientStart: '#FF8A70',
+    gradientEnd: '#FFB16D',
+    softBackground: '#FFF3EE',
+    strongTextOnColor: '#5F2411',
+    badgeBackground: '#FFF7F3',
+    badgeText: '#C2410C'
+  },
   radius: {
     sm: '0.5rem',
     md: '0.875rem',

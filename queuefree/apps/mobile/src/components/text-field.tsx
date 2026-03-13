@@ -43,16 +43,16 @@ const styles = StyleSheet.create({
   },
   label: {
     color: mobileTheme.colors.textPrimary,
-    fontWeight: "600",
+    fontWeight: "700",
     fontSize: 14
   },
   input: {
-    minHeight: 48,
-    backgroundColor: mobileTheme.colors.surface,
-    borderRadius: mobileTheme.radius.md,
+    minHeight: 52,
+    backgroundColor: mobileTheme.colors.surfaceMuted,
+    borderRadius: mobileTheme.radius.lg,
     paddingHorizontal: mobileTheme.spacing.md,
     borderWidth: 1,
-    borderColor: mobileTheme.colors.border,
+    borderColor: "rgba(148, 163, 184, 0.18)",
     color: mobileTheme.colors.textPrimary
   },
   inputError: {

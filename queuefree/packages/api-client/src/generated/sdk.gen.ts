@@ -2,7 +2,7 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { GetDashboardSummaryData, GetDashboardSummaryResponses, GetHealthData, GetHealthErrors, GetHealthResponses, GetInviteOverviewData, GetInviteOverviewResponses, GetMeData, GetMeResponses, GetProductDetailData, GetProductDetailResponses, GetQueueEntryDetailData, GetQueueEntryDetailResponses, GetQueueGuardData, GetQueueGuardResponses, GetRuleBySlugData, GetRuleBySlugErrors, GetRuleBySlugResponses, GetRuntimeConfigData, GetRuntimeConfigErrors, GetRuntimeConfigResponses, GetWalletOverviewData, GetWalletOverviewResponses, ListInviteRecordsData, ListInviteRecordsResponses, ListProductsData, ListProductsResponses, ListQueueEntriesData, ListQueueEntriesResponses, ListRulesData, ListRulesErrors, ListRulesResponses, ListTasksData, ListTasksResponses, ListWalletLedgersData, ListWalletLedgersResponses, ListWithdrawalsData, ListWithdrawalsResponses } from './types.gen';
+import type { CheckInQueueGuardData, CheckInQueueGuardErrors, CheckInQueueGuardResponses, CreateOrderData, CreateOrderErrors, CreateOrderResponses, CreatePaymentIntentData, CreatePaymentIntentErrors, CreatePaymentIntentResponses, GetDashboardSummaryData, GetDashboardSummaryResponses, GetHealthData, GetHealthErrors, GetHealthResponses, GetInviteOverviewData, GetInviteOverviewResponses, GetMeData, GetMeResponses, GetProductDetailData, GetProductDetailResponses, GetQueueEntryDetailData, GetQueueEntryDetailResponses, GetQueueGuardData, GetQueueGuardResponses, GetRuleBySlugData, GetRuleBySlugErrors, GetRuleBySlugResponses, GetRuntimeConfigData, GetRuntimeConfigErrors, GetRuntimeConfigResponses, GetWalletOverviewData, GetWalletOverviewResponses, ListInviteRecordsData, ListInviteRecordsResponses, ListProductsData, ListProductsResponses, ListQueueEntriesData, ListQueueEntriesResponses, ListRulesData, ListRulesErrors, ListRulesResponses, ListTasksData, ListTasksResponses, ListWalletLedgersData, ListWalletLedgersResponses, ListWithdrawalsData, ListWithdrawalsResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -39,66 +39,88 @@ export const listRules = <ThrowOnError extends boolean = false>(options?: Option
 export const getRuleBySlug = <ThrowOnError extends boolean = false>(options: Options<GetRuleBySlugData, ThrowOnError>) => (options.client ?? client).get<GetRuleBySlugResponses, GetRuleBySlugErrors, ThrowOnError>({ url: '/v1/rules/{slug}', ...options });
 
 /**
+ * Get Queue Guard Status
+ */
+export const getQueueGuard = <ThrowOnError extends boolean = false>(options?: Options<GetQueueGuardData, ThrowOnError>) => (options?.client ?? client).get<GetQueueGuardResponses, unknown, ThrowOnError>({ url: '/v1/queue-guard', ...options });
+
+/**
+ * Check in and refresh the current user queue guard validity
+ */
+export const checkInQueueGuard = <ThrowOnError extends boolean = false>(options: Options<CheckInQueueGuardData, ThrowOnError>) => (options.client ?? client).post<CheckInQueueGuardResponses, CheckInQueueGuardErrors, ThrowOnError>({ url: '/v1/queue-guard/check-in', ...options });
+
+/**
+ * Create a single-item order for the current C-end user
+ */
+export const createOrder = <ThrowOnError extends boolean = false>(options: Options<CreateOrderData, ThrowOnError>) => (options.client ?? client).post<CreateOrderResponses, CreateOrderErrors, ThrowOnError>({
+    url: '/v1/orders',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Create a payment intent for an existing order
+ */
+export const createPaymentIntent = <ThrowOnError extends boolean = false>(options: Options<CreatePaymentIntentData, ThrowOnError>) => (options.client ?? client).post<CreatePaymentIntentResponses, CreatePaymentIntentErrors, ThrowOnError>({ url: '/v1/orders/{orderId}/payment-intents', ...options });
+
+/**
  * Get User Overview
  */
-export const getMe = <ThrowOnError extends boolean = false>(options?: Options<GetMeData, ThrowOnError>) => (options?.client ?? client).get<GetMeResponses, unknown, ThrowOnError>({ url: '/v1/v1/me', ...options });
+export const getMe = <ThrowOnError extends boolean = false>(options?: Options<GetMeData, ThrowOnError>) => (options?.client ?? client).get<GetMeResponses, unknown, ThrowOnError>({ url: '/v1/me', ...options });
 
 /**
  * List Products
  */
-export const listProducts = <ThrowOnError extends boolean = false>(options?: Options<ListProductsData, ThrowOnError>) => (options?.client ?? client).get<ListProductsResponses, unknown, ThrowOnError>({ url: '/v1/v1/products', ...options });
+export const listProducts = <ThrowOnError extends boolean = false>(options?: Options<ListProductsData, ThrowOnError>) => (options?.client ?? client).get<ListProductsResponses, unknown, ThrowOnError>({ url: '/v1/products', ...options });
 
 /**
  * Get Product Detail
  */
-export const getProductDetail = <ThrowOnError extends boolean = false>(options?: Options<GetProductDetailData, ThrowOnError>) => (options?.client ?? client).get<GetProductDetailResponses, unknown, ThrowOnError>({ url: '/v1/v1/products/{productId}', ...options });
-
-/**
- * Get Queue Guard Status
- */
-export const getQueueGuard = <ThrowOnError extends boolean = false>(options?: Options<GetQueueGuardData, ThrowOnError>) => (options?.client ?? client).get<GetQueueGuardResponses, unknown, ThrowOnError>({ url: '/v1/v1/queue-guard', ...options });
+export const getProductDetail = <ThrowOnError extends boolean = false>(options?: Options<GetProductDetailData, ThrowOnError>) => (options?.client ?? client).get<GetProductDetailResponses, unknown, ThrowOnError>({ url: '/v1/products/{productId}', ...options });
 
 /**
  * List My Queue Entries
  */
-export const listQueueEntries = <ThrowOnError extends boolean = false>(options: Options<ListQueueEntriesData, ThrowOnError>) => (options.client ?? client).get<ListQueueEntriesResponses, unknown, ThrowOnError>({ url: '/v1/v1/queue-entries', ...options });
+export const listQueueEntries = <ThrowOnError extends boolean = false>(options: Options<ListQueueEntriesData, ThrowOnError>) => (options.client ?? client).get<ListQueueEntriesResponses, unknown, ThrowOnError>({ url: '/v1/queue-entries', ...options });
 
 /**
  * Get Queue Entry Detail
  */
-export const getQueueEntryDetail = <ThrowOnError extends boolean = false>(options?: Options<GetQueueEntryDetailData, ThrowOnError>) => (options?.client ?? client).get<GetQueueEntryDetailResponses, unknown, ThrowOnError>({ url: '/v1/v1/queue-entries/{queueEntryId}', ...options });
+export const getQueueEntryDetail = <ThrowOnError extends boolean = false>(options?: Options<GetQueueEntryDetailData, ThrowOnError>) => (options?.client ?? client).get<GetQueueEntryDetailResponses, unknown, ThrowOnError>({ url: '/v1/queue-entries/{queueEntryId}', ...options });
 
 /**
  * List Available Tasks
  */
-export const listTasks = <ThrowOnError extends boolean = false>(options?: Options<ListTasksData, ThrowOnError>) => (options?.client ?? client).get<ListTasksResponses, unknown, ThrowOnError>({ url: '/v1/v1/tasks', ...options });
+export const listTasks = <ThrowOnError extends boolean = false>(options?: Options<ListTasksData, ThrowOnError>) => (options?.client ?? client).get<ListTasksResponses, unknown, ThrowOnError>({ url: '/v1/tasks', ...options });
 
 /**
  * Get My Invite Overview
  */
-export const getInviteOverview = <ThrowOnError extends boolean = false>(options?: Options<GetInviteOverviewData, ThrowOnError>) => (options?.client ?? client).get<GetInviteOverviewResponses, unknown, ThrowOnError>({ url: '/v1/v1/invites/me', ...options });
+export const getInviteOverview = <ThrowOnError extends boolean = false>(options?: Options<GetInviteOverviewData, ThrowOnError>) => (options?.client ?? client).get<GetInviteOverviewResponses, unknown, ThrowOnError>({ url: '/v1/invites/me', ...options });
 
 /**
  * List My Invite Records
  */
-export const listInviteRecords = <ThrowOnError extends boolean = false>(options: Options<ListInviteRecordsData, ThrowOnError>) => (options.client ?? client).get<ListInviteRecordsResponses, unknown, ThrowOnError>({ url: '/v1/v1/invites/records', ...options });
+export const listInviteRecords = <ThrowOnError extends boolean = false>(options: Options<ListInviteRecordsData, ThrowOnError>) => (options.client ?? client).get<ListInviteRecordsResponses, unknown, ThrowOnError>({ url: '/v1/invites/records', ...options });
 
 /**
  * Get Wallet Overview
  */
-export const getWalletOverview = <ThrowOnError extends boolean = false>(options?: Options<GetWalletOverviewData, ThrowOnError>) => (options?.client ?? client).get<GetWalletOverviewResponses, unknown, ThrowOnError>({ url: '/v1/v1/wallet', ...options });
+export const getWalletOverview = <ThrowOnError extends boolean = false>(options?: Options<GetWalletOverviewData, ThrowOnError>) => (options?.client ?? client).get<GetWalletOverviewResponses, unknown, ThrowOnError>({ url: '/v1/wallet', ...options });
 
 /**
  * List Wallet Ledgers
  */
-export const listWalletLedgers = <ThrowOnError extends boolean = false>(options: Options<ListWalletLedgersData, ThrowOnError>) => (options.client ?? client).get<ListWalletLedgersResponses, unknown, ThrowOnError>({ url: '/v1/v1/wallet/ledgers', ...options });
+export const listWalletLedgers = <ThrowOnError extends boolean = false>(options: Options<ListWalletLedgersData, ThrowOnError>) => (options.client ?? client).get<ListWalletLedgersResponses, unknown, ThrowOnError>({ url: '/v1/wallet/ledgers', ...options });
 
 /**
  * List Withdrawals
  */
-export const listWithdrawals = <ThrowOnError extends boolean = false>(options: Options<ListWithdrawalsData, ThrowOnError>) => (options.client ?? client).get<ListWithdrawalsResponses, unknown, ThrowOnError>({ url: '/v1/v1/withdrawals', ...options });
+export const listWithdrawals = <ThrowOnError extends boolean = false>(options: Options<ListWithdrawalsData, ThrowOnError>) => (options.client ?? client).get<ListWithdrawalsResponses, unknown, ThrowOnError>({ url: '/v1/withdrawals', ...options });
 
 /**
  * Admin Dashboard Summary
  */
-export const getDashboardSummary = <ThrowOnError extends boolean = false>(options?: Options<GetDashboardSummaryData, ThrowOnError>) => (options?.client ?? client).get<GetDashboardSummaryResponses, unknown, ThrowOnError>({ url: '/v1/v1/admin/dashboard/summary', ...options });
+export const getDashboardSummary = <ThrowOnError extends boolean = false>(options?: Options<GetDashboardSummaryData, ThrowOnError>) => (options?.client ?? client).get<GetDashboardSummaryResponses, unknown, ThrowOnError>({ url: '/v1/admin/dashboard/summary', ...options });

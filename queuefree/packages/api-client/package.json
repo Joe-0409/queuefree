@@ -9,7 +9,7 @@
   "types": "./src/index.ts",
   "exports": {
     ".": "./src/index.ts",
-    "./client": "./src/generated/client.gen.ts",
+    "./client": "./src/generated/client/index.ts",
     "./sdk": "./src/generated/sdk.gen.ts",
     "./types": "./src/generated/types.gen.ts",
     "./package.json": "./package.json"

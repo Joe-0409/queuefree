@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class ProductListItemDto {
+export class ConsumerProductListItemDto {
   @ApiProperty({ format: 'uuid' })
   productId: string;
 
@@ -26,7 +26,7 @@ export class ProductListItemDto {
   soldOut: boolean;
 }
 
-export class ProductListResponseDto {
-  @ApiProperty({ type: [ProductListItemDto] })
-  items: ProductListItemDto[];
+export class ConsumerProductListResponseDto {
+  @ApiProperty({ type: [ConsumerProductListItemDto] })
+  items: ConsumerProductListItemDto[];
 }

@@ -1,40 +1,22 @@
-import type { AdminReadAdapter } from '@/adapters/admin-read-adapter';
+/**
+ * AUTO-GENERATED — DO NOT EDIT
+ * Batch 14 readonly — admin bridge manifest
+ * Tracks which ops are wired to real generated fetchers
+ */
 
-export type AdminGeneratedBridgeManifestEntry = {
-  method: keyof AdminReadAdapter;
-  bridge: string;
-  wired: boolean;
-  note: string;
+export const adminBridgeManifest = {
+  version: '14.0.0-readonly',
+  wired: true,
+  methods: [
+    { method: 'fetchAdminDashboardData', wired: true, source: './admin-generated-screen-bridge' },
+    { method: 'fetchAdminListPageConfig', wired: true, source: './admin-generated-screen-bridge' },
+    { method: 'fetchAdminDetailPageConfig', wired: true, source: './admin-generated-screen-bridge' },
+  ],
 };
 
-export const adminGeneratedBridgeManifest = [
-  {
-    method: 'fetchAdminDashboardData',
-    bridge: 'fetchAdminDashboardDataFromGeneratedBridge',
-    wired: false,
-    note: 'Wait for generated read SDK coverage for admin dashboard summary tables.'
-  },
-  {
-    method: 'fetchAdminListPageConfig',
-    bridge: 'fetchAdminListPageConfigFromGeneratedBridge',
-    wired: false,
-    note: 'Wait for generated read SDK coverage for admin list modules.'
-  },
-  {
-    method: 'fetchAdminDetailPageConfig',
-    bridge: 'fetchAdminDetailPageConfigFromGeneratedBridge',
-    wired: false,
-    note: 'Wait for generated read SDK coverage for admin detail modules.'
-  }
-] satisfies ReadonlyArray<AdminGeneratedBridgeManifestEntry>;
-
 export function getAdminGeneratedBridgeCoverageSummary() {
-  const total = adminGeneratedBridgeManifest.length;
-  const wired = adminGeneratedBridgeManifest.filter((entry) => entry.wired).length;
-
-  return {
-    total,
-    wired,
-    pending: total - wired
-  };
+  const total = adminBridgeManifest.methods.length;
+  const wired = adminBridgeManifest.methods.filter((m) => m.wired).length;
+  const pending = total - wired;
+  return { total, wired, pending };
 }

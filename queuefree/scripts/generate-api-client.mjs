@@ -173,7 +173,14 @@ async function main() {
   await ensureWorkspaceFiles();
 
   // Strip servers to prevent hardcoding queuefree.com domains
-  const openapiContent = JSON.parse(await readFile(inputRaw, 'utf8'));
+  const inputExt = path.extname(inputRaw).toLowerCase();
+  let openapiContent;
+  if (inputExt === '.yaml' || inputExt === '.yml') {
+    const yaml = await import('yaml');
+    openapiContent = yaml.parse(await readFile(inputRaw, 'utf8'));
+  } else {
+    openapiContent = JSON.parse(await readFile(inputRaw, 'utf8'));
+  }
   if (openapiContent.servers) {
     delete openapiContent.servers;
   }

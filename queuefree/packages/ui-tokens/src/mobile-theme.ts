@@ -18,17 +18,27 @@ export const mobileTheme = {
     info: "#1D4ED8",
     infoSoft: "#E0E7FF"
   },
+  promo: {
+    gradientStart: "#FF8A70",
+    gradientEnd: "#FFB16D",
+    softBackground: "#FFF3EE",
+    strongTextOnColor: "#5F2411",
+    badgeBackground: "#FFFFFF",
+    badgeText: "#C2410C"
+  },
   spacing: {
     xs: 6,
     sm: 10,
     md: 16,
     lg: 20,
-    xl: 28
+    xl: 28,
+    xxl: 36
   },
   radius: {
     sm: 10,
     md: 14,
     lg: 20,
+    xl: 26,
     pill: 999
   }
 } as const;

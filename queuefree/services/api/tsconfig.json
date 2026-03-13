@@ -10,5 +10,13 @@
     "types": ["node"]
   },
   "include": ["src/**/*.ts", "scripts/**/*.ts", "../../packages/shared/src/**/*.ts", "package.json"],
-  "exclude": ["dist", "node_modules"]
+  "exclude": ["dist", "node_modules"],
+  "ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS",
+      "moduleResolution": "Node"
+    },
+    "transpileOnly": true,
+    "require": ["tsconfig-paths/register"]
+  }
 }

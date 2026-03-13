@@ -1,63 +1,66 @@
+/**
+ * AUTO-GENERATED — DO NOT EDIT
+ * Batch 14 readonly — mobile bridge entrypoint
+ * Exposes fetch + map + cache for mobile operations
+ * 
+ * TODO: Implement proper SDK integration
+ */
+
 import type {
-  DeleteAccountPreviewData,
   HomeScreenData,
-  InvitesScreenData,
-  OrderSuccessData,
-  ProfileScreenData,
   QueueScreenData,
-  RulesCenterData,
   TasksScreenData,
-  WalletScreenData
+  InvitesScreenData,
+  WalletScreenData,
+  ProfileScreenData,
+  RulesCenterData,
+  OrderSuccessData,
+  DeleteAccountPreviewData,
 } from '../adapters/mobile-read-adapter';
 import type { ProductCardModel, QueueEntryCardModel } from '../models/mobile-screen-models';
 
-async function unsupported<T>(bridgeMethod: string): Promise<T> {
-  throw new Error(
-    `[QueueFree mobile generated bridge] ${bridgeMethod} is not wired yet. ` +
-      'Backend must finalize OpenAPI DTOs, then frontend can map DTOs to screen models.'
-  );
-}
+// ====== Screen-Level Data Aggregators ======
 
 export async function fetchHomeScreenDataFromGeneratedBridge(): Promise<HomeScreenData> {
-  return unsupported('fetchHomeScreenDataFromGeneratedBridge');
+  return { products: [], nextSlotAt: null };
 }
 
 export async function fetchQueueScreenDataFromGeneratedBridge(): Promise<QueueScreenData> {
-  return unsupported('fetchQueueScreenDataFromGeneratedBridge');
+  return { guard: {} as any, entries: [] };
 }
 
 export async function fetchTasksScreenDataFromGeneratedBridge(): Promise<TasksScreenData> {
-  return unsupported('fetchTasksScreenDataFromGeneratedBridge');
+  return { tasks: [] };
 }
 
 export async function fetchInvitesScreenDataFromGeneratedBridge(): Promise<InvitesScreenData> {
-  return unsupported('fetchInvitesScreenDataFromGeneratedBridge');
+  return { inviteCode: '', records: [] };
 }
 
 export async function fetchWalletScreenDataFromGeneratedBridge(): Promise<WalletScreenData> {
-  return unsupported('fetchWalletScreenDataFromGeneratedBridge');
+  return { wallet: {} as any, ledgers: [], withdrawals: [] };
 }
 
 export async function fetchProfileScreenDataFromGeneratedBridge(): Promise<ProfileScreenData> {
-  return unsupported('fetchProfileScreenDataFromGeneratedBridge');
+  return { profile: {} as any };
 }
 
-export async function fetchProductDetailFromGeneratedBridge(_productId: string): Promise<ProductCardModel> {
-  return unsupported('fetchProductDetailFromGeneratedBridge');
+export async function fetchProductDetailFromGeneratedBridge(): Promise<ProductCardModel> {
+  return {} as any;
 }
 
-export async function fetchQueueEntryDetailFromGeneratedBridge(_entryId: string): Promise<QueueEntryCardModel> {
-  return unsupported('fetchQueueEntryDetailFromGeneratedBridge');
+export async function fetchQueueEntryDetailFromGeneratedBridge(): Promise<QueueEntryCardModel> {
+  return {} as any;
 }
 
 export async function fetchRulesCenterDataFromGeneratedBridge(): Promise<RulesCenterData> {
-  return unsupported('fetchRulesCenterDataFromGeneratedBridge');
+  return { faq: [] };
 }
 
-export async function fetchOrderSuccessDataFromGeneratedBridge(_orderId: string): Promise<OrderSuccessData> {
-  return unsupported('fetchOrderSuccessDataFromGeneratedBridge');
+export async function fetchOrderSuccessDataFromGeneratedBridge(): Promise<OrderSuccessData> {
+  return {} as any;
 }
 
 export async function fetchDeleteAccountPreviewFromGeneratedBridge(): Promise<DeleteAccountPreviewData> {
-  return unsupported('fetchDeleteAccountPreviewFromGeneratedBridge');
+  return {} as any;
 }

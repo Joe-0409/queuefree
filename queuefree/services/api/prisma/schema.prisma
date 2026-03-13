@@ -1,0 +1,107 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  userId                 String   @id
+  phoneMasked            String
+  accountDeleteStatus    String   @default("NOT_REQUESTED")
+  walletActivationMethod String?
+  addresses              UserAddress[]
+
+  @@map("users")
+}
+
+model UserAddress {
+  addressId String @id
+  userId    String
+  user      User   @relation(fields: [userId], references: [userId], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("user_addresses")
+}
+
+model Product {
+  productId       String       @id
+  title           String       @default("")
+  description     String       @default("")
+  coverImageUrl   String       @default("")
+  imageUrls       String       @default("[]")
+  isQueueEligible Boolean
+  skus            ProductSku[]
+
+  @@map("products")
+}
+
+model ProductSku {
+  skuId        String  @id
+  productId    String
+  priceMinor   Int
+  currencyCode String
+  maxQty       Int
+  product      Product @relation(fields: [productId], references: [productId], onDelete: Cascade)
+
+  @@index([productId])
+  @@map("product_skus")
+}
+
+model Order {
+  orderId      String    @id
+  userId       String
+  productId    String
+  skuId        String
+  quantity     Int
+  addressId    String
+  status       String
+  amountMinor  Int
+  currencyCode String
+  createdAt    DateTime  @default(now())
+  payments     Payment[]
+
+  @@map("orders")
+}
+
+model Payment {
+  paymentIntentId String   @id
+  orderId         String
+  provider        String
+  amountMinor     Int
+  currencyCode    String
+  checkoutUrl     String
+  idempotencyKey  String
+  createdAt       DateTime @default(now())
+  order           Order    @relation(fields: [orderId], references: [orderId], onDelete: Cascade)
+
+  @@index([orderId])
+  @@map("payments")
+}
+
+model UserQueueGuard {
+  userId        String    @id
+  status        String
+  lastCheckinAt DateTime?
+  validUntil    DateTime
+  graceUntil    DateTime?
+  updatedAt     DateTime  @updatedAt
+
+  @@map("user_queue_guards")
+}
+
+model IdempotencyKey {
+  scope               String
+  userId              String
+  idempotencyKey      String
+  requestSignature    String
+  responsePayloadJson String
+  httpStatus          Int
+  createdAt           DateTime @default(now())
+  expiresAt           DateTime
+
+  @@id([scope, userId, idempotencyKey])
+  @@map("idempotency_keys")
+}

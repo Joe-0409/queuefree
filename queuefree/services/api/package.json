@@ -9,7 +9,12 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "echo \"@queuefree/api lint will be added in a later batch\"",
     "test": "echo \"@queuefree/api tests will be added in a later batch\"",
-    "openapi:generate": "ts-node scripts/generate-openapi.ts",
+    "openapi:generate": "tsx scripts/generate-openapi.ts",
+    "prisma:generate": "prisma generate --schema prisma/schema.prisma",
+    "prisma:push": "prisma db push --schema prisma/schema.prisma",
+    "prisma:migrate:dev": "prisma migrate dev --schema prisma/schema.prisma",
+    "prisma:seed": "tsx prisma/seed.ts",
+    "smoke:write": "tsx scripts/smoke-write-ops.ts",
     "clean": "rm -rf dist tsconfig.tsbuildinfo"
   },
   "dependencies": {
@@ -17,6 +22,7 @@
     "@nestjs/core": "11.1.16",
     "@nestjs/platform-express": "11.1.14",
     "@nestjs/swagger": "11.2.6",
+    "@prisma/client": "4.16.2",
     "@queuefree/shared": "workspace:*",
     "reflect-metadata": "0.2.2",
     "rxjs": "7.8.2",
@@ -24,6 +30,8 @@
   },
   "devDependencies": {
     "@nestjs/cli": "11.0.16",
-    "ts-node": "^10.9.2"
+    "prisma": "4.16.2",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0"
   }
 }

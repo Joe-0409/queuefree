@@ -29,9 +29,9 @@ const styles = StyleSheet.create({
     gap: mobileTheme.spacing.sm
   },
   box: {
-    width: 22,
-    height: 22,
-    borderRadius: 6,
+    width: 24,
+    height: 24,
+    borderRadius: 7,
     borderWidth: 1,
     borderColor: mobileTheme.colors.border,
     backgroundColor: mobileTheme.colors.surface,
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   },
   checkMark: {
     color: "#ffffff",
-    fontWeight: "700"
+    fontWeight: "800"
   },
   textBox: {
     flex: 1,

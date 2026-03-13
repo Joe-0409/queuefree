@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class ProductDetailSkuDto {
+export class ConsumerProductDetailSkuDto {
   @ApiProperty({ format: 'uuid' })
   skuId: string;
 
@@ -14,7 +14,7 @@ export class ProductDetailSkuDto {
   soldOut: boolean;
 }
 
-export class ProductDetailResponseDto {
+export class ConsumerProductDetailResponseDto {
   @ApiProperty({ format: 'uuid' })
   productId: string;
 
@@ -48,6 +48,6 @@ export class ProductDetailResponseDto {
   @ApiProperty()
   maxOrderQty: number;
 
-  @ApiProperty({ type: [ProductDetailSkuDto] })
-  skus: ProductDetailSkuDto[];
+  @ApiProperty({ type: [ConsumerProductDetailSkuDto] })
+  skus: ConsumerProductDetailSkuDto[];
 }

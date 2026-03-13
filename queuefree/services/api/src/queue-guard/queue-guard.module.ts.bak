@@ -1,0 +1,10 @@
+import { Module } from '@nestjs/common';
+import { QueueGuardController } from './queue-guard.controller';
+import { QueueGuardService } from './queue-guard.service';
+import { QueueGuardWriteController } from './queue-guard-write.controller';
+
+@Module({
+  controllers: [QueueGuardController, QueueGuardWriteController],
+  providers: [QueueGuardService]
+})
+export class QueueGuardModule {}

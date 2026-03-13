@@ -170,8 +170,21 @@
 - `quantity: number`
 - `addressId: string`
 
+### C 端写操作 Path Field Registry（Batch 12A）
+
 #### `POST /v1/orders/:orderId/payment-intents`
 - `orderId: string`
+
+### C 端写操作 Body Field Registry（Batch 12A）
+
+#### `POST /v1/orders`
+- `productId: string`
+- `skuId: string`
+- `quantity: number`
+- `addressId: string`
+
+#### `POST /v1/orders/:orderId/payment-intents`
+- 无 body 字段
 
 #### `POST /v1/queue-guard/check-in`
 - 无 body 字段
@@ -193,11 +206,132 @@
 - `currencyCode: string`
 - `checkoutUrl: string`
 
-#### `CheckInResponse`
+#### `POST /v1/queue-guard/check-in` Response
+- `UserQueueGuardResponse`
+
+### C 端写操作 Error Response Registry（Batch 13B / V2）
+
+#### `POST /v1/orders`
+- `400 -> ApiErrorResponse`
+- `404 -> ApiErrorResponse`
+- `500 -> ApiErrorResponse`
+
+#### `POST /v1/orders/:orderId/payment-intents`
+- `400 -> ApiErrorResponse`
+- `404 -> ApiErrorResponse`
+- `409 -> ApiErrorResponse`
+- `500 -> ApiErrorResponse`
+
+#### `POST /v1/queue-guard/check-in`
+- `400 -> ApiErrorResponse`
+- `500 -> ApiErrorResponse`
+
+### C 端写操作最小持久化真相源（Batch 15A）
+
+#### Table Field Registry — `orders`
+- `orderId: string`
+- `userId: string`
+- `productId: string`
+- `skuId: string`
+- `quantity: number`
+- `addressId: string`
+- `status: OrderStatus`
+- `amountMinor: number`
+- `currencyCode: string`
+- `createdAt: string`
+
+#### Table Field Registry — `payments`
+- `paymentIntentId: string`
+- `orderId: string`
+- `provider: string`
+- `amountMinor: number`
+- `currencyCode: string`
+- `checkoutUrl: string`
+- `idempotencyKey: string`
+- `createdAt: string`
+
+#### Table Field Registry — `user_queue_guards`
+- `userId: string`
 - `status: UserQueueGuardStatus`
 - `lastCheckinAt: string | null`
 - `validUntil: string`
 - `graceUntil: string | null`
+- `updatedAt: string`
+
+#### Table Field Registry — `idempotency_keys`
+- `scope: string`
+- `userId: string`
+- `idempotencyKey: string`
+- `requestSignature: string`
+- `responsePayloadJson: string`
+- `httpStatus: number`
+- `createdAt: string`
+- `expiresAt: string`
+
+### C 端写操作最小持久化约束（Batch 15A）
+
+- `orders.orderId` unique
+- `payments.paymentIntentId` unique
+- `user_queue_guards.userId` unique
+- `idempotency_keys (scope, userId, idempotencyKey)` unique
+
+### C 端写操作最小持久化写入范围（Batch 15A）
+
+#### `POST /v1/orders`
+- writes `orders`
+- writes `idempotency_keys`
+
+#### `POST /v1/orders/:orderId/payment-intents`
+- reads `orders`
+- writes `payments`
+- writes `idempotency_keys`
+
+#### `POST /v1/queue-guard/check-in`
+- updates `user_queue_guards`
+- writes `idempotency_keys`
+
+### Batch 16B — Real Source Readiness Registry
+
+#### Table Field Registry — `users`
+- `userId: string`
+- `phoneMasked: string`
+- `accountDeleteStatus: AccountDeleteStatus`
+- `walletActivationMethod: WalletActivationMethod | null`
+
+#### Table Field Registry — `products`
+- `productId: string`
+- `title: string`
+- `description: string`
+- `coverImageUrl: string`
+- `imageUrls: string[]`
+- `isQueueEligible: boolean`
+
+#### Table Field Registry — `product_skus`
+- `skuId: string`
+- `productId: string`
+- `priceMinor: number`
+- `currencyCode: string`
+- `maxQty: number`
+
+#### Table Field Registry — `user_addresses`
+- `addressId: string`
+- `userId: string`
+
+#### Minimal Read Ownership / Resolution Rules（Batch 16B）
+- `CurrentUserSource` 通过认证上下文解析 `users.userId`
+- `AddressBookSource` 必须按 `(userId, addressId)` 解析地址归属
+- `CatalogReadSource` 必须先解析 `products.productId`
+- `CatalogReadSource` 校验 `product_skus.skuId` 必须属于对应 `productId`
+- `POST /v1/orders` 的 `amountMinor`、`currencyCode`、`maxQty` 必须以后端解析到的 `product_skus` 为准，不接受客户端自报价格
+- `GET /v1/products` 与 `GET /v1/products/:productId` 的 `priceMinor`、`currencyCode`、`maxQty` 以后端选定的 orderable SKU 为准
+
+#### Minimal Read Constraints（Batch 16B）
+- `users.userId` unique
+- `products.productId` unique
+- `product_skus.skuId` unique
+- `user_addresses.addressId` unique
+- `product_skus.productId -> products.productId`
+- `user_addresses.userId -> users.userId`
 
 ### 必须幂等的服务端回调 / Worker 动作
 

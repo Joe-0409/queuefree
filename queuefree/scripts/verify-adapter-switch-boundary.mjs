@@ -15,6 +15,16 @@ const checks = [
     ]
   },
   {
+    rootDir: path.join(repoRoot, 'apps', 'mobile', 'src'),
+    blockedFragments: ['mobile-write-adapter.mock', 'mobile-write-adapter.generated'],
+    description: 'mobile source files must not import concrete write adapters directly',
+    allowPatterns: [
+      /src[\/]adapters[\/]mobile-write-adapter\.resolve\.ts$/,
+      /src[\/]adapters[\/]mobile-write-adapter\.mock\.ts$/,
+      /src[\/]adapters[\/]mobile-write-adapter\.generated\.ts$/
+    ]
+  },
+  {
     rootDir: path.join(repoRoot, 'apps', 'admin', 'src'),
     blockedFragments: ['admin-read-adapter.mock', 'admin-read-adapter.generated'],
     description: 'admin source files must not import concrete adapters directly',
@@ -51,8 +61,10 @@ const checks = [
       /src[\/]generated-bridge[\/].+\.ts$/,
       /src[\/]adapters[\/]mobile-read-adapter\.generated\.ts$/,
       /src[\/]adapters[\/]runtime-config-adapter\.generated\.ts$/,
+      /src[\/]adapters[\/]mobile-write-adapter\.generated\.ts$/,
       /src[\/]adapters[\/]mobile-read-adapter\.readiness\.ts$/,
-      /src[\/]adapters[\/]runtime-config-adapter\.readiness\.ts$/
+      /src[\/]adapters[\/]runtime-config-adapter\.readiness\.ts$/,
+      /src[\/]adapters[\/]mobile-write-adapter\.readiness\.ts$/
     ]
   },
   {

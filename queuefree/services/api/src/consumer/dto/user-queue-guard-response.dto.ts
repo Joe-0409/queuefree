@@ -1,24 +1,24 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class UserQueueGuardResponseDto {
-  @ApiProperty()
-  status: string;
+export class ConsumerUserQueueGuardResponseDto {
+  @ApiProperty({ enum: ['VALID', 'EXPIRED_GRACE'], enumName: 'UserQueueGuardStatus' })
+  status!: 'VALID' | 'EXPIRED_GRACE';
 
-  @ApiProperty()
-  validUntil: string;
+  @ApiProperty({ example: '2026-03-13T20:00:00.000Z' })
+  validUntil!: string;
 
-  @ApiProperty()
-  graceUntil: string;
+  @ApiProperty({ example: null, nullable: true })
+  graceUntil!: string | null;
 
-  @ApiProperty({ nullable: true })
-  lastCheckinAt: string | null;
+  @ApiProperty({ example: '2026-03-12T08:30:00.000Z', nullable: true })
+  lastCheckinAt!: string | null;
 
-  @ApiProperty()
-  canCheckInNow: boolean;
+  @ApiProperty({ example: true })
+  canCheckInNow!: boolean;
 
-  @ApiProperty()
-  activeEntriesCount: number;
+  @ApiProperty({ example: 3 })
+  activeEntriesCount!: number;
 
-  @ApiProperty()
-  frozenEntriesCount: number;
+  @ApiProperty({ example: 1 })
+  frozenEntriesCount!: number;
 }

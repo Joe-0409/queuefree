@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class MeOverviewResponseDto {
+export class ConsumerMeOverviewResponseDto {
   @ApiProperty({ format: 'uuid' })
   userId: string;
 

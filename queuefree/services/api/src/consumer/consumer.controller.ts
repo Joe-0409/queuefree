@@ -1,11 +1,11 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { MeOverviewResponseDto } from './dto/me-overview-response.dto';
-import { ProductListResponseDto } from './dto/product-list-response.dto';
-import { ProductDetailResponseDto } from './dto/product-detail-response.dto';
+import { ConsumerMeOverviewResponseDto } from './dto/me-overview-response.dto';
+import { ConsumerProductListResponseDto } from './dto/product-list-response.dto';
+import { ConsumerProductDetailResponseDto } from './dto/product-detail-response.dto';
 import { QueueEntryListResponseDto } from './dto/queue-entry-list-response.dto';
 import { QueueEntryDetailResponseDto } from './dto/queue-entry-detail-response.dto';
-import { UserQueueGuardResponseDto } from './dto/user-queue-guard-response.dto';
+import { ConsumerUserQueueGuardResponseDto as UserQueueGuardResponseDto } from './dto/user-queue-guard-response.dto';
 import { TaskListResponseDto } from './dto/task-list-response.dto';
 import { UserInviteOverviewResponseDto } from './dto/user-invite-overview-response.dto';
 import { InviteRecordListResponseDto } from './dto/invite-record-list-response.dto';
@@ -14,26 +14,26 @@ import { WalletLedgerListResponseDto } from './dto/wallet-ledger-list-response.d
 import { WithdrawalListResponseDto } from './dto/withdrawal-list-response.dto';
 
 @ApiTags('Consumer')
-@Controller('v1')
+@Controller()
 export class ConsumerController {
   @Get('me')
   @ApiOperation({ summary: 'Get User Overview' })
-  @ApiOkResponse({ type: MeOverviewResponseDto })
-  async getMe(): Promise<MeOverviewResponseDto> {
+  @ApiOkResponse({ type: ConsumerMeOverviewResponseDto })
+  async getMe(): Promise<ConsumerMeOverviewResponseDto> {
     return {} as any;
   }
 
   @Get('products')
   @ApiOperation({ summary: 'List Products' })
-  @ApiOkResponse({ type: ProductListResponseDto })
-  async listProducts(): Promise<ProductListResponseDto> {
+  @ApiOkResponse({ type: ConsumerProductListResponseDto })
+  async listProducts(): Promise<ConsumerProductListResponseDto> {
     return {} as any;
   }
 
   @Get('products/:productId')
   @ApiOperation({ summary: 'Get Product Detail' })
-  @ApiOkResponse({ type: ProductDetailResponseDto })
-  async getProductDetail(): Promise<ProductDetailResponseDto> {
+  @ApiOkResponse({ type: ConsumerProductDetailResponseDto })
+  async getProductDetail(): Promise<ConsumerProductDetailResponseDto> {
     return {} as any;
   }
 

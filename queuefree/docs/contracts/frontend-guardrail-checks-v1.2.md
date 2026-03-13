@@ -86,16 +86,41 @@
 - 校验 adapters 不直接依赖 schema / validator
 - 校验 page route files 不直接依赖 schema / validator
 
-### 11. `pnpm verify:frontend-guardrails`
+
+### 11. `pnpm verify:ui-stories`
 
 作用：
 
-- 串联执行上面所有校验
+- 校验 Batch 15 关键 mobile 视觉组件已经具备 Storybook stories
+- 校验 `packages/ui-tokens` 中 promo token 已写入 mobile / web theme
+- 防止 UI 视觉补丁只改页面，不补 Storybook 和 token 基线
+
+### 12. `pnpm verify:mobile-write-bridge-coverage`
+
+作用：
+
+- 校验 `MobileWriteAdapter` 的每个方法都有对应的 generated write bridge 槽位
+- 校验 `mobile-generated-write-bridge.manifest.ts` 没有漏项或多项
+- 防止 createOrder / createPaymentIntent / checkInQueueGuard 接线时偷偷绕开 generated bridge
+
+### 13. `pnpm verify:mobile-pending-checkout-loop`
+
+作用：
+
+- 校验 Batch 17 移动端 pending checkout loop 文件存在
+- 确保 order-success 页面保持在现有路由集合内
+- 校验 OrderSuccessData 包含 QUEUE_CREATED / AWAITING_QUEUE_ENTRY 状态
+
+### 14. `pnpm verify:frontend-guardrails`
+
+作用：
+
+- 串联执行上面所有校验（含 UI stories 覆盖检查）
 - 建议作为本地提交前的统一检查入口
 
 ## 设计目的
 
-这批脚本不是为了新增功能，而是为了避免 7 类问题再次出现：
+这批脚本不是为了新增功能，而是为了避免 8 类问题再次出现：
 
 1. 前端偷偷长出未登记路径
 2. 前端重新手写猜测型 API path / SDK
@@ -104,6 +129,7 @@
 5. SDK 已生成但 screen-model mapping 尚未完成时，被误切到 generated 模式
 6. mock / generated adapter 输出未经过统一 screen-model 校验就直接进入页面
 7. generated adapter 方法数量与未来 bridge 槽位数量不一致
+8. mobile 写操作直接从页面偷调 SDK，绕开 write adapter / bridge
 
 ## 当前边界
 
